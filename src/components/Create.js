@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { addBeer } from "../store/beers";
 import { useState } from "react";
@@ -13,7 +13,8 @@ const Create = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [color, setColor] = useState('');
-
+    const [photo, setPhoto] = useState('')
+    const author = useSelector(state => state.entities.styles.loggedIn)
     
 
     const history = useHistory();
@@ -22,11 +23,11 @@ const Create = () => {
 
     const createBeerArticle = (e) => {
         e.preventDefault()
-        const data = {name: name, description: description, color: color, date: moment().format('MMMM Do YYYY, h:mm:ss a'), id: uuidv4()}
+        const data = {name: name, description: description, color: color, author: author, photo: photo, date: moment().format('MMMM Do YYYY, h:mm:ss a'), id: uuidv4()}
         
 
         dispatch(addBeer(data))
-
+        console.log(author)
         setName("");
         setColor("");
         setDescription("");
@@ -46,6 +47,8 @@ const Create = () => {
             <Form onSubmit={createBeerArticle}>
                 <Label htmlFor="">Nazwa piwa:</Label>
                 <Input type="text"  value={name} onChange={(e) => setName(e.target.value)}/>
+                <Label htmlFor="">Link do zdjęcia:</Label>
+                <Textarea type="text" value={photo} onChange={(e) => setPhoto(e.target.value)} />
                 <Label htmlFor="">Opis piwa:</Label>
                 <Textarea type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
                 <Label htmlFor="">Kolor:</Label>

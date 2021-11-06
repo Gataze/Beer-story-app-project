@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+
 import img1 from '../img/beer-story-1.jpg'
 import HomeArticle from "./HomeArticle";
 

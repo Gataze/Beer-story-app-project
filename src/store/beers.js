@@ -1,6 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { apiCallBegan } from './api';
-// import moment from 'moment';
+import moment from 'moment';
 
 const slice = createSlice({
     name: 'beers',
@@ -17,9 +17,15 @@ const slice = createSlice({
             beers.loading = false;
             beers.list = action.payload;
             beers.lastFetch = Date.now();
+            
         },
         beersRequestFailed: (beers, action) => {
             beers.loading = false;
+        },
+        beerGetOne: (beers, action) => {
+            beers.list = action.payload;
+            beers.loading = false;
+            beers.lastFetch = Date.now();
         },
         beerAdded: (beers, action) => {
             beers.list.push(action.payload);
@@ -49,6 +55,7 @@ const {
     beersRequested,
     beersReceived,
     beersRequestFailed,
+    beerGetOne,
     beerAdded,
     beerDeleted,
     beerUpdated,
@@ -58,12 +65,14 @@ const {
 export default slice.reducer;
 
 
-export const loadBeers = (numberOfDocs) => (dispatch, getState) => {
+export const loadBeers = (numberOfDocs, ignoreLastFetch) => (dispatch, getState) => {
     
+    if(!ignoreLastFetch) {
+        const { lastFetch } = getState().entities.beers;
+        const diffInMinutes = moment().diff(moment(lastFetch), 'minutes');
+        if(diffInMinutes < 10) return;
+    }
     
-    // const { lastFetch } = getState().entities.beers;
-    // const diffInMinutes = moment().diff(moment(lastFetch), 'minutes');
-    // if(diffInMinutes < 10) return;
 
 
     dispatch(
@@ -72,6 +81,26 @@ export const loadBeers = (numberOfDocs) => (dispatch, getState) => {
             nDocs: numberOfDocs,
             onStart: beersRequested.type,
             onSuccess: beersReceived.type,
+            onError: beersRequestFailed.type
+        })
+    )
+}
+
+
+export const getOneBeer = (id, ignoreLastFetch) => (dispatch, getState) => {
+    if(!ignoreLastFetch) {
+        const { lastFetch } = getState().entities.beers;
+        const diffInMinutes = moment().diff(moment(lastFetch), 'minutes');
+        if(diffInMinutes < 10) return;
+    }
+
+
+    dispatch(
+        apiCallBegan({
+            method: 'doc',
+            data: id,
+            onStart: beersRequested.type,
+            onSuccess: beerGetOne.type,
             onError: beersRequestFailed.type
         })
     )

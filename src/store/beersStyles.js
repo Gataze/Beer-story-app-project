@@ -7,7 +7,8 @@ const slice = createSlice({
     initialState: {
         loginShow: false,
         signUpShow: false,
-        loggedIn: null
+        loggedIn: null,
+        edit: false
     },
     reducers: {
         setLoginFormValue: (styles, action) => {
@@ -18,6 +19,9 @@ const slice = createSlice({
         },
         setUserLoggedIn: (styles, action) => {
             styles.loggedIn = action.payload? action.payload : null
+        },
+        setEditMode: (styles, action) => {
+            styles.edit = !styles.edit
         }
     }
 })
@@ -25,7 +29,8 @@ const slice = createSlice({
 export const {
     setLoginFormValue,
     handleSignUpStyle,
-    setUserLoggedIn
+    setUserLoggedIn,
+    setEditMode
 } = slice.actions
 
 export default slice.reducer

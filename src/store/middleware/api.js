@@ -1,6 +1,6 @@
 import { db } from "../../firebase/firebase.config";
 import * as actions from '../api'
-import { collection, getDocs, doc, setDoc, deleteDoc, updateDoc, limit, query } from 'firebase/firestore'
+import { collection, getDocs, getDoc, doc, setDoc, deleteDoc, updateDoc, limit, query } from 'firebase/firestore'
 
 
 const api = ({dispatch}) => next => async action => {
@@ -18,20 +18,27 @@ const api = ({dispatch}) => next => async action => {
     if(method === 'getDocs') try {
     
         const data = await getDocs(beersCollectionRef)
-        const serializedData = data.docs.map(doc => ({...doc.data(), id: doc.id}))
-        
-
-        dispatch(actions.apiCallSuccess(serializedData))
 
 
         if(onSuccess) dispatch({type: onSuccess, payload: data.docs.map(doc => ({...doc.data(), id: doc.id}))})
-
-
-        
+ 
     }
     catch(error){
         dispatch(actions.apiCallFailed(error.message))
         if(onError) dispatch({type: onError, payload: error.message})
+    }
+
+    //pobiera z firebase pojedynczy dokument
+    if(method === 'doc') try {
+
+        const beer = await getDoc(doc(db, 'Beers', data))
+
+
+        if(onSuccess) dispatch({type: onSuccess, payload: [{...beer.data(), id: beer.id}]})
+
+    }
+    catch(error){
+        dispatch(actions.apiCallFailed(error.message))
     }
 
     
@@ -39,6 +46,8 @@ const api = ({dispatch}) => next => async action => {
 
         await setDoc(doc(db, 'Beers', data.id), {
             name: data.name,
+            author: data.author,
+            photo: data.photo,
             description: data.description,
             color: data.color,
             date: data.date
@@ -72,11 +81,11 @@ const api = ({dispatch}) => next => async action => {
     if(method === 'updateDoc') try {
 
         
-        const {id, color, description, name} = data 
+        const {id, color, description, name, photo} = data 
         const beer = doc(db, 'Beers', id)
-        console.log({id, color, description, name})
+        console.log({id, color, description, name, photo})
 
-        await updateDoc(beer, {id, description, name, color});
+        await updateDoc(beer, {id, description, name, color, photo});
         dispatch(actions.apiCallSuccess(data))
         if(onSuccess) dispatch({type: onSuccess, payload: data})
     }

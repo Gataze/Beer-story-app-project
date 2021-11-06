@@ -7,19 +7,24 @@ import { setLoginFormValue } from "../store/beersStyles";
 const LoginPage = () => {
 
     const dispatch = useDispatch();
+
+
+    //ustala czy formularz logowania się wyświetla czy nie
     const setLoginShow = useSelector(state => state.entities.styles.loginShow);
 
+
+    //zmienne zapuisujące email i haslo wpisane w formularzu
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
 
-
-    const handleShow = () => {
+    //ukrywa formularz logowania
+    const hideForm = () => {
         dispatch(setLoginFormValue()) 
     }
        
 
- 
+    //loguje urzytkownika, ukrywa formularz logowania
     const login = (email, password) => {
         
         dispatch(loginUser(email, password))
@@ -33,7 +38,7 @@ const LoginPage = () => {
     return ( 
         <LoginPageContainer setLoginShow={setLoginShow}>
             <LoginForm>
-            <p onClick={handleShow}>X</p>
+            <p onClick={hideForm}>X</p>
             <h2>Logowanie do BeerStory</h2>
                 <Form>
                     <label>Email: </label>

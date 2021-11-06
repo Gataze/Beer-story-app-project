@@ -7,18 +7,10 @@ import WorldBeerHistory from './components/WorldBeerHistory';
 import Create from './components/Create'
 import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
-import Article from './components/Article';
-import { saveState } from './localStorage';
+import ArticleControllers from './components/ArticleControllers';
+
 
 const store = configureStore();
-
-
-//sprawdzic to czy przydatne?
-store.subscribe(() => {
-  saveState({
-    data :store.getState().entities.beers,
-  });
-});
 
 
 
@@ -50,7 +42,7 @@ function App() {
             <Create/>
           </Route>
           <Route path='/article/:id'>
-            <Article/>
+            <ArticleControllers/>
           </Route>
         </Switch>
         <Footer/>

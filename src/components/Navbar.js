@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router"
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBeer } from '@fortawesome/free-solid-svg-icons';
@@ -8,25 +9,38 @@ import { auth } from "../firebase/firebase.config";
 import { onAuthStateChanged } from "@firebase/auth";
 import LoginPage from "./LoginPage";
 import SignUpPage from "./SignUpPage";
-import { useDispatch } from "react-redux";
-import { setLoginFormValue, handleSignUpStyle } from '../store/beersStyles'
+import { useDispatch, useSelector } from "react-redux";
+import { setLoginFormValue, handleSignUpStyle, setUserLoggedIn } from '../store/beersStyles'
 import { logoutUser } from "../store/beersAuth";
+import { loadBeers } from "../store/beers";
 
 const Navbar = () => {
 
     const dispatch = useDispatch();
-
+    const userC = useSelector(state => state.entities.styles.loggedIn)
     const [showMenu, setShowMenu] = useState(false)
-
+    const history = useHistory()
    
     
     //Listener onAuthStateChange z Firebase/auth zwracający dane zalogowanego użytkownika gdy ten się zaloguje. Funkcja setUser zapisuje dane urzytkownika
     //do pozniejszczego wykorzystania
-    const [user, setUser] = useState({});
+    // const [user, setUser] = useState({});
 
-    onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser)
-    })
+
+    
+    //Komponent ma wiele zmiennych? więc renderuje się kilka razy przez co kilka razy odpalal funkcje onAuthStateChange. Umieszczenie go w useEffect
+    //sprawia ze odpla sie tylko przy zaladowaniu
+    useEffect(() => {
+
+        onAuthStateChanged(auth, (currentUser) => {
+
+            const email = currentUser?.email? currentUser.email : false;
+        
+            dispatch(setUserLoggedIn(email))
+            
+    
+        })
+    },[auth])
 
     
         
@@ -40,13 +54,14 @@ const Navbar = () => {
 
     //Shows/hides Login/SignUp component. Value argument contains redux action that we want to dispatch. Based on changes in redux store LoginPage/SignUpPage
     //is shown or hidden
-    const handleHide = (value) => {
+    const showForm = (value) => {
         dispatch(value())
     }
 
     //Logout current user
     const logout = () => {       
         dispatch(logoutUser())
+        history.push('/')
     }
 
     
@@ -72,28 +87,28 @@ const Navbar = () => {
 
                 <MobileNav showMenu={showMenu}>
                     <li><Link to='/'>Strona domowa</Link></li>
-                    <li onClick={() => handleHide(setLoginFormValue)}>Logowanie</li>
-                    <li onClick={() => handleHide(handleSignUpStyle)}><Link to='/'>Rejestracja</Link></li>     
+                    <li onClick={() => showForm(setLoginFormValue)}>Logowanie</li>
+                    <li onClick={() => showForm(handleSignUpStyle)}><Link to='/'>Rejestracja</Link></li>     
                 </MobileNav>
 
             </Navigation>
 
                 <UserWelcome>
-                    {user?.email && <span> Witaj {user?.email} !</span>}
+                    {userC && <span> Witaj {userC} !</span>}
                 </UserWelcome>
             
             <FullNav> 
                 <li><Link to='/'>Strona domowa</Link></li>
-                {user && <li onClick={logout}>Wyloguj</li>}
-                {!user && <li onClick={() => handleHide(setLoginFormValue)}>Zaloguj</li>}
-                {!user && <li onClick={() => handleHide(handleSignUpStyle)}>Rejestracja</li>}
+                {userC && <li onClick={logout}>Wyloguj</li>}
+                {!userC && <li onClick={() => showForm(setLoginFormValue)}>Zaloguj</li>}
+                {!userC && <li onClick={() => showForm(handleSignUpStyle)}>Rejestracja</li>}
                 <li><Link to='/'><FontAwesomeIcon icon={faInstagram} /></Link></li>
             </FullNav>
 
             <LoginPage />
 
             <SignUpPage />
-
+            
         </NavbarContainer>
 
      );

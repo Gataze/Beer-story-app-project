@@ -9,22 +9,35 @@ import { useEffect, useState } from "react";
 const WorldBeerHistory = () => {
 
     const dispatch = useDispatch();
-    const loginStatus = useSelector(state => state.entities.styles.loggedIn);
+    const userC = useSelector(state => state.entities.styles.loggedIn);
     const beers = useSelector(state => state.entities.beers.list);
     const loading = useSelector(state => state.entities.beers.loading);
     const [infoShowForUser, setShowInfoForUser] = useState(false);
 
-    const [numberOfDisplayedDocs, setNumberOfDisplayedDocs] = useState(3)
+    const numberOfDisplayedDocs = 3;
     
 
 
     useEffect(() => {
+
         const getBeers = () => {
             dispatch(loadBeers(numberOfDisplayedDocs))
         }
         getBeers();   
     }, [dispatch, numberOfDisplayedDocs])
 
+
+
+    
+
+    const loadMore = () => {
+
+        const ignoreLastFetch = true;
+
+          
+        dispatch(loadBeers(beers.length + 2, ignoreLastFetch))
+
+    }
 
 
     return ( 
@@ -34,7 +47,7 @@ const WorldBeerHistory = () => {
                     {beers.map(beer => (
                         <ArticleItem key={beer.id}>
                             <h2>{beer.name}</h2>
-                            <p>@Kowalski</p>
+                            {beer.author && <p>{beer.author}</p>}
                             <span>{ 
                                 (beer.description.length > 20)?
                                 `${beer.description.substring(0, 120)}...` : beer.description
@@ -47,7 +60,7 @@ const WorldBeerHistory = () => {
                     
                         <AddArticleItem onClick={() => setShowInfoForUser(true)}>
                     
-                            <Link to={loginStatus? '/create' : "#"}>
+                            <Link to={userC? '/create' : "#"}>
                                 <FontAwesomeIcon icon={faPlusCircle} />
                             </Link> 
                         </AddArticleItem>
@@ -59,7 +72,8 @@ const WorldBeerHistory = () => {
                 </InfoForUser>
                 
             </Container>
-            <button onClick={() => setNumberOfDisplayedDocs(prevState => prevState = prevState + 2)}>{loading? 'Ładuję' : 'Więcej'}</button>
+            <button onClick={() => loadMore(prevState => prevState = prevState + 2)}>{loading? 'Ładuję' : 'Więcej'}</button>
+            {/* <button onClick={() => setNumberOfDisplayedDocs(prevState => prevState = prevState + 2)}>{loading? 'Ładuję' : 'Więcej'}</button> */}
         </ArticlesList>
      );
 }

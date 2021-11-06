@@ -36,7 +36,7 @@ const authentication = ({dispatch}) => next => async action => {
                 password 
             );
 
-            dispatch(loadBeers())
+            dispatch(loadBeers(3))
             if(onSuccess) dispatch({type: onSuccess})
             
         } catch( error ){
