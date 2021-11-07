@@ -23,7 +23,12 @@ const WorldBeerHistory = () => {
         const getBeers = () => {
             dispatch(loadBeers(numberOfDisplayedDocs))
         }
-        getBeers();   
+
+        console.log(beers.length)
+
+        if(beers.length < 2){
+            getBeers();
+        }     
     }, [dispatch, numberOfDisplayedDocs])
 
 
@@ -36,6 +41,7 @@ const WorldBeerHistory = () => {
 
           
         dispatch(loadBeers(beers.length + 2, ignoreLastFetch))
+
 
     }
 

@@ -15,73 +15,30 @@ const ArticleControllers = () => {
     
     const {id} = useParams();
     const dispatch = useDispatch();
-    
-
+    const history = useHistory();
     const edit = useSelector(state => state.entities.styles.edit)
-
-    // const [user, setUser] = useState({});
-
-    // onAuthStateChanged(auth, (currentUser) => {
-    //     setUser(currentUser)
-
-    //     console.log('artciel')
-    // })
+    const inputValues = useSelector(selectArticle(id))
 
 
-    
-    // const [beerArticleFromLocal, setBeerArticleFromLocal] = useState('');
-
-
-    //Selektor danych w Redux o danym id, stanowiacych treść artykułu
-    // const beerArticleReduxArray = useSelector(selectArticle(id));
-
-
-    //Pobieranie danych z localStorage zapisanych wcześniej w magazynie Redux. Powód: Po odświeżeniu strony, magazyn Redux musi ponownie 
-    //pobrać dane z Firestore aby je wyświetlić. W celu uniknięcia ponownego pobierania wcześniej załadowanych danych zapisano je w localStorage,
-    // w celu poźniejszego wykorzystania po odswiezeniu strony.
-    // useEffect(() => {
-
-    //     const beerArticleArray = loadState().data.list.filter(beer => beer.id === id);
-
-    //     setBeerArticleFromLocal(beerArticleArray[0])
-
-
-    //     //Unmounts useEffect when component is closed...
-    //     return () => console.log('unmounting...');
-        
-    // }, [id])
-
-    
-    // //Jeżeli magazyn Redux zaladowany jest danymi z firebase wtedy przypisuje te wartosci do beerArticle, jeżeli nie to przypisuje 
-    // //wartości znajdujące się w localStorage (np. po odświeżeniu strony gdy magazyn Redux jest czyszczony)
-    // const beerArticle = beerArticleReduxArray[0]? beerArticleReduxArray[0] : beerArticleFromLocal
 
     //Zmienne zawierające informacje o zmianach które będą wprowadzane do artykułu.
-    const [beerName, setBeerName] = useState('');
-    const [beerColor, setBeerColor] = useState('');
-    const [beerDescription, setBeerDescription] = useState('');
-    const [beerPhoto, setBeerPhoto] = useState('')
+    const [beerName, setBeerName] = useState(inputValues[0].name);
+    const [beerColor, setBeerColor] = useState(inputValues[0].color);
+    const [beerDescription, setBeerDescription] = useState(inputValues[0].description);
+    const [beerPhoto, setBeerPhoto] = useState(inputValues[0].photo)
 
-
-    //Funkcja deleteBeerArticle usówa artykuł o danym id nastepnie cofa do poprzednio wyświetlanej podstrony
     
-
     //Funckja updateBeerArticle aktualizuje zmienione wartości 'color', wysyła dane do firebase, nastepnie pobiera zaktualizowaną wartośc z firebase.
     const updateBeerArticle = (id, name, description, color, photo) => {
 
-        const data = {id, description, name, color, photo}
-
-
+        const data = {id, name, description, color, photo};
 
         //wysyła dane do firebase
-        dispatch(updateBeer(data))
-
+        dispatch(updateBeer(data));
         //pobiera zaktualizowane wartości z firebase
-        dispatch(loadBeers())
-
-
-       
-
+        dispatch(loadBeers());
+        dispatch(setEditMode(false))
+        history.goBack();
     }
 
     
@@ -89,7 +46,7 @@ const ArticleControllers = () => {
 
     return ( 
         <section>
-           
+        
                 <ShowContent showContent={!edit}>
                     <InputArticleContainer>
                         <Article/>
@@ -107,8 +64,9 @@ const ArticleControllers = () => {
                             <label>Kolor: </label>
                             <input type="text" value={beerColor} onChange={(e) => setBeerColor(e.target.value)} />
                         </ArticleContainer>
+                        
                         <button onClick={() => updateBeerArticle(id, beerName, beerDescription, beerColor, beerPhoto)}>Aktualizuj</button>
-                        <button onClick={() => dispatch(setEditMode())}>Wróć</button>
+                        <button onClick={() => dispatch(setEditMode(false))}>Wróć</button>
                     
                 </InputShow>
             
@@ -140,12 +98,8 @@ const InputArticleContainer = styled.div`
             margin: 0 auto;
             max-width: 992px;
     }
-
-    
-    
+ 
 `
-
-
 
 const ArticleContainer = styled.div`
     display: flex;

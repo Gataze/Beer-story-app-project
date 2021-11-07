@@ -88,6 +88,7 @@ const Navbar = () => {
                 <MobileNav showMenu={showMenu}>
                     <li><Link to='/'>Strona domowa</Link></li>
                     <li onClick={() => showForm(setLoginFormValue)}>Logowanie</li>
+                    {userC && <li><Link to={`/użytkownik/${userC}`}>Użytkownik</Link></li>}
                     <li onClick={() => showForm(handleSignUpStyle)}><Link to='/'>Rejestracja</Link></li>     
                 </MobileNav>
 
@@ -100,6 +101,7 @@ const Navbar = () => {
             <FullNav> 
                 <li><Link to='/'>Strona domowa</Link></li>
                 {userC && <li onClick={logout}>Wyloguj</li>}
+                {userC && <li><Link to={`/użytkownik/${userC}`}>Użytkownik</Link></li>}
                 {!userC && <li onClick={() => showForm(setLoginFormValue)}>Zaloguj</li>}
                 {!userC && <li onClick={() => showForm(handleSignUpStyle)}>Rejestracja</li>}
                 <li><Link to='/'><FontAwesomeIcon icon={faInstagram} /></Link></li>

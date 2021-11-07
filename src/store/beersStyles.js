@@ -21,7 +21,7 @@ const slice = createSlice({
             styles.loggedIn = action.payload? action.payload : null
         },
         setEditMode: (styles, action) => {
-            styles.edit = !styles.edit
+            styles.edit = action.payload
         }
     }
 })

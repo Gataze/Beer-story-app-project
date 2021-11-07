@@ -8,6 +8,7 @@ import Create from './components/Create'
 import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
 import ArticleControllers from './components/ArticleControllers';
+import UserPage from './components/UserPage';
 
 
 const store = configureStore();
@@ -43,6 +44,9 @@ function App() {
           </Route>
           <Route path='/article/:id'>
             <ArticleControllers/>
+          </Route>
+          <Route path='/użytkownik/:nazwa'>
+            <UserPage/>
           </Route>
         </Switch>
         <Footer/>

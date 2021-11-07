@@ -5,6 +5,8 @@ import { useParams } from "react-router";
 import { deleteBeer, getOneBeer, loadBeers, selectArticle } from "../store/beers";
 import styled from "styled-components";
 import { setEditMode } from "../store/beersStyles";
+import BeerCounter from "./BeerCounter";
+import CommentsSection from "./CommentsSection";
 
 const Article = () => {
 
@@ -43,7 +45,7 @@ const Article = () => {
         const ignoreLastFetch = false;
         //Dispatchuje getOneBeer() który odpala middleware pobierajacy dane na temat artykułu o danym ID (jezeli odswiezylismy stronę)
         dispatch(getOneBeer(id, ignoreLastFetch))
-
+        dispatch(setEditMode(false))
 
         
         //Unmounts useEffect when component is closed...
@@ -68,7 +70,7 @@ const Article = () => {
     const updateShowInput = () => {
         
         //ustawia wartoś edit w store na true/false. Wartośc ta steruje wyświetlaniem artykułu lub sekcji edytowania artykułu.
-        dispatch(setEditMode())
+        dispatch(setEditMode(true))
 
     }
 
@@ -77,7 +79,7 @@ const Article = () => {
 
         const ignoreLastFetch = true
 
-        dispatch(loadBeers(3, ignoreLastFetch));
+        // dispatch(loadBeers(3, ignoreLastFetch));
         history.goBack();
         
     }
@@ -91,7 +93,12 @@ const Article = () => {
                     <img src={beerArticle?.photo? beerArticle.photo : null}/>
                     <p>1. Lorem Ipsum dolor sie emet.</p>
                 </div>
+
+                <BeerCounter/>
+
                 <h1>{beerArticle?.name} Lorem Ipsum</h1>
+               
+                
                 <span>{beerArticle?.author? beerArticle.author : '@anonim'}</span><span>{beerArticle?.date}</span><span>{beerArticle?.color}</span>
                 <p>{beerArticle?.description}{beerArticle?.description}</p>
                 <p>{beerArticle?.description}{beerArticle?.description}</p>
@@ -110,6 +117,8 @@ const Article = () => {
 
             </Bibliography>
 
+            
+
             <ArticleButtons>
             
                 {userC && <button onClick={() => deleteBeerArticle(id)}>Usuń</button>}
@@ -117,6 +126,8 @@ const Article = () => {
                         <button onClick={() => goBackward()}>Wróć</button>
             
             </ArticleButtons>
+
+            <CommentsSection />
         </article>
      );
 }
