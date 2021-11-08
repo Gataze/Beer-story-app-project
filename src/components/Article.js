@@ -15,124 +15,106 @@ const Article = () => {
     const history = useHistory();
 
     const userC = useSelector(state => state.entities.styles.loggedIn)
+    const edit = useSelector(state => state.entities.styles.edit)
+
+    //Selektor danych w Redux o danym id, stanowiacych treść artykułu (jeśli nie odświeżono strony)
+    const beerArticleRedux = useSelector(selectArticle(id));
 
     //Selektor danych w Redux pobierający obecnie zaladowany artykul jezeli odswiezymy stronę
     const beerArticleOne = useSelector(state => state.entities.beers.list)
-    
-
-    
-
-    //Selektor danych w Redux o danym id, stanowiacych treść artykułu (jeśli są załadowane)
-    const beerArticleRedux = useSelector(selectArticle(id));
-
 
     const beerArticle = beerArticleRedux[0]? beerArticleRedux[0] : beerArticleOne[0];
 
-    console.log(beerArticleOne)
-    console.log(beerArticleRedux)
-    console.log(beerArticle)
 
-    //Pobieranie danych z localStorage zapisanych wcześniej w magazynie Redux. Powód: Po odświeżeniu strony, magazyn Redux musi ponownie 
-    //pobrać dane z Firestore aby je wyświetlić. W celu uniknięcia ponownego pobierania wcześniej załadowanych danych zapisano je w localStorage,
-    // w celu poźniejszego wykorzystania po odswiezeniu strony.
-    
-    //Zmienna przechowująca dane z store zapisane w localStorage
-    // const [beerArticleFromLocal, setBeerArticleFromLocal] = useState('');
-    
-    
+
     useEffect(() => {
-
-        const ignoreLastFetch = false;
+       
         //Dispatchuje getOneBeer() który odpala middleware pobierajacy dane na temat artykułu o danym ID (jezeli odswiezylismy stronę)
-        dispatch(getOneBeer(id, ignoreLastFetch))
-        dispatch(setEditMode(false))
-
-        
+        dispatch(getOneBeer(id))
+        console.log('article component')
         //Unmounts useEffect when component is closed...
         return () => console.log('unmounting...');
         
     }, [id])
 
-    
+    //usuwa artykuł, wraca do wczesniejszej strony
     const deleteBeerArticle = (id) => {
+
         const ignoreLastFetch = true;
-
         dispatch(deleteBeer(id));
-        dispatch(loadBeers(3, ignoreLastFetch));
-
         history.goBack();
     }
 
     
 
 
-
+    //ustawia wartoś edit w store na true/false. Wartośc ta steruje wyświetlaniem artykułu lub sekcji edytowania artykułu.
     const updateShowInput = () => {
-        
-        //ustawia wartoś edit w store na true/false. Wartośc ta steruje wyświetlaniem artykułu lub sekcji edytowania artykułu.
-        dispatch(setEditMode(true))
-
+        dispatch(setEditMode(false))
     }
 
-
+    //wraca do poprzedniej strony
     const goBackward = () => {
-
-        const ignoreLastFetch = true
-
-        // dispatch(loadBeers(3, ignoreLastFetch));
         history.goBack();
-        
     }
 
 
     return ( 
         <article>
-            <ArticleMainContent>
+            <ArticleShowController showContent={edit}>
+                <ArticleMainContent>
 
-                <div>
-                    <img src={beerArticle?.photo? beerArticle.photo : null}/>
-                    <p>1. Lorem Ipsum dolor sie emet.</p>
-                </div>
+                    <div>
+                        <img src={beerArticle?.photo? beerArticle.photo : null}/>
+                        <p>1. Lorem Ipsum dolor sie emet.</p>
+                    </div>
 
-                <BeerCounter/>
+                    <BeerCounter/>
 
-                <h1>{beerArticle?.name} Lorem Ipsum</h1>
-               
+                    <h1>{beerArticle?.name} Lorem Ipsum</h1>
                 
-                <span>{beerArticle?.author? beerArticle.author : '@anonim'}</span><span>{beerArticle?.date}</span><span>{beerArticle?.color}</span>
-                <p>{beerArticle?.description}{beerArticle?.description}</p>
-                <p>{beerArticle?.description}{beerArticle?.description}</p>
-                <p>{beerArticle?.description}{beerArticle?.description}</p>
+                    <span>{beerArticle?.author? beerArticle.author : '@anonim'}</span><span>{beerArticle?.date}</span><span>{beerArticle?.color}</span>
+                    <p>{beerArticle?.description}{beerArticle?.description}</p>
+                    <p>{beerArticle?.description}{beerArticle?.description}</p>
+                    <p>{beerArticle?.description}{beerArticle?.description}</p>
+                    
+
+                </ArticleMainContent>
+
+                <Bibliography>
+
+                        <h2>Bibliografia</h2>
+                        <ol>
+                            <li> "Punkva subterranean stream". Ramsar Sites Information Service. Retrieved 25 April 2018.</li>
+                            <li> Jaskinie Punkvy. Zarząd jaskiń Republiki Czeskiej. [dostęp 2017-08-13].</li>
+                        </ol>
+
+                </Bibliography>
+
                 
 
-            </ArticleMainContent>
+                <ArticleButtons>
+                
+                    {userC && <button onClick={() => deleteBeerArticle(id)}>Usuń</button>}
+                    {userC && <button onClick={() => updateShowInput()}>Edytuj</button>}
+                            <button onClick={() => goBackward()}>Wróć</button>
+                
+                </ArticleButtons>
 
-            <Bibliography>
-
-                    <h2>Bibliografia</h2>
-                    <ol>
-                        <li> "Punkva subterranean stream". Ramsar Sites Information Service. Retrieved 25 April 2018.</li>
-                        <li> Jaskinie Punkvy. Zarząd jaskiń Republiki Czeskiej. [dostęp 2017-08-13].</li>
-                    </ol>
-
-            </Bibliography>
-
+                <CommentsSection />
+            </ArticleShowController>
             
-
-            <ArticleButtons>
-            
-                {userC && <button onClick={() => deleteBeerArticle(id)}>Usuń</button>}
-                {userC && <button onClick={() => updateShowInput()}>Edytuj</button>}
-                        <button onClick={() => goBackward()}>Wróć</button>
-            
-            </ArticleButtons>
-
-            <CommentsSection />
         </article>
      );
 }
  
 export default Article;
+
+
+
+const ArticleShowController = styled.div`
+    display: ${({showContent}) => showContent? 'block' : 'none'}
+`
 
 
 const ArticleButtons = styled.div`
@@ -150,19 +132,18 @@ const ArticleButtons = styled.div`
     }
 `
 
-const ArticleMainContent = styled.article`
+const ArticleMainContent = styled.div`
     display: flex;
     flex-flow: column;
     margin-top: 30px;
     @media(min-width: 768px) {
         display: block;
     }
-    div {
+    > div {
         display: flex;
         flex-flow: column;
         align-items: flex-start;
         align-self: flex-start;
-        
         margin: 20px 0px 0px 0;
         padding-bottom: 3px;
         order: 4;
@@ -178,11 +159,12 @@ const ArticleMainContent = styled.article`
             width: 350px;
         }
         
-        p {
+        > p {
             text-indent: 0px;
             margin: 0;
             font-size: 12px;
         }
+    
     }
 
     h1 {
@@ -195,7 +177,7 @@ const ArticleMainContent = styled.article`
         }
     }
 
-    p {
+    > p {
         order: 4;
         text-align: justify;
         margin-top: 15px;
@@ -215,6 +197,7 @@ const ArticleMainContent = styled.article`
 
 
 `
+
 
 
 const Bibliography = styled.div`

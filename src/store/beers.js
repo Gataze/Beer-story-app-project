@@ -142,10 +142,13 @@ export const updateBeer = (data) => apiCallBegan({
 // })
 
 
+export const giveOkBeer = () => apiCallBegan({
+    method: 'updateDoc',
+    data: 1
+})
 
 export const selectArticle = (id) => createSelector(
     state => state.entities.beers,
     beers => beers.list.filter(beer => beer.id === id)
-    
     )
 

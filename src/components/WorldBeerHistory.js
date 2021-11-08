@@ -21,7 +21,7 @@ const WorldBeerHistory = () => {
     useEffect(() => {
 
         const getBeers = () => {
-            dispatch(loadBeers(numberOfDisplayedDocs))
+            dispatch(loadBeers(numberOfDisplayedDocs, true))
         }
 
         console.log(beers.length)

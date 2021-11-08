@@ -3,11 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBeer } from '@fortawesome/free-solid-svg-icons';
 
 const BeerCounter = () => {
+
+
+    
+
+
     return ( 
         <BeerCounterContainer>
             <Container>
                 <FontAwesomeIcon icon={faBeer} />
-                <span>Daj piwo</span>
+                <GiveBeer>Daj piwo</GiveBeer>
             </Container>
                 
             
@@ -24,13 +29,13 @@ const BeerCounterContainer = styled.div`
 `
 
 
-const Container = styled.article`
+const Container = styled.div`
     display: flex;
     flex-flow: column;
     align-items: center;
-    justify-content: center;
-    width: 55px;
-    height: 55px;
+    justify-items: center;
+    width: 50px;
+    height: 50px;
     border: 2px solid black;
     border-radius: 10px;
     cursor: pointer;
@@ -38,8 +43,6 @@ const Container = styled.article`
             color: gold;
         }
     
-   
-
     svg {
         margin-left: 7px;
         margin-top: 3px;
@@ -47,11 +50,11 @@ const Container = styled.article`
         
     }
 
-    span {
-        margin: 0;
-        font-size: 12px;
-    }
+`
 
-    
+const GiveBeer = styled.p`
+    margin: 0;
+    font-size: 11px;
 
 `
+    
