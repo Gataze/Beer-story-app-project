@@ -69,10 +69,10 @@ const Article = () => {
                         <p>1. Lorem Ipsum dolor sie emet.</p>
                     </div>
 
-                    <BeerCounter/>
+                    
 
                     <h1>{beerArticle?.name} Lorem Ipsum</h1>
-                
+                    <BeerCounter/>
                     <span>{beerArticle?.author? beerArticle.author : '@anonim'}</span><span>{beerArticle?.date}</span><span>{beerArticle?.color}</span>
                     <p>{beerArticle?.description}{beerArticle?.description}</p>
                     <p>{beerArticle?.description}{beerArticle?.description}</p>
@@ -145,7 +145,7 @@ const ArticleMainContent = styled.div`
         align-items: flex-start;
         align-self: flex-start;
         margin: 20px 0px 0px 0;
-        padding-bottom: 3px;
+        
         order: 4;
         @media(min-width: 768px){
             display: block;
@@ -185,9 +185,10 @@ const ArticleMainContent = styled.div`
         text-indent: 40px;
     }
 
-    span {
-        margin: 0 10px 0 0;
+    > span {
+        margin: 0 5px 0 0;
         font-size: 11px;
+        line-height: 5px;
         order: 2;
     }
 

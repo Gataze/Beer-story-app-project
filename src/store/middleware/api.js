@@ -1,6 +1,6 @@
 import { db } from "../../firebase/firebase.config";
 import * as actions from '../api'
-import { collection, getDocs, getDoc, doc, setDoc, deleteDoc, updateDoc, limit, query } from 'firebase/firestore'
+import { collection, getDocs, getDoc, doc, setDoc, deleteDoc, updateDoc, limit, query, arrayUnion } from 'firebase/firestore'
 
 
 const api = ({dispatch}) => next => async action => {
@@ -92,6 +92,24 @@ const api = ({dispatch}) => next => async action => {
     catch(error){
         dispatch(actions.apiCallFailed(error.message))
     }
+
+
+    if(method === 'rateBeer') try {
+
+        const {id, gradeArrayItem, whoRated} = data;
+        const beerRef = doc(db, 'Beers', id)
+
+        await updateDoc(beerRef, {
+            
+            whoRated: arrayUnion({name: whoRated, gradeArrayItem: gradeArrayItem})
+        });
+        dispatch(actions.apiCallSuccess(data));
+        if(onSuccess) dispatch({type: onSuccess, payload: data});
+    }
+    catch(error){
+        dispatch(actions.apiCallFailed(error.message))
+    }
+
 
     if(method === 'clear'){
         dispatch({type: onSuccess})

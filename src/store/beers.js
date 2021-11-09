@@ -7,7 +7,8 @@ const slice = createSlice({
     initialState: {
         loading: false,
         list: [],
-        lastFetch: null
+        lastFetch: null,
+        whoRated: [{}],
     },
     reducers: {
         beersRequested: (beers, action) => {
@@ -46,6 +47,15 @@ const slice = createSlice({
         beerClear: (beers, action) => {
             beers.list = []
             beers.loading = false
+        },
+        beerRate: (beers, action) => {
+            const index = beers.list.findIndex(beer => beer.id === action.payload.id);
+            // beers.list[index].gradeArrayItem = action.payload.gradeArrayItem;
+            beers.list[index].whoRated.push({
+                name: action.payload.whoRated,
+                gradeArrayItem: action.payload.gradeArrayItem
+            })
+            beers.loading = false
         }
     }
 })
@@ -59,6 +69,7 @@ const {
     beerAdded,
     beerDeleted,
     beerUpdated,
+    beerRate
     
 } = slice.actions;
 
@@ -142,10 +153,15 @@ export const updateBeer = (data) => apiCallBegan({
 // })
 
 
-export const giveOkBeer = () => apiCallBegan({
-    method: 'updateDoc',
-    data: 1
+export const rateBeer = (data) => apiCallBegan({
+    method: 'rateBeer',
+    data: data,
+    onStart: beersRequested.type,
+    onSuccess: beerRate.type,
+    onError: beersRequestFailed.type
 })
+
+
 
 export const selectArticle = (id) => createSelector(
     state => state.entities.beers,
