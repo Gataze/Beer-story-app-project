@@ -9,9 +9,10 @@ const SignUpPage = () => {
     const dispatch = useDispatch();
     const setSignUpShow = useSelector(state => state.entities.styles.signUpShow);
 
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const [username, setUsername] = useState('')
 
 
     const handleHide = () => {
@@ -22,12 +23,12 @@ const SignUpPage = () => {
  
     const signUp = (email, password) => {
         
-        dispatch(signUpUser(email, password))
-        dispatch(handleSignUpStyle()) 
+        dispatch(signUpUser(email, password, username));
+        dispatch(handleSignUpStyle());
         
-        setEmail('')
-        setPassword('')
-
+        setEmail('');
+        setPassword('');
+        setUsername('');
     }
 
 
@@ -37,6 +38,8 @@ const SignUpPage = () => {
             <p  onClick={() => handleHide(handleSignUpStyle)}>X</p>
             <h2>Rejestracja do BeerStory</h2>
                 <Form>
+                    <label>Username: </label>
+                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
                     <label>Email: </label>
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                     <label>Password: </label>

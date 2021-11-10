@@ -12,12 +12,12 @@ import SignUpPage from "./SignUpPage";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoginFormValue, handleSignUpStyle, setUserLoggedIn } from '../store/beersStyles'
 import { logoutUser } from "../store/beersAuth";
-import { loadBeers } from "../store/beers";
+
 
 const Navbar = () => {
 
     const dispatch = useDispatch();
-    const userC = useSelector(state => state.entities.styles.loggedIn)
+    const user = useSelector(state => state.entities.styles.loggedIn.name)
     const [showMenu, setShowMenu] = useState(false)
     const history = useHistory()
    
@@ -35,9 +35,13 @@ const Navbar = () => {
         onAuthStateChanged(auth, (currentUser) => {
 
             const email = currentUser?.email? currentUser.email : false;
+            const name = currentUser?.email? currentUser.displayName : false;
+
+            const data = {email, name}
         
-            dispatch(setUserLoggedIn(email))
+            dispatch(setUserLoggedIn(data))
             
+            console.log(currentUser)
     
         })
     },[auth])
@@ -88,22 +92,22 @@ const Navbar = () => {
                 <MobileNav showMenu={showMenu}>
                     <li><Link to='/'>Strona domowa</Link></li>
                     <li onClick={() => showForm(setLoginFormValue)}>Logowanie</li>
-                    {userC && <li><Link to={`/użytkownik/${userC}`}>Użytkownik</Link></li>}
+                    {user && <li><Link to={`/użytkownik/${user.displayName}`}>Użytkownik</Link></li>}
                     <li onClick={() => showForm(handleSignUpStyle)}><Link to='/'>Rejestracja</Link></li>     
                 </MobileNav>
 
             </Navigation>
 
                 <UserWelcome>
-                    {userC && <span> Witaj {userC} !</span>}
+                    {user && <span> Witaj {user} !</span>}
                 </UserWelcome>
             
             <FullNav> 
                 <li><Link to='/'>Strona domowa</Link></li>
-                {userC && <li onClick={logout}>Wyloguj</li>}
-                {userC && <li><Link to={`/użytkownik/${userC}`}>Użytkownik</Link></li>}
-                {!userC && <li onClick={() => showForm(setLoginFormValue)}>Zaloguj</li>}
-                {!userC && <li onClick={() => showForm(handleSignUpStyle)}>Rejestracja</li>}
+                {user && <li onClick={logout}>Wyloguj</li>}
+                {user && <li><Link to={`/użytkownik/${user.displayName}`}>Użytkownik</Link></li>}
+                {!user && <li onClick={() => showForm(setLoginFormValue)}>Zaloguj</li>}
+                {!user && <li onClick={() => showForm(handleSignUpStyle)}>Rejestracja</li>}
                 <li><Link to='/'><FontAwesomeIcon icon={faInstagram} /></Link></li>
             </FullNav>
 

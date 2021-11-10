@@ -9,7 +9,8 @@ import { useEffect, useState } from "react";
 const WorldBeerHistory = () => {
 
     const dispatch = useDispatch();
-    const userC = useSelector(state => state.entities.styles.loggedIn);
+    const user = useSelector(state => state.entities.styles.loggedIn.name)
+
     const beers = useSelector(state => state.entities.beers.list);
     const loading = useSelector(state => state.entities.beers.loading);
     const [infoShowForUser, setShowInfoForUser] = useState(false);
@@ -53,7 +54,7 @@ const WorldBeerHistory = () => {
                     {beers.map(beer => (
                         <ArticleItem key={beer.id}>
                             <h2>{beer.name}</h2>
-                            {beer.author && <p>{beer.author}</p>}
+                            {beer.author && <p>@{beer.author}</p>}
                             <span>{ 
                                 (beer.description.length > 20)?
                                 `${beer.description.substring(0, 120)}...` : beer.description
@@ -66,7 +67,7 @@ const WorldBeerHistory = () => {
                     
                         <AddArticleItem onClick={() => setShowInfoForUser(true)}>
                     
-                            <Link to={userC? '/create' : "#"}>
+                            <Link to={user? '/create' : "#"}>
                                 <FontAwesomeIcon icon={faPlusCircle} />
                             </Link> 
                         </AddArticleItem>

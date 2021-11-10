@@ -32,19 +32,22 @@ const BeerCounter =  () => {
 
     
     
-   //1 dodana tylko po to aby kolejne wartosci tez sie zliczyly (bez error) po odświeżeniu strony
-    const gradeArray = rating? rating.map(grade => {
+   //1? dodana tylko po to aby kolejne wartosci tez sie zliczyly (bez error) po odświeżeniu strony
+    const gradeArray = (rating?.length)? rating.map(grade => {
         return grade.gradeArrayItem
-    }) : [1]
+    }) : [0]
     
+
 
     // zbiera sumę wszystkich wartosci w macierzy 
-    const sum = gradeArray.reduce((a, b) => a + b)
+    const sum = gradeArray? gradeArray.reduce((a, b) => a + b) : 0
 
     // oblicza srednia ocen
-    const mean = sum / gradeArray.length
+    const mean = Math.round((sum / gradeArray.length) * 100) / 100
     
     
+    console.log(rating)
+    console.log(mean)
     // tworzy macierz użytkowników ktorzy ocenili artykul
     const raters = rating? rating.map(grade => {
         return grade.name
@@ -52,7 +55,7 @@ const BeerCounter =  () => {
 
    
 
-    console.log(raters)
+  
 
   
     

@@ -50,7 +50,8 @@ const api = ({dispatch}) => next => async action => {
             photo: data.photo,
             description: data.description,
             color: data.color,
-            date: data.date
+            date: data.date,
+            whoRated: data.whoRated
         })
 
         dispatch(actions.apiCallSuccess(data))
@@ -104,7 +105,7 @@ const api = ({dispatch}) => next => async action => {
             whoRated: arrayUnion({name: whoRated, gradeArrayItem: gradeArrayItem})
         });
         dispatch(actions.apiCallSuccess(data));
-        if(onSuccess) dispatch({type: onSuccess, payload: data});
+        if(onSuccess) dispatch({type: onSuccess, payload: {id: id, name: whoRated, gradeArrayItem: gradeArrayItem}});
     }
     catch(error){
         dispatch(actions.apiCallFailed(error.message))

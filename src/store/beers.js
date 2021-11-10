@@ -8,7 +8,6 @@ const slice = createSlice({
         loading: false,
         list: [],
         lastFetch: null,
-        whoRated: [{}],
     },
     reducers: {
         beersRequested: (beers, action) => {
@@ -49,12 +48,12 @@ const slice = createSlice({
             beers.loading = false
         },
         beerRate: (beers, action) => {
-            const index = beers.list.findIndex(beer => beer.id === action.payload.id);
-            // beers.list[index].gradeArrayItem = action.payload.gradeArrayItem;
-            beers.list[index].whoRated.push({
-                name: action.payload.whoRated,
-                gradeArrayItem: action.payload.gradeArrayItem
-            })
+            const index = beers.list.findIndex(beer => beer.id === action.payload.id)
+            beers.list[index].whoRated.push({name: action.payload.name, gradeArrayItem: action.payload.gradeArrayItem})
+                    
+                
+                
+            
             beers.loading = false
         }
     }

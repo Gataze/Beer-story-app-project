@@ -42,9 +42,10 @@ const {
 
 export default slice.reducer
 
-export const signUpUser = (email, password) => authCallBegan({
+export const signUpUser = (email, password, username) => authCallBegan({
     password: password,
     email: email,
+    username: username,
     method: 'register',
     onStart: userRequested.type,
     onSuccess: userRegistered.type,

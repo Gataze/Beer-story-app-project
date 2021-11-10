@@ -14,7 +14,7 @@ const Article = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const userC = useSelector(state => state.entities.styles.loggedIn)
+    const user = useSelector(state => state.entities.styles.loggedIn.name)
     const edit = useSelector(state => state.entities.styles.edit)
 
     //Selektor danych w Redux o danym id, stanowiacych treść artykułu (jeśli nie odświeżono strony)
@@ -46,11 +46,14 @@ const Article = () => {
     }
 
     
-
+  
 
     //ustawia wartoś edit w store na true/false. Wartośc ta steruje wyświetlaniem artykułu lub sekcji edytowania artykułu.
     const updateShowInput = () => {
-        dispatch(setEditMode(false))
+        
+            dispatch(setEditMode(false))
+        
+        
     }
 
     //wraca do poprzedniej strony
@@ -95,8 +98,8 @@ const Article = () => {
 
                 <ArticleButtons>
                 
-                    {userC && <button onClick={() => deleteBeerArticle(id)}>Usuń</button>}
-                    {userC && <button onClick={() => updateShowInput()}>Edytuj</button>}
+                    {user && user ===  beerArticle?.author && <button onClick={() => deleteBeerArticle(id)}>Usuń</button>}
+                    {user && user ===  beerArticle?.author && <button onClick={() => updateShowInput()}>Edytuj</button>}
                             <button onClick={() => goBackward()}>Wróć</button>
                 
                 </ArticleButtons>

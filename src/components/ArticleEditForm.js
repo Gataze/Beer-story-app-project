@@ -15,8 +15,7 @@ const ArticleEditForm = () => {
     const edit = useSelector(state => state.entities.styles.edit)
     const inputValues = useSelector(selectArticle(id))[0]
 
-    console.log(inputValues?.name)
-
+    const user = useSelector(state => state.entities.styles.loggedIn) || null;
 
     //Zmienne zawierające informacje o zmianach które będą wprowadzane do artykułu.
     const [beerName, setBeerName] = useState('');
@@ -38,18 +37,26 @@ const ArticleEditForm = () => {
     },[inputValues])
 
 
+
     //Aktualizcaja starych informacji w artykule
     const updateBeerArticle = (id, name, description, color, photo) => {
 
         const data = {id, name, description, color, photo};
 
-        //wysyła dane do firebase
-        dispatch(updateBeer(data));
-        //pobiera zaktualizowane wartości z firebase
-        dispatch(loadBeers());
-        //ustawia EditMode na false co zmienia display formularza aktualizacji na 'none'
-        dispatch(setEditMode(false))
-        history.goBack();
+        //If user is not the author do not allow to edit/ send msg to user
+        if(user === inputValues.author){
+                //wysyła dane do firebase
+            dispatch(updateBeer(data));
+            //pobiera zaktualizowane wartości z firebase
+            dispatch(loadBeers());
+            //ustawia EditMode na false co zmienia display formularza aktualizacji na 'none'
+            dispatch(setEditMode(false))
+            history.goBack();
+
+        } else {
+            console.log(`Hey what are you doing ${user}?`)
+        }
+       
     }
 
     return ( 
