@@ -7,7 +7,8 @@ const slice = createSlice({
     name: 'auth',
     initialState: {
         loading: false,
-        loggedIn: false
+        
+        user: false
     },
     reducers: {
         userRequested: (auth, action) => {
@@ -15,29 +16,33 @@ const slice = createSlice({
         },
         userRegistered: (auth, action) => {
             auth.loading = false
-            auth.loggedIn = true
+            
         },
         userRegisterFailed: (auth, action) => {
             auth.loading = false
         },
         userLogin: (auth, action) => {
             auth.loading = false
-            auth.loggedIn = true
         },
         userLogout: (auth, action) => {
             auth.loading = false
-            auth.loggedIn = false
-        }
+           
+        },
+        setUserLoggedIn: (auth, action) => {
+            auth.user = action.payload;
+            auth.loading = false;
+            
+        },
     }
 })
 
 
-const {
+export const  {
     userRequested,
-    userRegistered,
     userRegisterFailed,
     userLogin,
-    userLogout
+    userLogout,
+    setUserLoggedIn
 } = slice.actions;
 
 export default slice.reducer
@@ -48,7 +53,7 @@ export const signUpUser = (email, password, username) => authCallBegan({
     username: username,
     method: 'register',
     onStart: userRequested.type,
-    onSuccess: userRegistered.type,
+    onSuccess: setUserLoggedIn.type,
     onError: userRegisterFailed.type
 })
 

@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 const WorldBeerHistory = () => {
 
     const dispatch = useDispatch();
-    const user = useSelector(state => state.entities.styles.loggedIn.name)
+    const user = useSelector(state => state.entities.auth.user.username)
 
     const beers = useSelector(state => state.entities.beers.list);
     const loading = useSelector(state => state.entities.beers.loading);
@@ -17,7 +17,7 @@ const WorldBeerHistory = () => {
 
     const numberOfDisplayedDocs = 3;
     
-
+    
 
     useEffect(() => {
 
@@ -25,7 +25,6 @@ const WorldBeerHistory = () => {
             dispatch(loadBeers(numberOfDisplayedDocs, true))
         }
 
-        console.log(beers.length)
 
         if(beers.length < 2){
             getBeers();

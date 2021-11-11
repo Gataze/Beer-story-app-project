@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { useEffect } from "react";
 import { useParams } from "react-router";
-import { deleteBeer, getOneBeer, loadBeers, selectArticle } from "../store/beers";
+import { deleteBeer, getOneBeer, selectArticle } from "../store/beers";
 import styled from "styled-components";
 import { setEditMode } from "../store/beersStyles";
 import BeerCounter from "./BeerCounter";
@@ -14,7 +14,7 @@ const Article = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const user = useSelector(state => state.entities.styles.loggedIn.name)
+    const user = useSelector(state => state.entities.auth.user.username)
     const edit = useSelector(state => state.entities.styles.edit)
 
     //Selektor danych w Redux o danym id, stanowiacych treść artykułu (jeśli nie odświeżono strony)
@@ -35,12 +35,11 @@ const Article = () => {
         //Unmounts useEffect when component is closed...
         return () => console.log('unmounting...');
         
-    }, [id])
+    }, [dispatch, id])
 
     //usuwa artykuł, wraca do wczesniejszej strony
     const deleteBeerArticle = (id) => {
 
-        const ignoreLastFetch = true;
         dispatch(deleteBeer(id));
         history.goBack();
     }
@@ -51,7 +50,7 @@ const Article = () => {
     //ustawia wartoś edit w store na true/false. Wartośc ta steruje wyświetlaniem artykułu lub sekcji edytowania artykułu.
     const updateShowInput = () => {
         
-            dispatch(setEditMode(false))
+            dispatch(setEditMode(true))
         
         
     }
@@ -64,15 +63,13 @@ const Article = () => {
 
     return ( 
         <article>
-            <ArticleShowController showContent={edit}>
+            <ArticleShowController showContent={!edit}>
                 <ArticleMainContent>
 
                     <div>
-                        <img src={beerArticle?.photo? beerArticle.photo : null}/>
+                        <img src={beerArticle?.photo? beerArticle.photo : null} alt='zdjecie artykulu'/>
                         <p>1. Lorem Ipsum dolor sie emet.</p>
                     </div>
-
-                    
 
                     <h1>{beerArticle?.name} Lorem Ipsum</h1>
                     <BeerCounter/>

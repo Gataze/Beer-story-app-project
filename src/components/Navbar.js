@@ -10,14 +10,16 @@ import { onAuthStateChanged } from "@firebase/auth";
 import LoginPage from "./LoginPage";
 import SignUpPage from "./SignUpPage";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoginFormValue, handleSignUpStyle, setUserLoggedIn } from '../store/beersStyles'
-import { logoutUser } from "../store/beersAuth";
+import { setLoginFormValue, handleSignUpStyle } from '../store/beersStyles'
+import { logoutUser, setUserLoggedIn  } from "../store/beersAuth";
+
+
 
 
 const Navbar = () => {
 
     const dispatch = useDispatch();
-    const user = useSelector(state => state.entities.styles.loggedIn.name)
+    const user = useSelector(state => state.entities.auth.user.username)
     const [showMenu, setShowMenu] = useState(false)
     const history = useHistory()
    
@@ -32,22 +34,31 @@ const Navbar = () => {
     //sprawia ze odpla sie tylko przy zaladowaniu
     useEffect(() => {
 
-        onAuthStateChanged(auth, (currentUser) => {
+        onAuthStateChanged(auth,  (currentUser) => {
 
-            const email = currentUser?.email? currentUser.email : false;
-            const name = currentUser?.email? currentUser.displayName : false;
+           
 
-            const data = {email, name}
-        
-            dispatch(setUserLoggedIn(data))
+            const email =  currentUser?.email? currentUser.email : false;
+            const username = currentUser?.email? currentUser.displayName : false;
+
+            const data = {email, username}
+
+                //Po odświeżeniu strony lub zalogowaniu zamieszcza dane o uzytkowniku wredux store. Po zarejestrowaniu tez się dispatchuje jednak nie zamieszcza
+                //username wlasciwego. Username tworzony jest po utworzeniu uzytkownika w bazie firebase. Utworzenie uzytkownika samo w sobie 
+                //uruchamia onAuthStateChange jeszcze przed nadaniem uzytkownika przez co po rejestracji username początkowo zostaje null. 
+                //Aby zamiescic nazwe uzytkonika w redux to po rejestracji funkcja ta dispatchuje sie wtedy rownież w middleware tuż po dodaniu uzytkownika do bazy firebase.
+
+                
+
+                dispatch(setUserLoggedIn(data))
             
-            console.log(currentUser)
+           
     
         })
-    },[auth])
+    },[dispatch])
 
     
-        
+    
 
     //Shows/hides small screen menu based on showMenu localValue 
     const handleBurgerMenu = () => {
@@ -91,9 +102,10 @@ const Navbar = () => {
 
                 <MobileNav showMenu={showMenu}>
                     <li><Link to='/'>Strona domowa</Link></li>
-                    <li onClick={() => showForm(setLoginFormValue)}>Logowanie</li>
+                    {!user && <li onClick={() => showForm(setLoginFormValue)}>Zaloguj</li>}
                     {user && <li><Link to={`/użytkownik/${user.displayName}`}>Użytkownik</Link></li>}
-                    <li onClick={() => showForm(handleSignUpStyle)}><Link to='/'>Rejestracja</Link></li>     
+                    {!user && <li onClick={() => showForm(handleSignUpStyle)}>Rejestracja</li>}    
+                    {user && <li onClick={logout}>Wyloguj</li>}
                 </MobileNav>
 
             </Navigation>

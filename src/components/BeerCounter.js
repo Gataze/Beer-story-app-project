@@ -17,7 +17,7 @@ const BeerCounter =  () => {
 
 
     //selektor sprawdzajacy czy loggedIn is true
-    const user = useSelector(state => state.entities.styles.loggedIn)
+    const user = useSelector(state => state.entities.auth.user.username)
 
     //stan kontrolujacy wyswietlanie sie wiadomosci o oniecznosci zalogowania sie jezeli trzeba sie zalogowac
     const [showLogInRequest, setShowLogInRequest] = useState(false)
@@ -46,28 +46,30 @@ const BeerCounter =  () => {
     const mean = Math.round((sum / gradeArray.length) * 100) / 100
     
     
-    console.log(rating)
-    console.log(mean)
+    
     // tworzy macierz użytkowników ktorzy ocenili artykul
     const raters = rating? rating.map(grade => {
         return grade.name
     }) : null;
 
-   
-
-  
-
-  
     
     //Funkja kontroluje dispatchowanie akcji wysylajacych dane na serwer o ocenie dodanej przez uzytkownika.
     //Jesli uzytkownik dodal juz ocene lub jest nie zalogowany wtedy odsyla do zalogowania lub przypomina o wczesniejszej ocenie
     const rateBeerArticle = (id, grade) => {
 
-        const found = raters?.find(rater => rater === user)
+        // if(!user.email) {setShowLogInRequest(true)}
 
+        const found = raters?.find(rater => rater === user)
+        
+        
+        
             if(found){
+
                 setShowReminder(true)
+
             } else {
+
+
                 if(user){
                     const whoRated = user
                     const gradeArrayItem = grade
@@ -75,7 +77,9 @@ const BeerCounter =  () => {
                     const data = {id, gradeArrayItem, whoRated}
         
                     dispatch(rateBeer(data))
+
                 } else {
+
                     setShowLogInRequest(true)
                 }
 

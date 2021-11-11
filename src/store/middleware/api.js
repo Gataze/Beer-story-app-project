@@ -54,7 +54,7 @@ const api = ({dispatch}) => next => async action => {
             whoRated: data.whoRated
         })
 
-        dispatch(actions.apiCallSuccess(data))
+        // dispatch(actions.apiCallSuccess(data))
         if(onSuccess) dispatch({type: onSuccess, payload: data})
     }
     catch(error){
@@ -114,6 +114,21 @@ const api = ({dispatch}) => next => async action => {
 
     if(method === 'clear'){
         dispatch({type: onSuccess})
+    }
+
+    if(method === 'addComment') try {
+
+        
+        const {id, comment, date, user} = data 
+        const beer = doc(db, 'Beers', id)
+        console.log({date, comment, user, id})
+
+        await updateDoc(beer, {comments: arrayUnion({comment, date, user })});
+        dispatch(actions.apiCallSuccess(data))
+        if(onSuccess) dispatch({type: onSuccess, payload: {comment, date, user, id}})
+    }
+    catch(error){
+        dispatch(actions.apiCallFailed(error.message))
     }
 
 

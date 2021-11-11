@@ -8,7 +8,7 @@ const slice = createSlice({
         loginShow: false,
         signUpShow: false,
         loggedIn: {},
-        edit: []
+        edit: false
     },
     reducers: {
         setLoginFormValue: (styles, action) => {

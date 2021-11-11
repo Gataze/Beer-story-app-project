@@ -50,10 +50,11 @@ const slice = createSlice({
         beerRate: (beers, action) => {
             const index = beers.list.findIndex(beer => beer.id === action.payload.id)
             beers.list[index].whoRated.push({name: action.payload.name, gradeArrayItem: action.payload.gradeArrayItem})
-                    
-                
-                
-            
+            beers.loading = false
+        },
+        beerComment: (beers, action) => {
+            const index = beers.list.findIndex(beer => beer.id === action.payload.id)
+            beers.list[index].comments.push(action.payload)
             beers.loading = false
         }
     }
@@ -68,8 +69,8 @@ const {
     beerAdded,
     beerDeleted,
     beerUpdated,
-    beerRate
-    
+    beerRate,
+    beerComment
 } = slice.actions;
 
 export default slice.reducer;
@@ -140,6 +141,15 @@ export const updateBeer = (data) => apiCallBegan({
     data: data,
     onStart: beersRequested.type,
     onSuccess: beerUpdated.type,
+    onError: beersRequestFailed.type
+})
+
+
+export const commentBeer = (data) => apiCallBegan({
+    method: 'addComment',
+    data: data,
+    onStart: beersRequested.type,
+    onSuccess: beerComment.type,
     onError: beersRequestFailed.type
 })
 

@@ -13,9 +13,11 @@ const ArticleEditForm = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const edit = useSelector(state => state.entities.styles.edit)
+
+    //treść i dane na temat artykułuumieszczane formularzu edycji artykułu
     const inputValues = useSelector(selectArticle(id))[0]
 
-    const user = useSelector(state => state.entities.styles.loggedIn) || null;
+    const user = useSelector(state => state.entities.auth.user.username);
 
     //Zmienne zawierające informacje o zmianach które będą wprowadzane do artykułu.
     const [beerName, setBeerName] = useState('');
@@ -36,7 +38,8 @@ const ArticleEditForm = () => {
 
     },[inputValues])
 
-
+    
+    
 
     //Aktualizcaja starych informacji w artykule
     const updateBeerArticle = (id, name, description, color, photo) => {
@@ -59,8 +62,11 @@ const ArticleEditForm = () => {
        
     }
 
+
+    
+
     return ( 
-    <InputShow showInput={!edit} >
+    <InputShow showInput={edit} >
                     
         <ArticleContainer>
             <label>Nazwa: </label>

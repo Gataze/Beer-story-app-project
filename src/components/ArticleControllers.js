@@ -1,19 +1,15 @@
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Article from "./Article";
-import { setEditMode } from "../store/beersStyles";
 import ArticleEditForm from "./ArticleEditForm";
-import { useEffect } from "react";
+
 
 const ArticleControllers = () => {
 
-    const dispatch = useDispatch();
-   
-    useEffect(() => {
-
-        dispatch(setEditMode(true))
-        
-    }, [])
+    //usunięto 11.11.2021 
+    // const dispatch = useDispatch();
+    // useEffect(() => {
+    //     dispatch(setEditMode(true))
+    // })
 
 
     return ( 
