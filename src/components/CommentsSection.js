@@ -2,21 +2,23 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { commentBeer, selectArticle } from "../store/beers";
+import { commentBeer, deleteComment, selectArticleComments  } from "../store/beers";
 import moment from "moment";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-
+import {v4 as uuidv4} from 'uuid';
 
 const CommentsSection = () => {
 
     
     const user = useSelector(state => state.entities.auth.user.username)
-    const {id} = useParams();
+    const {id: articleId} = useParams();
     const dispatch = useDispatch();
     const [comment, setComment] = useState('');
     
-    const commentsLoaded = useSelector(selectArticle(id))[0]?.comments
+    // const commentsLoaded = useSelector(state => state.entities.beers.commentsList)
+
+    const commentsLoaded = useSelector(selectArticleComments(articleId))
 
 
 
@@ -24,7 +26,8 @@ const CommentsSection = () => {
         
         
             setComment({
-                id: id,
+                articleId: articleId,
+                id: uuidv4(),
                 user: user,
                 comment: comment,
                 date: moment().format('MMMM Do YYYY, h:mm:ss a')
@@ -33,6 +36,7 @@ const CommentsSection = () => {
         
     }
 
+    
     
 
     const addComment = (e) => {
@@ -47,7 +51,7 @@ const CommentsSection = () => {
         
 
         setComment({
-            id: '',
+            articleId: '',
             user: '',
             comment: '',
             date: ''
@@ -56,9 +60,9 @@ const CommentsSection = () => {
     }
 
 
-    const deleteComment = (id) => {
+    const deleteArticleComment = (id) => {
 
-        
+            dispatch(deleteComment(id))
 
     }
 
@@ -76,7 +80,7 @@ const CommentsSection = () => {
                         <span>{comment.date}</span>
                         <div>
                             <p>{comment.comment}</p>
-                            <FontAwesomeIcon icon={faTrash} onClick={() => deleteComment(id)}/>
+                            <FontAwesomeIcon icon={faTrash} onClick={() => deleteArticleComment(comment.id)}/>
                         </div>
                     </CommentItem>
                 ))}

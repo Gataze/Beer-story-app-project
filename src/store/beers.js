@@ -8,6 +8,7 @@ const slice = createSlice({
         loading: false,
         list: [],
         lastFetch: null,
+        commentsList: []
     },
     reducers: {
         beersRequested: (beers, action) => {
@@ -53,10 +54,25 @@ const slice = createSlice({
             beers.loading = false
         },
         beerComment: (beers, action) => {
-            const index = beers.list.findIndex(beer => beer.id === action.payload.id)
-            beers.list[index].comments.push(action.payload)
+            // beers.commentsList = action.payload;
+            // beers.loading = false;
+
+            // const index = beers.list.findIndex(beer => beer.id === action.payload.articleId)
+
+            beers.commentsList.push(action.payload)
             beers.loading = false
-        }
+        },
+        beerCommmentReceived: (beers, action) => {
+            beers.loading = false;
+            beers.commentsList = action.payload;
+        },
+        beerCommentDeleted: (beers, action) => {
+            const index = beers.commentsList.findIndex(comment => comment.id === action.payload.id);
+            beers.commentsList.splice(index, 1);
+            beers.loading = false;
+        },
+        
+
     }
 })
 
@@ -70,7 +86,9 @@ const {
     beerDeleted,
     beerUpdated,
     beerRate,
-    beerComment
+    beerComment,
+    beerCommmentReceived,
+    beerCommentDeleted
 } = slice.actions;
 
 export default slice.reducer;
@@ -111,7 +129,8 @@ export const getOneBeer = (id, ignoreLastFetch) => (dispatch, getState) => {
             method: 'doc',
             data: id,
             onStart: beersRequested.type,
-            onSuccess: beerGetOne.type,
+            onSuccessBeers: beerGetOne.type,
+            onSuccessComments: beerCommmentReceived.type,
             onError: beersRequestFailed.type
         })
     )
@@ -146,7 +165,7 @@ export const updateBeer = (data) => apiCallBegan({
 
 
 export const commentBeer = (data) => apiCallBegan({
-    method: 'addComment',
+    method: 'setComment',
     data: data,
     onStart: beersRequested.type,
     onSuccess: beerComment.type,
@@ -172,8 +191,22 @@ export const rateBeer = (data) => apiCallBegan({
 
 
 
+export const deleteComment = (id) => apiCallBegan({
+    method: 'deleteComment',
+    data: id,
+    onStart: beersRequested.type,
+    onSuccess: beerCommentDeleted.type,
+    onError: beersRequestFailed.type
+})
+
+
+
 export const selectArticle = (id) => createSelector(
     state => state.entities.beers,
     beers => beers.list.filter(beer => beer.id === id)
     )
 
+export const selectArticleComments = (articleId) => createSelector(
+    state => state.entities.beers,
+    beers => beers.commentsList.filter(comment => comment.articleId === articleId)
+)

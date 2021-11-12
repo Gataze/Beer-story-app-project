@@ -7,9 +7,9 @@ const api = ({dispatch}) => next => async action => {
 
     if(action.type !== actions.apiCallBegan.type) return next(action);
 
-    const {data, method, onStart, onSuccess, onError, nDocs} = action.payload;
+    const {data, method, onStart, onSuccess, onSuccessBeers, onSuccessComments, onError, nDocs} = action.payload;
     const beersCollectionRef = query(collection(db, 'Beers'), limit(nDocs))
-
+    const commentsCollectionRef =  collection(db, 'Comments')
     
     if(onStart) dispatch({type: onStart});
 
@@ -32,10 +32,10 @@ const api = ({dispatch}) => next => async action => {
     if(method === 'doc') try {
 
         const beer = await getDoc(doc(db, 'Beers', data))
+        const comments = await getDocs(commentsCollectionRef)
 
-
-        if(onSuccess) dispatch({type: onSuccess, payload: [{...beer.data(), id: beer.id}]})
-
+        if(onSuccessBeers) dispatch({type: onSuccessBeers, payload: [{...beer.data(), id: beer.id}]})
+        if(onSuccessComments) dispatch({type: onSuccessComments, payload: comments.docs.map(doc => ({...doc.data(), id: doc.id}))})
     }
     catch(error){
         dispatch(actions.apiCallFailed(error.message))
@@ -71,7 +71,20 @@ const api = ({dispatch}) => next => async action => {
         if(onSuccess) dispatch({type: onSuccess, payload: {id: data}})
     }
 
+    catch(error){
+        dispatch(actions.apiCallFailed(error.message));
+        if(onError) dispatch({type: onError, payload: error.message})
+    }
 
+
+    if(method === 'deleteComment') try {
+
+        const comment = doc(db, "Comments", data)
+        await deleteDoc(comment)
+
+        dispatch(actions.apiCallSuccess('deleted'))
+        if(onSuccess) dispatch({type: onSuccess, payload: {id: data}})
+    }
 
     catch(error){
         dispatch(actions.apiCallFailed(error.message));
@@ -116,18 +129,40 @@ const api = ({dispatch}) => next => async action => {
         dispatch({type: onSuccess})
     }
 
-    if(method === 'addComment') try {
+    // if(method === 'addComment') try {
 
         
-        const {id, comment, date, user} = data 
-        const beer = doc(db, 'Beers', id)
-        console.log({date, comment, user, id})
+    //     const {id, comment, date, user} = data 
+    //     const beer = doc(db, 'Beers', id)
+    //     console.log({date, comment, user, id})
 
-        await updateDoc(beer, {comments: arrayUnion({comment, date, user })});
-        dispatch(actions.apiCallSuccess(data))
-        if(onSuccess) dispatch({type: onSuccess, payload: {comment, date, user, id}})
+    //     await updateDoc(beer, {comments: arrayUnion({comment, date, user })});
+    //     dispatch(actions.apiCallSuccess(data))
+    //     if(onSuccess) dispatch({type: onSuccess, payload: {comment, date, user, id}})
+    // }
+    // catch(error){
+    //     dispatch(actions.apiCallFailed(error.message))
+    // }
+
+    if(method === 'setComment') try {
+
+        const {articleId, id, comment, date, user} = data 
+
+
+        await setDoc(doc(db, 'Comments', id), {
+            
+            id: id,
+            articleId: articleId,
+            user: user,
+            comment: comment,
+            date: date
+        })
+
+        // dispatch(actions.apiCallSuccess(data))
+        if(onSuccess) dispatch({type: onSuccess, payload: data})
     }
     catch(error){
+        if(onError) dispatch({type: onError, payload: error.message})
         dispatch(actions.apiCallFailed(error.message))
     }
 
