@@ -14,7 +14,8 @@ const Create = () => {
     const [description, setDescription] = useState('');
     const [color, setColor] = useState('');
     const [photo, setPhoto] = useState('')
-    const author = useSelector(state => state.entities.auth.user.username)
+    const author = useSelector(state => state.entities.auth.user.username);
+    const uid = useSelector(state => state.entities.auth.user.uid);
     
 
     const history = useHistory();
@@ -23,7 +24,7 @@ const Create = () => {
 
     const createBeerArticle = (e) => {
         e.preventDefault()
-        const data = {name: name, description: description, color: color, author: author, photo: photo, whoRated: [], comments: [], date: moment().format('MMMM Do YYYY, h:mm:ss a'), id: uuidv4()}
+        const data = {name: name, description: description, color: color, author: author, photo: photo, whoRated: [], comments: [], userID: uid ,date: moment().format('MMMM Do YYYY, h:mm:ss a'), id: uuidv4()}
         
 
         dispatch(addBeer(data))

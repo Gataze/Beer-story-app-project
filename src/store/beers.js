@@ -54,15 +54,10 @@ const slice = createSlice({
             beers.loading = false
         },
         beerComment: (beers, action) => {
-            // beers.commentsList = action.payload;
-            // beers.loading = false;
-
-            // const index = beers.list.findIndex(beer => beer.id === action.payload.articleId)
-
             beers.commentsList.push(action.payload)
             beers.loading = false
         },
-        beerCommmentReceived: (beers, action) => {
+        beerCommentReceived: (beers, action) => {
             beers.loading = false;
             beers.commentsList = action.payload;
         },
@@ -87,7 +82,7 @@ const {
     beerUpdated,
     beerRate,
     beerComment,
-    beerCommmentReceived,
+    beerCommentReceived,
     beerCommentDeleted
 } = slice.actions;
 
@@ -130,7 +125,7 @@ export const getOneBeer = (id, ignoreLastFetch) => (dispatch, getState) => {
             data: id,
             onStart: beersRequested.type,
             onSuccessBeers: beerGetOne.type,
-            onSuccessComments: beerCommmentReceived.type,
+            onSuccessComments: beerCommentReceived.type,
             onError: beersRequestFailed.type
         })
     )
@@ -161,6 +156,17 @@ export const updateBeer = (data) => apiCallBegan({
     onStart: beersRequested.type,
     onSuccess: beerUpdated.type,
     onError: beersRequestFailed.type
+})
+
+
+
+export const loadCommentBeer = (data) => apiCallBegan({
+    method: 'loadComment',
+    data: data,
+    onStart: beersRequested.type,        
+    onSuccess: beerCommentReceived.type,
+    onError: beersRequestFailed.type
+
 })
 
 

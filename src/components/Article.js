@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { useEffect } from "react";
 import { useParams } from "react-router";
-import { deleteBeer, getOneBeer, selectArticle } from "../store/beers";
+import { deleteBeer, getOneBeer, selectArticle, loadCommentBeer } from "../store/beers";
 import styled from "styled-components";
 import { setEditMode } from "../store/beersStyles";
 import BeerCounter from "./BeerCounter";
@@ -36,6 +36,12 @@ const Article = () => {
         return () => console.log('unmounting...');
         
     }, [dispatch, id])
+
+
+    useEffect(() => {
+        dispatch(loadCommentBeer(id))
+        return () => console.log('unmounting...');
+    }, [])
 
     //usuwa artykuł, wraca do wczesniejszej strony
     const deleteBeerArticle = (id) => {
@@ -94,9 +100,10 @@ const Article = () => {
                 
 
                 <ArticleButtons>
-                
-                    {user && user ===  beerArticle?.author && <button onClick={() => deleteBeerArticle(id)}>Usuń</button>}
-                    {user && user ===  beerArticle?.author && <button onClick={() => updateShowInput()}>Edytuj</button>}
+                    <button onClick={() => updateShowInput()}>Edytuj</button>
+                    <button onClick={() => deleteBeerArticle(id)}>Usuń</button>
+                    {/* {user && user ===  beerArticle?.author && <button onClick={() => deleteBeerArticle(id)}>Usuń</button>}
+                    {user && user ===  beerArticle?.author && <button onClick={() => updateShowInput()}>Edytuj</button>} */}
                             <button onClick={() => goBackward()}>Wróć</button>
                 
                 </ArticleButtons>

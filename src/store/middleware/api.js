@@ -1,6 +1,6 @@
 import { db } from "../../firebase/firebase.config";
 import * as actions from '../api'
-import { collection, getDocs, getDoc, doc, setDoc, deleteDoc, updateDoc, limit, query, arrayUnion } from 'firebase/firestore'
+import { collection, getDocs, getDoc, doc, setDoc, deleteDoc, updateDoc, limit, query, arrayUnion, where } from 'firebase/firestore'
 
 
 const api = ({dispatch}) => next => async action => {
@@ -9,7 +9,7 @@ const api = ({dispatch}) => next => async action => {
 
     const {data, method, onStart, onSuccess, onSuccessBeers, onSuccessComments, onError, nDocs} = action.payload;
     const beersCollectionRef = query(collection(db, 'Beers'), limit(nDocs))
-    const commentsCollectionRef =  collection(db, 'Comments')
+    
     
     if(onStart) dispatch({type: onStart});
 
@@ -18,9 +18,10 @@ const api = ({dispatch}) => next => async action => {
     if(method === 'getDocs') try {
     
         const data = await getDocs(beersCollectionRef)
-
+        // const comments = await getDocs(commentsCollectionRef)
 
         if(onSuccess) dispatch({type: onSuccess, payload: data.docs.map(doc => ({...doc.data(), id: doc.id}))})
+        // if(onSuccessComments) dispatch({type: onSuccessComments, payload: comments.docs.map(doc => ({...doc.data(), id: doc.id}))})
  
     }
     catch(error){
@@ -31,7 +32,10 @@ const api = ({dispatch}) => next => async action => {
     //pobiera z firebase pojedynczy dokument
     if(method === 'doc') try {
 
+        const commentsCollectionRef =  query(collection(db, 'Comments'), where("articleId", "==", data))
+
         const beer = await getDoc(doc(db, 'Beers', data))
+        
         const comments = await getDocs(commentsCollectionRef)
 
         if(onSuccessBeers) dispatch({type: onSuccessBeers, payload: [{...beer.data(), id: beer.id}]})
@@ -51,7 +55,8 @@ const api = ({dispatch}) => next => async action => {
             description: data.description,
             color: data.color,
             date: data.date,
-            whoRated: data.whoRated
+            whoRated: data.whoRated,
+            userID: data.userID
         })
 
         // dispatch(actions.apiCallSuccess(data))
@@ -129,20 +134,23 @@ const api = ({dispatch}) => next => async action => {
         dispatch({type: onSuccess})
     }
 
-    // if(method === 'addComment') try {
 
-        
-    //     const {id, comment, date, user} = data 
-    //     const beer = doc(db, 'Beers', id)
-    //     console.log({date, comment, user, id})
+    if(method === 'loadComment') try {
 
-    //     await updateDoc(beer, {comments: arrayUnion({comment, date, user })});
-    //     dispatch(actions.apiCallSuccess(data))
-    //     if(onSuccess) dispatch({type: onSuccess, payload: {comment, date, user, id}})
-    // }
-    // catch(error){
-    //     dispatch(actions.apiCallFailed(error.message))
-    // }
+        const commentsCollectionRef =  query(collection(db, 'Comments'), where("articleId", "==", data))
+
+        const comments = await getDocs(commentsCollectionRef)
+
+    
+        if(onSuccess) dispatch({type: onSuccess, payload: comments.docs.map(doc => ({...doc.data(), id: doc.id}))})
+    }
+    catch(error){
+        dispatch(actions.apiCallFailed(error.message))
+}
+
+    
+
+   
 
     if(method === 'setComment') try {
 
@@ -165,6 +173,8 @@ const api = ({dispatch}) => next => async action => {
         if(onError) dispatch({type: onError, payload: error.message})
         dispatch(actions.apiCallFailed(error.message))
     }
+
+
 
 
 

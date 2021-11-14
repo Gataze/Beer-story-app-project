@@ -40,8 +40,11 @@ const Navbar = () => {
 
             const email =  currentUser?.email? currentUser.email : false;
             const username = currentUser?.email? currentUser.displayName : false;
+            const uid = currentUser?.email? currentUser.uid : false;
+           
 
-            const data = {email, username}
+
+            const data = {email, username, uid}
 
                 //Po odświeżeniu strony lub zalogowaniu zamieszcza dane o uzytkowniku wredux store. Po zarejestrowaniu tez się dispatchuje jednak nie zamieszcza
                 //username wlasciwego. Username tworzony jest po utworzeniu uzytkownika w bazie firebase. Utworzenie uzytkownika samo w sobie 
