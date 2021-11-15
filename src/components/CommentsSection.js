@@ -11,7 +11,8 @@ import {v4 as uuidv4} from 'uuid';
 const CommentsSection = () => {
 
     
-    const user = useSelector(state => state.entities.auth.user.username)
+    const user = useSelector(state => state.entities.auth.user.username);
+    const uid = useSelector(state => state.entities.auth.user.uid)
     const {id: articleId} = useParams();
     const dispatch = useDispatch();
     const [comment, setComment] = useState('');
@@ -28,8 +29,9 @@ const CommentsSection = () => {
             setComment({
                 articleId: articleId,
                 id: uuidv4(),
-                user: user,
                 comment: comment,
+                user: user,
+                userID: uid,
                 date: moment().format('MMMM Do YYYY, h:mm:ss a')
             }) 
         
@@ -54,7 +56,8 @@ const CommentsSection = () => {
             articleId: '',
             user: '',
             comment: '',
-            date: ''
+            date: '',
+            userID: ''
         })
 
     }

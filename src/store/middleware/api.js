@@ -7,7 +7,7 @@ const api = ({dispatch}) => next => async action => {
 
     if(action.type !== actions.apiCallBegan.type) return next(action);
 
-    const {data, method, onStart, onSuccess, onSuccessBeers, onSuccessComments, onError, nDocs} = action.payload;
+    const {data, method, onStart, onSuccess, onSuccessBeers, onSuccessComments, onSuccessRates, onError, nDocs} = action.payload;
     const beersCollectionRef = query(collection(db, 'Beers'), limit(nDocs))
     
     
@@ -33,13 +33,20 @@ const api = ({dispatch}) => next => async action => {
     if(method === 'doc') try {
 
         const commentsCollectionRef =  query(collection(db, 'Comments'), where("articleId", "==", data))
+        const ratesCollecionRef = query(collection(db, 'Rates'), where("articleID", "==", data))
+
+        
 
         const beer = await getDoc(doc(db, 'Beers', data))
         
         const comments = await getDocs(commentsCollectionRef)
+        //tu do zmianu
+        const rates = await getDocs(ratesCollecionRef)
+
 
         if(onSuccessBeers) dispatch({type: onSuccessBeers, payload: [{...beer.data(), id: beer.id}]})
         if(onSuccessComments) dispatch({type: onSuccessComments, payload: comments.docs.map(doc => ({...doc.data(), id: doc.id}))})
+        if(onSuccessRates) dispatch({type: onSuccessRates, payload: rates.docs.map(doc => ({...doc.data(), id: doc.id}))})
     }
     catch(error){
         dispatch(actions.apiCallFailed(error.message))
@@ -55,7 +62,6 @@ const api = ({dispatch}) => next => async action => {
             description: data.description,
             color: data.color,
             date: data.date,
-            whoRated: data.whoRated,
             userID: data.userID
         })
 
@@ -112,22 +118,42 @@ const api = ({dispatch}) => next => async action => {
         dispatch(actions.apiCallFailed(error.message))
     }
 
-
     if(method === 'rateBeer') try {
 
-        const {id, gradeArrayItem, whoRated} = data;
-        const beerRef = doc(db, 'Beers', id)
+        const {gradeArrayItem, articleID, userID, id} = data;
+        await setDoc(doc(db, 'Rates', id), {
+            gradeArrayItem: gradeArrayItem,
+            userID: userID,
+            articleID: articleID
+        })
 
-        await updateDoc(beerRef, {
+        // await updateDoc(beerRef, {
             
-            whoRated: arrayUnion({name: whoRated, gradeArrayItem: gradeArrayItem})
-        });
+        //     gradeArrayItem: gradeArrayItem
+        // });
         dispatch(actions.apiCallSuccess(data));
-        if(onSuccess) dispatch({type: onSuccess, payload: {id: id, name: whoRated, gradeArrayItem: gradeArrayItem}});
+        if(onSuccess) dispatch({type: onSuccess, payload: {gradeArrayItem: gradeArrayItem, userID: userID, articleID: articleID}});
     }
     catch(error){
         dispatch(actions.apiCallFailed(error.message))
     }
+
+
+    // if(method === 'rateBeer') try {
+
+    //     const {id, gradeArrayItem, whoRated, userID} = data;
+    //     const beerRef = doc(db, 'Beers', id)
+
+    //     await updateDoc(beerRef, {
+            
+    //         whoRated: arrayUnion({name: whoRated, gradeArrayItem: gradeArrayItem, userID: userID})
+    //     });
+    //     dispatch(actions.apiCallSuccess(data));
+    //     if(onSuccess) dispatch({type: onSuccess, payload: {id: id, name: whoRated, gradeArrayItem: gradeArrayItem, userID: userID}});
+    // }
+    // catch(error){
+    //     dispatch(actions.apiCallFailed(error.message))
+    // }
 
 
     if(method === 'clear'){
@@ -154,7 +180,7 @@ const api = ({dispatch}) => next => async action => {
 
     if(method === 'setComment') try {
 
-        const {articleId, id, comment, date, user} = data 
+        const {articleId, id, comment, date, user, userID} = data 
 
 
         await setDoc(doc(db, 'Comments', id), {
@@ -162,6 +188,7 @@ const api = ({dispatch}) => next => async action => {
             id: id,
             articleId: articleId,
             user: user,
+            userID: userID,
             comment: comment,
             date: date
         })

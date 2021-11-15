@@ -27,21 +27,24 @@ const Article = () => {
 
 
 
-    useEffect(() => {
+    // useEffect(() => {
        
-        //Dispatchuje getOneBeer() który odpala middleware pobierajacy dane na temat artykułu o danym ID (jezeli odswiezylismy stronę)
-        dispatch(getOneBeer(id))
-        console.log('article component')
-        //Unmounts useEffect when component is closed...
-        return () => console.log('unmounting...');
+    //     //Dispatchuje getOneBeer() który odpala middleware pobierajacy dane na temat artykułu o danym ID (jezeli odswiezylismy stronę)
+    //     dispatch(getOneBeer(id))
         
-    }, [dispatch, id])
+    //     //Unmounts useEffect when component is closed...
+    //     return () => console.log('unmounting...');
+        
+    // }, [dispatch, id])
 
 
     useEffect(() => {
-        dispatch(loadCommentBeer(id))
+
+        const ignoreLastFetch = true;
+        dispatch(getOneBeer(id, ignoreLastFetch))
+        dispatch(setEditMode(false))
         return () => console.log('unmounting...');
-    }, [])
+    },[])
 
     //usuwa artykuł, wraca do wczesniejszej strony
     const deleteBeerArticle = (id) => {

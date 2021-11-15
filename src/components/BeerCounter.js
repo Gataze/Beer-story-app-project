@@ -5,19 +5,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectArticle, rateBeer } from "../store/beers";
 import { useParams } from "react-router";
 import { useState } from "react";
-
+import {v4 as uuidv4} from 'uuid';
 
 const BeerCounter =  () => {
 
-    const {id} = useParams()
+    const {id: articleId} = useParams()
     const dispatch = useDispatch();
 
     //selektor danych osób które oceniły dany artykuł wraz z ich ocenami
-    const rating = useSelector(selectArticle(id))[0]?.whoRated
+    // const rating = useSelector(selectArticle(id))[0]?.whoRated
+
+    const rating = useSelector(state => state.entities.beers.rates)
+
+    console.log(rating)
 
 
     //selektor sprawdzajacy czy loggedIn is true
-    const user = useSelector(state => state.entities.auth.user.username)
+    const uid = useSelector(state => state.entities.auth.user.uid);
 
     //stan kontrolujacy wyswietlanie sie wiadomosci o oniecznosci zalogowania sie jezeli trzeba sie zalogowac
     const [showLogInRequest, setShowLogInRequest] = useState(false)
@@ -39,49 +43,46 @@ const BeerCounter =  () => {
     
 
 
-    // zbiera sumę wszystkich wartosci w macierzy 
+    // // zbiera sumę wszystkich wartosci w macierzy 
     const sum = gradeArray? gradeArray.reduce((a, b) => a + b) : 0
 
-    // oblicza srednia ocen
+    // // oblicza srednia ocen
     const mean = Math.round((sum / gradeArray.length) * 100) / 100
     
     
     
-    // tworzy macierz użytkowników ktorzy ocenili artykul
-    const raters = rating? rating.map(grade => {
-        return grade.name
+    // // tworzy macierz użytkowników ktorzy ocenili artykul
+    const ratersID = rating? rating.map(grade => {
+        return grade.userID
     }) : null;
 
     
     //Funkja kontroluje dispatchowanie akcji wysylajacych dane na serwer o ocenie dodanej przez uzytkownika.
     //Jesli uzytkownik dodal juz ocene lub jest nie zalogowany wtedy odsyla do zalogowania lub przypomina o wczesniejszej ocenie
-    const rateBeerArticle = (id, grade) => {
+    const rateBeerArticle = (articleId, grade) => {
 
-        // if(!user.email) {setShowLogInRequest(true)}
+        if(!uid) {setShowLogInRequest(true)}
 
-        const found = raters?.find(rater => rater === user)
-        
+        const found = ratersID?.find(raterID => raterID === uid)
+        console.log(found)
         
         
             if(found){
 
-                setShowReminder(true)
+               setShowReminder(true)
+               return
 
             } else {
 
 
-                if(user){
-                    const whoRated = user
                     const gradeArrayItem = grade
-                   
-                    const data = {id, gradeArrayItem, whoRated}
-        
+                    const userID = uid
+                    const id = uid + articleId
+                    const articleID = articleId
+                    const data = {gradeArrayItem, articleID, userID, id}
                     dispatch(rateBeer(data))
+                    console.log(id)
 
-                } else {
-
-                    setShowLogInRequest(true)
-                }
 
             }
           
@@ -114,7 +115,7 @@ const BeerCounter =  () => {
                             ratingValue={ratingValue} 
                             rating={mean? mean : null}
                             hover={hover}
-                            onClick={() => rateBeerArticle(id, i + 1)}
+                            onClick={() => rateBeerArticle(articleId, i + 1)}
                             onMouseEnter={() => setHover(ratingValue)}
                             onMouseLeave={() => setHover(null)}
                             >

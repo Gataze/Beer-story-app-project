@@ -47,8 +47,10 @@ const ArticleEditForm = () => {
         const data = {id, name, description, color, photo};
 
         //If user is not the author do not allow to edit/ send msg to user
-        if(user === inputValues.author){
-                //wysyła dane do firebase
+        // if(user === inputValues.author){
+
+        
+            //wysyła dane do firebase
             dispatch(updateBeer(data));
             //pobiera zaktualizowane wartości z firebase
             dispatch(loadBeers());
@@ -56,9 +58,7 @@ const ArticleEditForm = () => {
             dispatch(setEditMode(false))
             history.goBack();
 
-        } else {
-            console.log(`Hey what are you doing ${user}?`)
-        }
+        
        
     }
 
@@ -80,7 +80,7 @@ const ArticleEditForm = () => {
         </ArticleContainer>
         
         <button onClick={() => updateBeerArticle(id, beerName, beerDescription, beerColor, beerPhoto)}>Aktualizuj</button>
-        <button onClick={() => dispatch(setEditMode(true))}>Wróć</button>
+        <button onClick={() => dispatch(setEditMode(false))}>Wróć</button>
     
     </InputShow> );
 }

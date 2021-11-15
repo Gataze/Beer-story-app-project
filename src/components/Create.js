@@ -24,7 +24,7 @@ const Create = () => {
 
     const createBeerArticle = (e) => {
         e.preventDefault()
-        const data = {name: name, description: description, color: color, author: author, photo: photo, whoRated: [], comments: [], userID: uid ,date: moment().format('MMMM Do YYYY, h:mm:ss a'), id: uuidv4()}
+        const data = {name: name, description: description, color: color, author: author, photo: photo, whoRated: [], comments: [], userID: uid, date: moment().format('MMMM Do YYYY, h:mm:ss a'), id: uuidv4()}
         
 
         dispatch(addBeer(data))

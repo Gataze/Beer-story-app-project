@@ -8,7 +8,8 @@ const slice = createSlice({
         loading: false,
         list: [],
         lastFetch: null,
-        commentsList: []
+        commentsList: [],
+        rates: []
     },
     reducers: {
         beersRequested: (beers, action) => {
@@ -49,9 +50,15 @@ const slice = createSlice({
             beers.loading = false
         },
         beerRate: (beers, action) => {
-            const index = beers.list.findIndex(beer => beer.id === action.payload.id)
-            beers.list[index].whoRated.push({name: action.payload.name, gradeArrayItem: action.payload.gradeArrayItem})
+            //odnajduje dokument o danym id aby przypisać mu ocene
+            // const index = beers.list.findIndex(beer => beer.id === action.payload.id)
+            // beers.list[index].whoRated.push({gradeArrayItem: action.payload.gradeArrayItem})
+            beers.rates.push(action.payload);
             beers.loading = false
+        },
+        beerRateReceived: (beers, action) => {
+            beers.loading = false;
+            beers.rates = action.payload;
         },
         beerComment: (beers, action) => {
             beers.commentsList.push(action.payload)
@@ -81,6 +88,7 @@ const {
     beerDeleted,
     beerUpdated,
     beerRate,
+    beerRateReceived,
     beerComment,
     beerCommentReceived,
     beerCommentDeleted
@@ -126,6 +134,7 @@ export const getOneBeer = (id, ignoreLastFetch) => (dispatch, getState) => {
             onStart: beersRequested.type,
             onSuccessBeers: beerGetOne.type,
             onSuccessComments: beerCommentReceived.type,
+            onSuccessRates: beerRateReceived.type,
             onError: beersRequestFailed.type
         })
     )
