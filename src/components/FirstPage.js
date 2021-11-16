@@ -3,6 +3,7 @@ import { keyframes } from "styled-components";
 import { Link } from "react-router-dom";
 
 import img1 from '../img/img-1.svg'
+import img2 from '../img/img-2.svg'
 import HomeArticle from "./HomeArticle";
 
 
@@ -16,10 +17,12 @@ const FirstPage = () => {
                 <Section>
                     <Overlay>
                         <article>
-                            <One>
-                                <h2>Historia piwa w Polsce</h2>
-                                <button><Link to='/swiat'>Więcej</Link></button>
-                            </One>
+                            <Link to='/swiat'>
+                                <One>
+                                    <h2>Historia Piwa na Świecie</h2>
+                                    
+                                </One>
+                            </Link>
                             
                         </article>
                         <OneImg src={img1} alt="hello" />   
@@ -28,22 +31,25 @@ const FirstPage = () => {
                 <Section>
                     <Overlay>
                         <article>
-                            <Two>
-                                <h2>Historia piwa na świecie</h2>
-                                <button><Link to='/swiat'>Więcej</Link></button>
-                            </Two>
-                            
+                            <Link to='/swiat'>
+                                <Two>
+                                    <h2>Zapomniene receptury</h2>
+                                    
+                                </Two>
+                            </Link>
                         </article>
-                        <TwoImg src={img1} alt="hello" />
+                        <TwoImg src={img2} alt="hello" />
                     </Overlay>
                 </Section>
                 <Section>
                     <Overlay>
                         <article>
-                            <Three>
-                                <h2>Zapomniane piwa</h2>
-                                <button><Link to='/swiat'>Więcej</Link></button>
-                            </Three>
+                        <Link to='/swiat'>
+                                <Three>
+                                    <h2>Historia piwa w Polsce</h2>
+                                    
+                                </Three>
+                            </Link>
                         </article>
                         <ThreeImg src={img1} alt="hello" />
                     </Overlay>
@@ -51,10 +57,12 @@ const FirstPage = () => {
                 <Section>
                     <Overlay>
                         <article>
-                            <Four>
-                                <h2>Opuszczone browary</h2>
-                                <button><Link to='/swiat'>Więcej</Link></button>
-                            </Four>
+                            <Link to='/swiat'>
+                                <Four>
+                                    <h2>Opuszczone browary</h2>
+                                    
+                                </Four>
+                            </Link>
                         </article>
                         <FourImg src={img1} alt="hello" />
                     </Overlay>
@@ -149,7 +157,7 @@ const brightnessChange = keyframes`
     opacity: 0;
 }
     to { 
-    filter: brightness(70%);
+    filter: brightness(100%);
     opacity: 1;
 }
 `
@@ -199,8 +207,10 @@ const Overlay = styled.div`
         background-color: transparent;
         filter: brightness(100%);
         
-        
+    }
 
+    a {
+        text-decoration: none;
     }
     
     article{
@@ -215,22 +225,23 @@ const Overlay = styled.div`
 
         
         div {
+            
             opacity: 0;
             position: relative;
             height: 100%;
             z-index: 0;
-            //tu
             background-color: transparent;
             h2 {
             
             text-align: center;
             color: white;
             width: 80%;
-            margin: 0 auto;
-            padding-top: 90px;
+            margin: 45px auto;
             font-weight: 400;
+            width: 60%;
+            }
+
             
-        }
          button {
             display: block;
             color: white;

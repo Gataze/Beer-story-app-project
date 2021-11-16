@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { useEffect } from "react";
 import { useParams } from "react-router";
-import { deleteBeer, getOneBeer, selectArticle, loadCommentBeer } from "../store/beers";
+import { deleteBeer, getOneBeer, selectArticle } from "../store/beers";
 import styled from "styled-components";
 import { setEditMode } from "../store/beersStyles";
 import BeerCounter from "./BeerCounter";
@@ -26,25 +26,13 @@ const Article = () => {
     const beerArticle = beerArticleRedux[0]? beerArticleRedux[0] : beerArticleOne[0];
 
 
-
-    // useEffect(() => {
-       
-    //     //Dispatchuje getOneBeer() który odpala middleware pobierajacy dane na temat artykułu o danym ID (jezeli odswiezylismy stronę)
-    //     dispatch(getOneBeer(id))
-        
-    //     //Unmounts useEffect when component is closed...
-    //     return () => console.log('unmounting...');
-        
-    // }, [dispatch, id])
-
-
+    //sprawdzić czy ignore last fetch jest napewno tu potrzebne
     useEffect(() => {
-
         const ignoreLastFetch = true;
         dispatch(getOneBeer(id, ignoreLastFetch))
         dispatch(setEditMode(false))
         return () => console.log('unmounting...');
-    },[])
+    },[id, dispatch])
 
     //usuwa artykuł, wraca do wczesniejszej strony
     const deleteBeerArticle = (id) => {
@@ -60,8 +48,7 @@ const Article = () => {
     const updateShowInput = () => {
         
             dispatch(setEditMode(true))
-        
-        
+            
     }
 
     //wraca do poprzedniej strony
@@ -103,10 +90,10 @@ const Article = () => {
                 
 
                 <ArticleButtons>
-                    <button onClick={() => updateShowInput()}>Edytuj</button>
-                    <button onClick={() => deleteBeerArticle(id)}>Usuń</button>
-                    {/* {user && user ===  beerArticle?.author && <button onClick={() => deleteBeerArticle(id)}>Usuń</button>}
-                    {user && user ===  beerArticle?.author && <button onClick={() => updateShowInput()}>Edytuj</button>} */}
+                    {/* <button onClick={() => updateShowInput()}>Edytuj</button>
+                    <button onClick={() => deleteBeerArticle(id)}>Usuń</button> */}
+                    {user && user ===  beerArticle?.author && <button onClick={() => deleteBeerArticle(id)}>Usuń</button>}
+                    {user && user ===  beerArticle?.author && <button onClick={() => updateShowInput()}>Edytuj</button>}
                             <button onClick={() => goBackward()}>Wróć</button>
                 
                 </ArticleButtons>

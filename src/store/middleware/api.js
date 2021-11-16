@@ -1,6 +1,6 @@
 import { db } from "../../firebase/firebase.config";
 import * as actions from '../api'
-import { collection, getDocs, getDoc, doc, setDoc, deleteDoc, updateDoc, limit, query, arrayUnion, where } from 'firebase/firestore'
+import { collection, getDocs, getDoc, doc, setDoc, deleteDoc, updateDoc, limit, query, where } from 'firebase/firestore'
 
 
 const api = ({dispatch}) => next => async action => {
@@ -47,6 +47,22 @@ const api = ({dispatch}) => next => async action => {
         if(onSuccessBeers) dispatch({type: onSuccessBeers, payload: [{...beer.data(), id: beer.id}]})
         if(onSuccessComments) dispatch({type: onSuccessComments, payload: comments.docs.map(doc => ({...doc.data(), id: doc.id}))})
         if(onSuccessRates) dispatch({type: onSuccessRates, payload: rates.docs.map(doc => ({...doc.data(), id: doc.id}))})
+    }
+    catch(error){
+        dispatch(actions.apiCallFailed(error.message))
+    }
+
+
+    if(method === 'getUserDocs') try {
+
+        console.log(data)
+        const userCollecionRef = query(collection(db, 'Beers'), where("userID", "==", data))
+
+
+
+        const userDocs = await getDocs(userCollecionRef);
+
+        if(onSuccess) dispatch({type: onSuccess, payload: userDocs.docs.map(doc => ({...doc.data(), id: doc.id}))})
     }
     catch(error){
         dispatch(actions.apiCallFailed(error.message))

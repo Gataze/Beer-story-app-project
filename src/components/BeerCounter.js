@@ -2,10 +2,10 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from "react-redux";
-import { selectArticle, rateBeer } from "../store/beers";
+import { rateBeer } from "../store/beers";
 import { useParams } from "react-router";
 import { useState } from "react";
-import {v4 as uuidv4} from 'uuid';
+
 
 const BeerCounter =  () => {
 
@@ -16,8 +16,6 @@ const BeerCounter =  () => {
     // const rating = useSelector(selectArticle(id))[0]?.whoRated
 
     const rating = useSelector(state => state.entities.beers.rates)
-
-    console.log(rating)
 
 
     //selektor sprawdzajacy czy loggedIn is true

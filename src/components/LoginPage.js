@@ -43,9 +43,9 @@ const LoginPage = () => {
                 <Form>
                     <label>Email: </label>
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-                    <label>Password: </label>
+                    <label>Hasło: </label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
-                    <button onClick={() => login(email, password)}>Login</button>
+                    <button onClick={() => login(email, password)}>Zaloguj</button>
                     <button>Przypomnij</button>
                 </Form>
             </LoginForm>

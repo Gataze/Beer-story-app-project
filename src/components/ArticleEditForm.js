@@ -17,8 +17,6 @@ const ArticleEditForm = () => {
     //treść i dane na temat artykułuumieszczane formularzu edycji artykułu
     const inputValues = useSelector(selectArticle(id))[0]
 
-    const user = useSelector(state => state.entities.auth.user.username);
-
     //Zmienne zawierające informacje o zmianach które będą wprowadzane do artykułu.
     const [beerName, setBeerName] = useState('');
     const [beerColor, setBeerColor] = useState('');
@@ -46,9 +44,7 @@ const ArticleEditForm = () => {
 
         const data = {id, name, description, color, photo};
 
-        //If user is not the author do not allow to edit/ send msg to user
-        // if(user === inputValues.author){
-
+        
         
             //wysyła dane do firebase
             dispatch(updateBeer(data));

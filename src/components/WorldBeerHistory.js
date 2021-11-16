@@ -10,7 +10,6 @@ const WorldBeerHistory = () => {
 
     const dispatch = useDispatch();
     const user = useSelector(state => state.entities.auth.user.username)
-
     const beers = useSelector(state => state.entities.beers.list);
     const loading = useSelector(state => state.entities.beers.loading);
     const [infoShowForUser, setShowInfoForUser] = useState(false);
@@ -105,7 +104,7 @@ const Container = styled.div`
     margin: 40px 20px;
 `
 
-const ArticlesGrid = styled.div`
+export const ArticlesGrid = styled.div`
     display: grid;
     grid-template-columns: 300px;
     grid-auto-rows: 200px;
@@ -121,7 +120,7 @@ const ArticlesGrid = styled.div`
     }
 `
 
-const ArticleItem = styled.article`
+export const ArticleItem = styled.article`
     display: flex;
     flex-flow: column;
     align-items: flex-start;

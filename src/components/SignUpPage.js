@@ -12,23 +12,37 @@ const SignUpPage = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordRepeat, setPasswordRepeat] = useState('')
     const [username, setUsername] = useState('')
 
 
+    //Funkcja zamykająca formularz rejestracji. Zeruje wszystkie stany w formularzu 
     const handleHide = () => {
         dispatch(handleSignUpStyle()) 
+        setEmail('');
+        setPassword('');
+        setUsername('');
+        setPasswordRepeat('')
     }
        
 
  
     const signUp = (email, password) => {
+
+        if(password === passwordRepeat){
+            dispatch(signUpUser(email, password, username));
+            dispatch(handleSignUpStyle());
         
-        dispatch(signUpUser(email, password, username));
-        dispatch(handleSignUpStyle());
+            setEmail('');
+            setPassword('');
+            setUsername('');
+            setPasswordRepeat('')
+
+        } else {
+            alert('Wpisane hasła nie są identyczne')
+        }
         
-        setEmail('');
-        setPassword('');
-        setUsername('');
+        
     }
 
 
@@ -38,14 +52,15 @@ const SignUpPage = () => {
             <p  onClick={() => handleHide(handleSignUpStyle)}>X</p>
             <h2>Rejestracja do BeerStory</h2>
                 <Form>
-                    <label>Username: </label>
+                    <label>Użytkownik: </label>
                     <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
                     <label>Email: </label>
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-                    <label>Password: </label>
+                    <label>Hasło: </label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
-                    <button onClick={() => signUp(email, password)}>Register</button>
-                    <button>Przypomnij</button>
+                    <label>Powtórz hasło: </label>
+                    <input type="password" value={passwordRepeat} onChange={(e) => setPasswordRepeat(e.target.value)}/>
+                    <button onClick={() => signUp(email, password)}>Zarejestruj</button>
                 </Form>
             </LoginForm>
         </LoginPageContainer>

@@ -141,6 +141,27 @@ export const getOneBeer = (id, ignoreLastFetch) => (dispatch, getState) => {
 }
 
 
+export const getUserBeer = (user, ignoreLastFetch) => (dispatch, getState) => {
+
+        if(!ignoreLastFetch){
+        const { lastFetch } = getState().entities.beers;
+        const diffInMinutes = moment().diff(moment(lastFetch), 'minutes');
+        if(diffInMinutes < 10) return;
+        }
+
+        dispatch(
+            apiCallBegan({
+                method: 'getUserDocs',
+                data: user,
+                onStart: beersRequested.type,
+                onSuccess: beersReceived.type,
+                onError: beersRequestFailed.type
+            })
+        )
+    
+}
+
+
 
 export const addBeer = (data) => apiCallBegan({
     method: 'setDoc',

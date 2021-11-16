@@ -36,14 +36,9 @@ const Navbar = () => {
 
         onAuthStateChanged(auth,  (currentUser) => {
 
-           
-
             const email =  currentUser?.email? currentUser.email : false;
             const username = currentUser?.email? currentUser.displayName : false;
             const uid = currentUser?.email? currentUser.uid : false;
-           
-
-
             const data = {email, username, uid}
 
                 //Po odświeżeniu strony lub zalogowaniu zamieszcza dane o uzytkowniku wredux store. Po zarejestrowaniu tez się dispatchuje jednak nie zamieszcza
@@ -90,8 +85,10 @@ const Navbar = () => {
             <Navigation showMenu={showMenu}>
 
                 <Logo>
-                    <FontAwesomeIcon icon={faBeer} />
-                    BeerStory
+                    <Link to='/'>
+                        <FontAwesomeIcon icon={faBeer} />
+                        BeerStory
+                    </Link>
                 </Logo>
             
             
@@ -174,6 +171,11 @@ const Navigation = styled.nav`
 
 const Logo = styled.h2`
     padding: 20px;
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
     svg {
         margin-right: 10px;
     }
