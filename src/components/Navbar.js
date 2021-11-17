@@ -10,7 +10,7 @@ import { onAuthStateChanged } from "@firebase/auth";
 import LoginPage from "./LoginPage";
 import SignUpPage from "./SignUpPage";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoginFormValue, handleSignUpStyle } from '../store/beersStyles'
+import { setLoginFormValue, handleSignUpStyle, setUserAgeVerified } from '../store/beersStyles'
 import { logoutUser, setUserLoggedIn  } from "../store/beersAuth";
 
 
@@ -49,7 +49,7 @@ const Navbar = () => {
                 
 
                 dispatch(setUserLoggedIn(data))
-            
+                if(uid) dispatch(setUserAgeVerified(true))
            
     
         })

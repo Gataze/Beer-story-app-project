@@ -38,6 +38,18 @@ const ArticleEditForm = () => {
 
     
     
+    console.log(beerDescription)
+    
+    const desc = inputValues?.description
+
+    const handleDescription = (e) => {
+
+        const value = e.target.value
+
+        setBeerDescription(prevState => ...prevState, value)
+    }
+
+    
 
     //Aktualizcaja starych informacji w artykule
     const updateBeerArticle = (id, name, description, color, photo) => {
@@ -69,9 +81,15 @@ const ArticleEditForm = () => {
             <input type="text" value={beerName} onChange={(e) => setBeerName(e.target.value)} />
             <label>Link do zdjęcia: </label>
             <input type="text" value={beerPhoto} onChange={(e) => setBeerPhoto(e.target.value)} />
-            <label>Opis: </label>
-            <textarea rows='10' type="text" value={beerDescription} onChange={(e) => setBeerDescription(e.target.value)} />
-            <label>Kolor: </label>
+            <label>Akapity:</label>
+            {beerDescription && beerDescription.map(descript => (
+                <ParagraphContainer key={descript}>
+                    <textarea rows='10' type="text" value={descript} onChange={(e) => handleDescription(e)} />
+                </ParagraphContainer>
+            ))}
+
+            
+            <label>Bibliografia: </label>
             <input type="text" value={beerColor} onChange={(e) => setBeerColor(e.target.value)} />
         </ArticleContainer>
         
@@ -95,6 +113,11 @@ const ArticleContainer = styled.div`
     display: flex;
     flex-flow: column;
     margin-bottom: 10px;
+`
+
+const ParagraphContainer = styled.p`
+    display: flex;
+    flex-flow: column;
 `
 
 

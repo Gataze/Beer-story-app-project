@@ -55,7 +55,7 @@ const WorldBeerHistory = () => {
                             {beer.author && <p>@{beer.author}</p>}
                             <span>{ 
                                 (beer.description.length > 20)?
-                                `${beer.description.substring(0, 120)}...` : beer.description
+                                `${beer.description[0].substring(0, 120)}...` : beer.description[0]
                             }</span>
                             <span>{beer.date}</span>
                             <button><Link to={`/article/${beer.id}`}>Czytaj dalej...</Link></button>

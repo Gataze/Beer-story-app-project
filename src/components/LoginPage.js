@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { loginUser } from "../store/beersAuth";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoginFormValue } from "../store/beersStyles";
+import { setLoginFormValue, setUserAgeVerified } from "../store/beersStyles";
 
 const LoginPage = () => {
 
@@ -28,7 +28,8 @@ const LoginPage = () => {
     const login = (email, password) => {
         
         dispatch(loginUser(email, password))
-        dispatch(setLoginFormValue()) 
+        dispatch(setLoginFormValue())
+        dispatch(setUserAgeVerified(true)) 
         setEmail('')
         setPassword('')
 

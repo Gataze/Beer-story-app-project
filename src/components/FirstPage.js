@@ -6,8 +6,30 @@ import img1 from '../img/img-1.svg'
 import img2 from '../img/img-2.svg'
 import HomeArticle from "./HomeArticle";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBeer } from '@fortawesome/free-solid-svg-icons';
+import { useEffect } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
+import { setUserAgeVerified } from '../store/beersStyles'
 
 const FirstPage = () => {
+
+    const dispatch = useDispatch();
+    const userAgeCheck = useSelector(state => state.entities.styles.ageConfirmed);
+
+  
+    //Funkcja weryfikuje wiek użytkownika. Osoby niepelnoletnie nie maja dostepu do strony
+    const ageVerificationFunction = () => {
+
+
+        dispatch(setUserAgeVerified(true))
+        
+    }
+
+    const redirectToGoogle = () => {
+        window.location.href = "https://google.com/"
+    }
 
 
     return ( 
@@ -68,7 +90,21 @@ const FirstPage = () => {
                     </Overlay>
                 </Section>
             </MainGrid>
-           
+           <AgeVerification userAgeCheck={userAgeCheck}>
+                <Logo>
+                    <FontAwesomeIcon icon={faBeer}/>
+                    BeerStory
+                </Logo>
+                    <AgeMessage>
+                        <h2>Dostęp do strony tylko dla osób pełnoletnich</h2>
+                        <label>Czy ukończyłeś 18 lat?</label>
+                        <p>
+                            <button onClick={() => ageVerificationFunction()}>Tak</button>
+                            <button onClick={redirectToGoogle}>Nie</button>
+                        </p>
+                    </AgeMessage>
+
+           </AgeVerification>
               
         </Main>
      );
@@ -260,34 +296,58 @@ const Overlay = styled.div`
 
         }
         } 
-        
-        /* opacity: 0; */
-        /* background: rgb(244,184,96); */
-        /* background: linear-gradient(117deg, rgba(244,184,96,0.3085609243697479) 0%, rgba(244,184,96,0.5130427170868348) 63%, rgba(244,184,96,1) 100%); */
-        /* opacity: 0.9;
-        filter: grayscale(0.2); */
-        /* &:hover {
-            background: black;
-            background-color: rgba(0,0,0,0.4);
-            transition: all 0.4s ease-in-out;
-        }
-        &:hover h2{
-            opacity: 1;
-            transition: all 0.4s ease-in-out;
-        }
-
-        &:hover button{
-            opacity: 1;
-            transition: all 0.4s ease-in-out;
-        } */
-        
-         
-
-        
-
-    }
-     
+    } 
 `
 
 
+const AgeVerification = styled.section`
+        display: ${({userAgeCheck}) => userAgeCheck? 'none' : 'flex'};
+        height: 100vh;
+        width: 100vw;
+        flex-flow: column;
+        position: fixed;
+        top: 0px;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        z-index: 999;
+        
+    `
+
+const Logo = styled.div`
+
+    color: black;
+    padding: 20px;
+    font-size: 26px;
+    text-align: center;
+    svg {
+        margin-right: 5px;
+    }
+`
+
+const AgeMessage = styled.article`
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    padding: 0 20px;
+    text-align: center;
+
+    h2{
+        font-size: 25px;
+    }
+
+    label {
+        margin: 10px;
+    }
+
+    button {
+        margin: 10px;
+        background-color: white;
+        border: 2px solid black;
+        font-size: 20px;
+        &:hover{
+            background-color: #999999;
+        }
+    }
+`
 

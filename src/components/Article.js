@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router";
 import { deleteBeer, getOneBeer, selectArticle } from "../store/beers";
 import styled from "styled-components";
-import { setEditMode } from "../store/beersStyles";
+import { setEditMode, setUserAgeVerified } from "../store/beersStyles";
 import BeerCounter from "./BeerCounter";
 import CommentsSection from "./CommentsSection";
 
@@ -20,17 +20,22 @@ const Article = () => {
     //Selektor danych w Redux o danym id, stanowiacych treść artykułu (jeśli nie odświeżono strony)
     const beerArticleRedux = useSelector(selectArticle(id));
 
+    
+
     //Selektor danych w Redux pobierający obecnie zaladowany artykul jezeli odswiezymy stronę
     const beerArticleOne = useSelector(state => state.entities.beers.list)
 
-    const beerArticle = beerArticleRedux[0]? beerArticleRedux[0] : beerArticleOne[0];
+    
 
+    const beerArticle = beerArticleRedux[0]? beerArticleRedux[0] : beerArticleOne[0];
+    // console.log(Object.values(beerArticle?.description))
 
     //sprawdzić czy ignore last fetch jest napewno tu potrzebne
     useEffect(() => {
         const ignoreLastFetch = true;
         dispatch(getOneBeer(id, ignoreLastFetch))
         dispatch(setEditMode(false))
+        dispatch(setUserAgeVerified(true))
         return () => console.log('unmounting...');
     },[id, dispatch])
 
@@ -70,9 +75,15 @@ const Article = () => {
                     <h1>{beerArticle?.name} Lorem Ipsum</h1>
                     <BeerCounter/>
                     <span>{beerArticle?.author? beerArticle.author : '@anonim'}</span><span>{beerArticle?.date}</span><span>{beerArticle?.color}</span>
+                    
+                    {beerArticle?.description.map(descript => (
+                        <p key={descript}>
+                            {descript}
+                        </p>
+                    ))}
+                    {/* <p>{beerArticle?.description}{beerArticle?.description}</p>
                     <p>{beerArticle?.description}{beerArticle?.description}</p>
-                    <p>{beerArticle?.description}{beerArticle?.description}</p>
-                    <p>{beerArticle?.description}{beerArticle?.description}</p>
+                    <p>{beerArticle?.description}{beerArticle?.description}</p> */}
                     
 
                 </ArticleMainContent>
