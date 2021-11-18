@@ -12,6 +12,7 @@ import SignUpPage from "./SignUpPage";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoginFormValue, handleSignUpStyle, setUserAgeVerified } from '../store/beersStyles'
 import { logoutUser, setUserLoggedIn  } from "../store/beersAuth";
+import Loader from "./Loader";
 
 
 
@@ -19,7 +20,10 @@ import { logoutUser, setUserLoggedIn  } from "../store/beersAuth";
 const Navbar = () => {
 
     const dispatch = useDispatch();
+    
     const user = useSelector(state => state.entities.auth.user.username)
+
+
     const [showMenu, setShowMenu] = useState(false)
     const history = useHistory()
    
@@ -49,7 +53,7 @@ const Navbar = () => {
                 
 
                 dispatch(setUserLoggedIn(data))
-                if(uid) dispatch(setUserAgeVerified(true))
+                if(!uid) dispatch(setUserAgeVerified(false))
            
     
         })
@@ -77,6 +81,9 @@ const Navbar = () => {
         history.push('/')
     }
 
+
+    
+
     
 
     return ( 
@@ -103,7 +110,7 @@ const Navbar = () => {
                 <MobileNav showMenu={showMenu}>
                     <li><Link to='/'>Strona domowa</Link></li>
                     {!user && <li onClick={() => showForm(setLoginFormValue)}>Zaloguj</li>}
-                    {user && <li><Link to={`/użytkownik/${user.displayName}`}>Użytkownik</Link></li>}
+                    {user && <li><Link to='/użytkownik/panel'>Użytkownik</Link></li>}
                     {!user && <li onClick={() => showForm(handleSignUpStyle)}>Rejestracja</li>}    
                     {user && <li onClick={logout}>Wyloguj</li>}
                 </MobileNav>
@@ -117,7 +124,7 @@ const Navbar = () => {
             <FullNav> 
                 <li><Link to='/'>Strona domowa</Link></li>
                 {user && <li onClick={logout}>Wyloguj</li>}
-                {user && <li><Link to={`/użytkownik/${user.displayName}`}>Użytkownik</Link></li>}
+                {user && <li><Link to='/użytkownik/panel'>Użytkownik</Link></li>}
                 {!user && <li onClick={() => showForm(setLoginFormValue)}>Zaloguj</li>}
                 {!user && <li onClick={() => showForm(handleSignUpStyle)}>Rejestracja</li>}
                 <li><Link to='/'><FontAwesomeIcon icon={faInstagram} /></Link></li>
@@ -127,6 +134,7 @@ const Navbar = () => {
 
             <SignUpPage />
             
+            <Loader />
         </NavbarContainer>
 
      );

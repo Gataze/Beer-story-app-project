@@ -9,7 +9,7 @@ const slice = createSlice({
         signUpShow: false,
         loggedIn: {},
         edit: false,
-        ageConfirmed: false,
+        ageConfirmed: true,
     },
     reducers: {
         setLoginFormValue: (styles, action) => {

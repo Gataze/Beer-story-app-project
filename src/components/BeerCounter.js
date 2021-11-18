@@ -59,32 +59,31 @@ const BeerCounter =  () => {
     //Jesli uzytkownik dodal juz ocene lub jest nie zalogowany wtedy odsyla do zalogowania lub przypomina o wczesniejszej ocenie
     const rateBeerArticle = (articleId, grade) => {
 
-        if(!uid) {setShowLogInRequest(true)}
-
         const found = ratersID?.find(raterID => raterID === uid)
-        console.log(found)
-        
-        
+     
+
+        //If user is not logged in show msg that he should login or register
+        if(!uid) {setShowLogInRequest(true)} else {
+
+
             if(found){
 
-               setShowReminder(true)
-               return
-
-            } else {
-
-
-                    const gradeArrayItem = grade
-                    const userID = uid
-                    const id = uid + articleId
-                    const articleID = articleId
-                    const data = {gradeArrayItem, articleID, userID, id}
-                    dispatch(rateBeer(data))
-                    console.log(id)
-
-
-            }
-          
-
+                setShowReminder(true)
+                
+             } else {
+ 
+ 
+                     const gradeArrayItem = grade
+                     const userID = uid
+                     const id = uid + articleId
+                     const articleID = articleId
+                     const data = {gradeArrayItem, articleID, userID, id}
+                     dispatch(rateBeer(data))
+                     console.log(id)
+ 
+ 
+             }
+        }     
     }
 
     

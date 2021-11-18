@@ -95,7 +95,7 @@ const api = ({dispatch}) => next => async action => {
         await deleteDoc(beer)
 
         dispatch(actions.apiCallSuccess('deleted'))
-        if(onSuccess) dispatch({type: onSuccess, payload: {id: data}})
+        // if(onSuccess) dispatch({type: onSuccess, payload: {id: data}})
     }
 
     catch(error){

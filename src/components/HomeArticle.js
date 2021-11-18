@@ -15,6 +15,7 @@ const ArticleHome = styled.article`
     width: 380px;
     color: white;
     text-align: justify;
+    margin-left: 25px;
     h2 {
         margin-bottom: 20px;
     }

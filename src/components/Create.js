@@ -66,9 +66,7 @@ const Create = () => {
             )
     }
 
-    // paragraphs
-
-    // console.log(JSON.stringify(i))
+  
 
 
 
@@ -99,7 +97,6 @@ const Create = () => {
 
         }
         
-        console.log(description)
         
     }
 

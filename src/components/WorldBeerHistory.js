@@ -22,6 +22,8 @@ const WorldBeerHistory = () => {
 
         const getBeers = () => {
             dispatch(loadBeers(numberOfDisplayedDocs, true))
+
+            console.log('WBH')
         }
 
 
@@ -54,8 +56,7 @@ const WorldBeerHistory = () => {
                             <h2>{beer.name}</h2>
                             {beer.author && <p>@{beer.author}</p>}
                             <span>{ 
-                                (beer.description.length > 20)?
-                                `${beer.description[0].substring(0, 120)}...` : beer.description[0]
+                                `${beer.description[0].substring(0, 120)}...` 
                             }</span>
                             <span>{beer.date}</span>
                             <button><Link to={`/article/${beer.id}`}>Czytaj dalej...</Link></button>
@@ -78,7 +79,7 @@ const WorldBeerHistory = () => {
                 
             </Container>
             <button onClick={() => loadMore(prevState => prevState = prevState + 2)}>{loading? 'Ładuję' : 'Więcej'}</button>
-            {/* <button onClick={() => setNumberOfDisplayedDocs(prevState => prevState = prevState + 2)}>{loading? 'Ładuję' : 'Więcej'}</button> */}
+            
         </ArticlesList>
      );
 }

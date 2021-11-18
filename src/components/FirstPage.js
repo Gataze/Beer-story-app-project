@@ -1,35 +1,27 @@
-import styled from "styled-components";
+
 import { keyframes } from "styled-components";
 import { Link } from "react-router-dom";
-
 import img1 from '../img/img-1.svg'
 import img2 from '../img/img-2.svg'
 import HomeArticle from "./HomeArticle";
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBeer } from '@fortawesome/free-solid-svg-icons';
+import AgeVerificationForm from "./AgeVerificationForm";
+import styled from "styled-components";
 import { useEffect } from "react";
+import { useState } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
-import { setUserAgeVerified } from '../store/beersStyles'
 
 const FirstPage = () => {
 
-    const dispatch = useDispatch();
-    const userAgeCheck = useSelector(state => state.entities.styles.ageConfirmed);
 
-  
-    //Funkcja weryfikuje wiek użytkownika. Osoby niepelnoletnie nie maja dostepu do strony
-    const ageVerificationFunction = () => {
+    const [ageVerified, setAgeVerified] = useState(false)
+
+    useEffect(() => {
+
+        setAgeVerified(localStorage.getItem('ageVerifiedBeerStory'))
+
+    }, [ageVerified])
 
 
-        dispatch(setUserAgeVerified(true))
-        
-    }
-
-    const redirectToGoogle = () => {
-        window.location.href = "https://google.com/"
-    }
 
 
     return ( 
@@ -42,10 +34,8 @@ const FirstPage = () => {
                             <Link to='/swiat'>
                                 <One>
                                     <h2>Historia Piwa na Świecie</h2>
-                                    
                                 </One>
                             </Link>
-                            
                         </article>
                         <OneImg src={img1} alt="hello" />   
                     </Overlay>
@@ -55,8 +45,7 @@ const FirstPage = () => {
                         <article>
                             <Link to='/swiat'>
                                 <Two>
-                                    <h2>Zapomniene receptury</h2>
-                                    
+                                    <h2>Zapomniene receptury</h2> 
                                 </Two>
                             </Link>
                         </article>
@@ -69,11 +58,10 @@ const FirstPage = () => {
                         <Link to='/swiat'>
                                 <Three>
                                     <h2>Historia piwa w Polsce</h2>
-                                    
                                 </Three>
                             </Link>
                         </article>
-                        <ThreeImg src={img1} alt="hello" />
+                        <ThreeImg src={img2} alt="hello" />
                     </Overlay>
                 </Section>
                 <Section>
@@ -82,7 +70,6 @@ const FirstPage = () => {
                             <Link to='/swiat'>
                                 <Four>
                                     <h2>Opuszczone browary</h2>
-                                    
                                 </Four>
                             </Link>
                         </article>
@@ -90,22 +77,9 @@ const FirstPage = () => {
                     </Overlay>
                 </Section>
             </MainGrid>
-           <AgeVerification userAgeCheck={userAgeCheck}>
-                <Logo>
-                    <FontAwesomeIcon icon={faBeer}/>
-                    BeerStory
-                </Logo>
-                    <AgeMessage>
-                        <h2>Dostęp do strony tylko dla osób pełnoletnich</h2>
-                        <label>Czy ukończyłeś 18 lat?</label>
-                        <p>
-                            <button onClick={() => ageVerificationFunction()}>Tak</button>
-                            <button onClick={redirectToGoogle}>Nie</button>
-                        </p>
-                    </AgeMessage>
 
-           </AgeVerification>
-              
+           <AgeVerificationForm ageVerified={ageVerified}/>
+
         </Main>
      );
 }
@@ -227,7 +201,6 @@ const Overlay = styled.div`
     justify-content: center;
     width: 100%;
     height: 100%;
-
     z-index: 1;
     background-color: #4A5859;
     transition: all 0.3s ease-in-out;
@@ -300,54 +273,6 @@ const Overlay = styled.div`
 `
 
 
-const AgeVerification = styled.section`
-        display: ${({userAgeCheck}) => userAgeCheck? 'none' : 'flex'};
-        height: 100vh;
-        width: 100vw;
-        flex-flow: column;
-        position: fixed;
-        top: 0px;
-        align-items: center;
-        justify-content: center;
-        background-color: white;
-        z-index: 999;
-        
-    `
 
-const Logo = styled.div`
 
-    color: black;
-    padding: 20px;
-    font-size: 26px;
-    text-align: center;
-    svg {
-        margin-right: 5px;
-    }
-`
-
-const AgeMessage = styled.article`
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    padding: 0 20px;
-    text-align: center;
-
-    h2{
-        font-size: 25px;
-    }
-
-    label {
-        margin: 10px;
-    }
-
-    button {
-        margin: 10px;
-        background-color: white;
-        border: 2px solid black;
-        font-size: 20px;
-        &:hover{
-            background-color: #999999;
-        }
-    }
-`
 

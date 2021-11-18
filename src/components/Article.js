@@ -36,6 +36,7 @@ const Article = () => {
         dispatch(getOneBeer(id, ignoreLastFetch))
         dispatch(setEditMode(false))
         dispatch(setUserAgeVerified(true))
+        
         return () => console.log('unmounting...');
     },[id, dispatch])
 
@@ -68,22 +69,27 @@ const Article = () => {
                 <ArticleMainContent>
 
                     <div>
-                        <img src={beerArticle?.photo? beerArticle.photo : null} alt='zdjecie artykulu'/>
-                        <p>1. Lorem Ipsum dolor sie emet.</p>
+                        {beerArticle?.photo && 
+                        <div>
+                            <img src={beerArticle?.photo? beerArticle.photo : null} alt='zdjecie artykulu'/>
+                            <p>1. Lorem Ipsum dolor sie emet.</p>
+                        </div>
+                    }
+                        
                     </div>
 
-                    <h1>{beerArticle?.name} Lorem Ipsum</h1>
+                    <h1>{beerArticle?.name}</h1>
                     <BeerCounter/>
-                    <span>{beerArticle?.author? beerArticle.author : '@anonim'}</span><span>{beerArticle?.date}</span><span>{beerArticle?.color}</span>
-                    
+                    <ArticleDets>
+                        <span>Autor: {beerArticle?.author? beerArticle.author : '@anonim '} /</span>
+                        <span>/ Data publikacji: {beerArticle?.date}</span>
+                    </ArticleDets>
                     {beerArticle?.description.map(descript => (
                         <p key={descript}>
                             {descript}
                         </p>
                     ))}
-                    {/* <p>{beerArticle?.description}{beerArticle?.description}</p>
-                    <p>{beerArticle?.description}{beerArticle?.description}</p>
-                    <p>{beerArticle?.description}{beerArticle?.description}</p> */}
+                    
                     
 
                 </ArticleMainContent>
@@ -101,8 +107,7 @@ const Article = () => {
                 
 
                 <ArticleButtons>
-                    {/* <button onClick={() => updateShowInput()}>Edytuj</button>
-                    <button onClick={() => deleteBeerArticle(id)}>Usuń</button> */}
+                    
                     {user && user ===  beerArticle?.author && <button onClick={() => deleteBeerArticle(id)}>Usuń</button>}
                     {user && user ===  beerArticle?.author && <button onClick={() => updateShowInput()}>Edytuj</button>}
                             <button onClick={() => goBackward()}>Wróć</button>
@@ -188,7 +193,7 @@ const ArticleMainContent = styled.div`
     > p {
         order: 4;
         text-align: justify;
-        margin-top: 15px;
+        margin-top: 25px;
         font-size: 15px;
         text-indent: 40px;
     }
@@ -204,6 +209,15 @@ const ArticleMainContent = styled.div`
         order: 6;
     }
 
+
+`
+
+//Stylizuje element zawierający nazwę autora i datę
+const ArticleDets = styled.summary`
+
+    display: flex;
+    justify-content: flex-end;
+    
 
 `
 
