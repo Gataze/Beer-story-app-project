@@ -12,9 +12,9 @@ const Create = () => {
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState([]);
-    const [color, setColor] = useState('');
+    const [references, setReferences] = useState('');
     const [photo, setPhoto] = useState('');
-    const [beerSection, setBeerSection] = useState('Historia piwa na świecie')
+    const [beerSection, setBeerSection] = useState('world')
 
     
 
@@ -29,6 +29,8 @@ const Create = () => {
 
     const [paragraphs, setParagraphs] = useState([{key: 1}])
     const [paragraphCounter, setParagraphCounter] = useState(2);
+
+    console.log(beerSection)
 
     const addParagraph = () => {
 
@@ -105,12 +107,10 @@ const Create = () => {
         const data = {
                     name: name, 
                     description: Object.values(description), 
-                    color: color, 
+                    references: references, 
                     author: author, 
                     photo: photo, 
                     beerSection: beerSection,
-                    whoRated: [], 
-                    comments: [], 
                     userID: uid, 
                     date: moment().format('MMMM Do YYYY, h:mm:ss a'), 
                     id: uuidv4()}
@@ -118,7 +118,7 @@ const Create = () => {
         dispatch(addBeer(data))
         console.log(author)
         setName("");
-        setColor("");
+        setReferences("");
         setDescription("");
         history.goBack()
         
@@ -150,13 +150,13 @@ const Create = () => {
                 
                 
                 <Label htmlFor="">Bibliografia:</Label>
-                <Input type="text" value={color} onChange={(e) => setColor(e.target.value)}/>
+                <Input type="text" value={references} onChange={(e) => setReferences(e.target.value)}/>
                 <Label htmlFor="">Sekcja:</Label>
-                <Select onChange={(e) => setBeerSection(e.target.value)}>
-                    <option value='Historia piwa na świecie'>Historia piwa na świecie</option>
-                    <option value='Historia piwa w Polsce'>Historia piwa w Polsce</option>
-                    <option value='Zapomniane Piwa'>Zapomniane Piwa</option>
-                    <option value='Opuszczone Browary'>Opuszczone Browary</option>
+                <Select onChange={(e) => setBeerSection(e.target.value) }>
+                    <option value='world'>Historia piwa na świecie</option>
+                    <option value='poland'>Historia piwa w Polsce</option>
+                    <option value='lostrecipes'>Zapomniane Piwa</option>
+                    <option value='oldbreweries'>Opuszczone Browary</option>
                 </Select>
                 <button onClick={createBeerArticle}>Opublikuj</button>
                 <button onClick={(e) => {e.preventDefault(); history.goBack(-1)}}>Wróć</button>

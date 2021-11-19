@@ -116,7 +116,7 @@ const Section = styled.section`
     justify-content: flex-start;
     position: relative;
     width: 230px;
-    height: 280px;
+    height: 269px;
     z-index: 999;
     margin: 20px 0;
    

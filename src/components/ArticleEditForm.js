@@ -18,7 +18,7 @@ const ArticleEditForm = () => {
 
     //Zmienne zawierające informacje o zmianach które będą wprowadzane do artykułu.
     const [beerName, setBeerName] = useState('');
-    const [beerColor, setBeerColor] = useState('');
+    const [beerReferences, setBeerReferences] = useState('');
     const [beerDescription, setBeerDescription] = useState('');
     const [beerPhoto, setBeerPhoto] = useState('')
 
@@ -26,7 +26,7 @@ const ArticleEditForm = () => {
 
         if(inputValues){
             setBeerName(inputValues.name);
-            setBeerColor(inputValues.color);
+            setBeerReferences(inputValues.references);
             setBeerDescription(inputValues.description);
             setBeerPhoto(inputValues.photo)
         }
@@ -117,8 +117,6 @@ const ArticleEditForm = () => {
     }
 
 
-    
-
     return ( 
     <InputShow showInput={edit} >
                     
@@ -137,10 +135,10 @@ const ArticleEditForm = () => {
 
             
             <label>Bibliografia: </label>
-            <input type="text" value={beerColor} onChange={(e) => setBeerColor(e.target.value)} />
+            <input type="text" value={beerReferences} onChange={(e) => setBeerReferences(e.target.value)} />
         </ArticleContainer>
         
-        <button onClick={() => updateBeerArticle(id, beerName, beerDescription, beerColor, beerPhoto)}>Aktualizuj</button>
+        <button onClick={() => updateBeerArticle(id, beerName, beerDescription, beerReferences, beerPhoto)}>Aktualizuj</button>
         <button onClick={() => dispatch(setEditMode(false))}>Wróć</button>
     
     </InputShow> );

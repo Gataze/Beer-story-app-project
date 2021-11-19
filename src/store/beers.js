@@ -30,7 +30,7 @@ const slice = createSlice({
             beers.lastFetch = Date.now();
         },
         beerAdded: (beers, action) => {
-            beers.list.push(action.payload);
+            // beers.list.push(action.payload);
             beers.loading = false;
         },
         beerDeleted: (beers, action) => {
@@ -97,7 +97,7 @@ const {
 export default slice.reducer;
 
 
-export const loadBeers = (numberOfDocs, ignoreLastFetch) => (dispatch, getState) => {
+export const loadBeers = (numberOfDocs, group ,ignoreLastFetch) => (dispatch, getState) => {
     
     if(!ignoreLastFetch) {
         const { lastFetch } = getState().entities.beers;
@@ -110,7 +110,8 @@ export const loadBeers = (numberOfDocs, ignoreLastFetch) => (dispatch, getState)
     dispatch(
         apiCallBegan({
             method: 'getDocs',
-            nDocs: numberOfDocs,
+            numberOfDocs: numberOfDocs,
+            group: group,
             onStart: beersRequested.type,
             onSuccess: beersReceived.type,
             onError: beersRequestFailed.type
@@ -245,4 +246,9 @@ export const selectArticle = (id) => createSelector(
 export const selectArticleComments = (articleId) => createSelector(
     state => state.entities.beers,
     beers => beers.commentsList.filter(comment => comment.articleId === articleId)
+)
+
+export const selectArticleGroups = (articleGroup) => createSelector(
+    state => state.entities.beers,
+    beers => beers.list.filter(beer => beer.beerSection === articleGroup)
 )

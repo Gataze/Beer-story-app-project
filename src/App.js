@@ -3,7 +3,7 @@ import './App.css';
 import Navbar from './components/Navbar';
 import FirstPage from './components/FirstPage';
 import Footer from './components/Footer';
-import WorldBeerHistory from './components/WorldBeerHistory';
+import ArticlesGroupList from './components/ArticlesList';
 import Create from './components/Create'
 import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
@@ -24,16 +24,16 @@ function App() {
             <FirstPage />
           </Route>
           <Route path='/articles/:group'>
-            <WorldBeerHistory/>
+            <ArticlesGroupList/>
           </Route>
           <Route path='/articles/:group'>
-            <WorldBeerHistory/>
+            <ArticlesGroupList/>
           </Route>
           <Route path='/articles/:group'>
-            <WorldBeerHistory/>
+            <ArticlesGroupList/>
           </Route>
           <Route path='/articles/:group'>
-            <WorldBeerHistory/>
+            <ArticlesGroupList/>
           </Route>
           <Route path='/create'>
             <Create/>

@@ -84,8 +84,8 @@ const Article = () => {
                         <span>Autor: {beerArticle?.author? beerArticle.author : '@anonim '} /</span>
                         <span>/ Data publikacji: {beerArticle?.date}</span>
                     </ArticleDets>
-                    {beerArticle?.description.map(descript => (
-                        <p key={descript}>
+                    {beerArticle?.description.map((descript, index) => (
+                        <p key={index}>
                             {descript}
                         </p>
                     ))}

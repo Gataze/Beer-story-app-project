@@ -72,15 +72,12 @@ const BeerCounter =  () => {
                 
              } else {
  
- 
                      const gradeArrayItem = grade
                      const userID = uid
                      const id = uid + articleId
                      const articleID = articleId
                      const data = {gradeArrayItem, articleID, userID, id}
                      dispatch(rateBeer(data))
-                     console.log(id)
- 
  
              }
         }     

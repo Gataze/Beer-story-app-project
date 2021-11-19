@@ -2,13 +2,14 @@ import styled, { keyframes } from "styled-components";
 import { useSelector } from "react-redux";
 
 
-
-
 const Loader = () => {
 
     const authLoading = useSelector(state => state.entities.auth.loading);
     const articleLoading = useSelector(state => state.entities.beers.loading);
-    const loading =  articleLoading || authLoading;
+
+    //'+' przed wartością true/false zamienia ją na 1/0 przez co moze być przekazana w propsach do styled-components (official solution). W przypadku
+    //gdy przekazemy propsy true/false do styled-components to wyrzucany jest błąd (mimo że wszystko działa): Warning: Received `false` for a non-boolean attribute `loading`.
+    const loading =  +articleLoading? +articleLoading : +authLoading
     
 
     return ( 

@@ -7,8 +7,7 @@ const api = ({dispatch}) => next => async action => {
 
     if(action.type !== actions.apiCallBegan.type) return next(action);
 
-    const {data, method, onStart, onSuccess, onSuccessBeers, onSuccessComments, onSuccessRates, onError, nDocs} = action.payload;
-    const beersCollectionRef = query(collection(db, 'Beers'), limit(nDocs))
+    const {data, method, onStart, onSuccess, onSuccessBeers, onSuccessComments, onSuccessRates, onError, numberOfDocs, group} = action.payload;
     
     
     if(onStart) dispatch({type: onStart});
@@ -16,7 +15,7 @@ const api = ({dispatch}) => next => async action => {
     next(action);
 
     if(method === 'getDocs') try {
-    
+        const beersCollectionRef = query(collection(db, 'Beers'), limit(numberOfDocs), where("beerSection", "==", group))
         const data = await getDocs(beersCollectionRef)
         // const comments = await getDocs(commentsCollectionRef)
 
@@ -71,13 +70,15 @@ const api = ({dispatch}) => next => async action => {
     
     if(method === 'setDoc') try {
 
+        console.log(data)
+
         await setDoc(doc(db, 'Beers', data.id), {
             name: data.name,
             author: data.author,
             photo: data.photo,
             description: data.description,
             beerSection: data.beerSection,
-            color: data.color,
+            references: data.references,
             date: data.date,
             userID: data.userID
         })

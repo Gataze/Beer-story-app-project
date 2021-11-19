@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { ArticlesGrid, ArticleItem } from "./WorldBeerHistory";
+import { ArticlesGrid, ArticleItem } from "./ArticlesList";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
@@ -21,7 +21,6 @@ const UserPage = () => {
     const uid = useSelector(state => state.entities.auth.user.uid)
 
 
-    
     const user = auth.currentUser;
 
 
@@ -44,6 +43,8 @@ const UserPage = () => {
     }, [uid])
 
 
+
+
     const handleDeleteAccount = () => {
         deleteUser(user).then(() => {
             // User deleted.
@@ -63,11 +64,13 @@ const UserPage = () => {
         <UserInfo>
             <h2>Panel użytkownika</h2>
             <article>
-                <div>
+                <UserDets>
                     <p>Użytkownik: {userCreds?.username}</p>
                     <p>Email: {userCreds?.email}</p>
+                    <p>Status weryfikacji: {user?.emailVerified? <span>zweryfikowano</span> : <span>niezweryfikowano</span>}</p>
+                    {!user.emailVerified && <button>Wyślij link weryfikacyjny</button>}
                     <button onClick={handleDeleteAccount}>Usuń konto</button>
-                </div>
+                </UserDets>
                 <h2>Twoje artykuły</h2>
                 <ArticlesGrid>
                     {beers.map(beer => (
@@ -79,11 +82,9 @@ const UserPage = () => {
                             }</span>
                             <span>{beer.date}</span>
                             <button><Link to={`/article/${beer.id}`}>Czytaj dalej...</Link></button>
-                            
                         </ArticleItem>
                         ))}
                 </ArticlesGrid>
-                {/* <button onClick={() => loadMore(prevState => prevState = prevState + 2)}>{loading? 'Ładuję' : 'Więcej'}</button> */}
             </article>
         </UserInfo>
 
@@ -97,20 +98,35 @@ const UserInfo = styled.section`
 margin: 40px;
     > h2{
         font-size: 29px;
-        margin-bottom: 20px;
+        margin: 20px auto;
+        width: 1000px;
+    }
+
+    > article {
+        margin: 0 auto;
+        width: 1000px;
     }
 
     > article > h2{
-        margin-top: 25px;
-    }
-
-    > article > button {
-        display: block;
-        background-color: white;
-        border: 2px solid black;
-        padding: 5px;
-        margin: 0 auto;
+        margin: 45px 0 20px;
+        @media(min-width: 992px){
+            margin: 54px 0 0px;
+        }
     }
 `
-
+const UserDets = styled.div`
+    display: flex;
+    flex-flow: column;
+    width: 90%;
+    gap: 15px;
+    @media(min-width: 768px){
+        width: 60%;
+    }
+    button {
+        width: 150px;
+        background-color: transparent;
+        border: 2px solid black;
+        cursor: pointer;
+    }
+`
 

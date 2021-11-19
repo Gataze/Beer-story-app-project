@@ -2,49 +2,53 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { loadBeers } from "../store/beers";
+import { loadBeers, selectArticleGroups } from "../store/beers";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 
-
-const WorldBeerHistory = () => {
+const ArticlesGroupList = () => {
 
     const dispatch = useDispatch();
-    
+    const {group} = useParams();
+
+    //username selector.
     const user = useSelector(state => state.entities.auth.user.username)
-    const beers = useSelector(state => state.entities.beers.list);
+    
+    //articles group selector.
+    const beers = useSelector(selectArticleGroups(group));
+
+    //loading indicator: true when action callBegan is dispatched / false after last action is dispatched.
     const loading = useSelector(state => state.entities.beers.loading);
+
+    //when true / false <InfoForUser> components display property is flex / none.
     const [infoShowForUser, setShowInfoForUser] = useState(false);
 
-    const numberOfDisplayedDocs = 3;
+    //number of documents that are initially loaded from firebase
+    const numberOfDocs = 3;
     
-
-
+    
+    //This useEffect contains loadBeers redux function that dispatches action that loads articles from the firebase databese 
+    //(starts when group of articles is displayed or when user refreshes the page).
     useEffect(() => {
 
         const getBeers = () => {
-            dispatch(loadBeers(numberOfDisplayedDocs, true))
-
+            dispatch(loadBeers(numberOfDocs, group, true))
         }
         
-
-
         if(beers.length < 2){
             getBeers();
-        }     
-    }, [dispatch, numberOfDisplayedDocs])
+        }
+
+    }, [dispatch, numberOfDocs])
 
 
 
-    
-
+    //Function that loads more articles from the firebase databese
     const loadMore = () => {
 
         const ignoreLastFetch = true;
-
-          
-        dispatch(loadBeers(beers.length + 2, ignoreLastFetch))
-
+        dispatch(loadBeers(beers.length + 2, group, ignoreLastFetch))
 
     }
 
@@ -86,14 +90,18 @@ const WorldBeerHistory = () => {
      );
 }
  
-export default WorldBeerHistory;
+export default ArticlesGroupList;
 
 
 const ArticlesList = styled.section`
+    display: flex;
+    flex-flow: column;
+    min-height: 634px;
     > button {
         display: block;
+        box-sizing: border-box;
         background-color: white;
-        margin: 0 auto 40px;
+        margin: 0 auto 50px;
         padding: 10px 20px;
         border: 2px solid black;
         cursor: pointer;

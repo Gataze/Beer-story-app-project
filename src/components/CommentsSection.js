@@ -34,8 +34,7 @@ const CommentsSection = () => {
                 userID: uid,
                 date: moment().format('MMMM Do YYYY, h:mm:ss a')
             }) 
-        
-        
+  
     }
 
     
@@ -94,7 +93,6 @@ const CommentsSection = () => {
                 <textarea 
                     placeholder='Twój komentarz...' 
                     rows="5"
-                    value={comment.comment}
                     onChange={(e) => Comment(e.target.value)}
                     ></textarea>
                 <button onClick={addComment}>Wyślij</button>
