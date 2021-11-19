@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { signUpUser } from "../store/beersAuth";
 import { useDispatch, useSelector } from "react-redux";
-import { handleSignUpStyle } from "../store/beersStyles";
+import { handleSignUpStyle, setEmailVerificationMessage } from "../store/beersStyles";
 
 const SignUpPage = () => {
 
@@ -36,7 +36,11 @@ const SignUpPage = () => {
             setEmail('');
             setPassword('');
             setUsername('');
-            setPasswordRepeat('')
+            setPasswordRepeat('');
+
+            dispatch(setEmailVerificationMessage(true));
+
+            
 
         } else {
             alert('Wpisane hasła nie są identyczne')
@@ -63,6 +67,7 @@ const SignUpPage = () => {
                     <button onClick={() => signUp(email, password)}>Zarejestruj</button>
                 </Form>
             </LoginForm>
+            
         </LoginPageContainer>
         
      );
@@ -80,7 +85,7 @@ const LoginPageContainer = styled.div`
     background-color: rgba(46, 49, 49, 0.9);
     color: white;
     padding: 20px;
-    z-index: 999;
+    z-index: 9999;
     position: fixed;
     top: 0px;
     width: 100%;
@@ -121,3 +126,4 @@ const Form = styled.div`
     }
     
 `
+

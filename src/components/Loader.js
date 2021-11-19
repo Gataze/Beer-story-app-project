@@ -8,8 +8,8 @@ const Loader = () => {
 
     const authLoading = useSelector(state => state.entities.auth.loading);
     const articleLoading = useSelector(state => state.entities.beers.loading);
-    const loading = authLoading? authLoading : articleLoading;
-    console.log(loading)
+    const loading =  articleLoading || authLoading;
+    
 
     return ( 
         <LoaderContainer loading={loading}>

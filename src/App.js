@@ -13,11 +13,7 @@ import UserPage from './components/UserPage';
 
 const store = configureStore();
 
-
-
-
 function App() {
-
 
   return (
     <Provider store={store}>
@@ -27,16 +23,16 @@ function App() {
           <Route exact path="/">
             <FirstPage />
           </Route>
-          <Route path='/swiat'>
+          <Route path='/articles/:group'>
             <WorldBeerHistory/>
           </Route>
-          <Route path='/polska'>
+          <Route path='/articles/:group'>
             <WorldBeerHistory/>
           </Route>
-          <Route path='/zaponianestyle'>
+          <Route path='/articles/:group'>
             <WorldBeerHistory/>
           </Route>
-          <Route path='/opuszczonebrowary'>
+          <Route path='/articles/:group'>
             <WorldBeerHistory/>
           </Route>
           <Route path='/create'>

@@ -6,9 +6,11 @@ import { loadBeers } from "../store/beers";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
+
 const WorldBeerHistory = () => {
 
     const dispatch = useDispatch();
+    
     const user = useSelector(state => state.entities.auth.user.username)
     const beers = useSelector(state => state.entities.beers.list);
     const loading = useSelector(state => state.entities.beers.loading);
@@ -16,15 +18,15 @@ const WorldBeerHistory = () => {
 
     const numberOfDisplayedDocs = 3;
     
-    
+
 
     useEffect(() => {
 
         const getBeers = () => {
             dispatch(loadBeers(numberOfDisplayedDocs, true))
 
-            console.log('WBH')
         }
+        
 
 
         if(beers.length < 2){
@@ -56,7 +58,7 @@ const WorldBeerHistory = () => {
                             <h2>{beer.name}</h2>
                             {beer.author && <p>@{beer.author}</p>}
                             <span>{ 
-                                `${beer.description[0].substring(0, 120)}...` 
+                                `${beer.description[0]?.substring(0, 120)}...` 
                             }</span>
                             <span>{beer.date}</span>
                             <button><Link to={`/article/${beer.id}`}>Czytaj dalej...</Link></button>
@@ -66,7 +68,7 @@ const WorldBeerHistory = () => {
                     
                         <AddArticleItem onClick={() => setShowInfoForUser(true)}>
                     
-                            <Link to={user? '/create' : "#"}>
+                            <Link to={user? `/create` : "#"}>
                                 <FontAwesomeIcon icon={faPlusCircle} />
                             </Link> 
                         </AddArticleItem>
@@ -97,8 +99,6 @@ const ArticlesList = styled.section`
         cursor: pointer;
     }
 `
-
-
 
 const Container = styled.div`
     display: flex;

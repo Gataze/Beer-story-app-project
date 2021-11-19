@@ -10,6 +10,7 @@ const slice = createSlice({
         loggedIn: {},
         edit: false,
         ageConfirmed: true,
+        emailVerificationMessage: false
     },
     reducers: {
         setLoginFormValue: (styles, action) => {
@@ -26,7 +27,11 @@ const slice = createSlice({
         },
         setUserAgeVerified: (styles, action) => {
             styles.ageConfirmed = action.payload
+        },
+        setEmailVerificationMessage: (styles, action) => {
+            styles.emailVerificationMessage = action.payload
         }
+
     }
 })
 
@@ -35,7 +40,8 @@ export const {
     handleSignUpStyle,
     setUserLoggedIn,
     setEditMode,
-    setUserAgeVerified
+    setUserAgeVerified,
+    setEmailVerificationMessage
 } = slice.actions
 
 export default slice.reducer

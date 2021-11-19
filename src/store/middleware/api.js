@@ -55,7 +55,7 @@ const api = ({dispatch}) => next => async action => {
 
     if(method === 'getUserDocs') try {
 
-        console.log(data)
+        
         const userCollecionRef = query(collection(db, 'Beers'), where("userID", "==", data))
 
 
@@ -76,6 +76,7 @@ const api = ({dispatch}) => next => async action => {
             author: data.author,
             photo: data.photo,
             description: data.description,
+            beerSection: data.beerSection,
             color: data.color,
             date: data.date,
             userID: data.userID

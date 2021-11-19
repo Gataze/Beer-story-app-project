@@ -47,7 +47,6 @@ const LoginPage = () => {
                     <label>Hasło: </label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                     <button onClick={() => login(email, password)}>Zaloguj</button>
-                    <button>Przypomnij</button>
                 </Form>
             </LoginForm>
         </LoginPageContainer>
@@ -67,7 +66,7 @@ const LoginPageContainer = styled.div`
     background-color: rgba(46, 49, 49, 0.9);
     color: white;
     padding: 20px;
-    z-index: 999;
+    z-index: 9999;
     position: fixed;
     top: 0px;
     width: 100%;

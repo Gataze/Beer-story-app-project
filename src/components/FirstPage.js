@@ -31,19 +31,19 @@ const FirstPage = () => {
                 <Section>
                     <Overlay>
                         <article>
-                            <Link to='/swiat'>
+                            <Link to='/articles/world'>
                                 <One>
                                     <h2>Historia Piwa na Świecie</h2>
                                 </One>
                             </Link>
                         </article>
-                        <OneImg src={img1} alt="hello" />   
+                        <OneImg src={img1} alt="hello"/>
                     </Overlay>
                 </Section>
                 <Section>
                     <Overlay>
                         <article>
-                            <Link to='/swiat'>
+                            <Link to='/articles/lostrecipes'>
                                 <Two>
                                     <h2>Zapomniene receptury</h2> 
                                 </Two>
@@ -55,7 +55,7 @@ const FirstPage = () => {
                 <Section>
                     <Overlay>
                         <article>
-                        <Link to='/swiat'>
+                        <Link to='/articles/poland'>
                                 <Three>
                                     <h2>Historia piwa w Polsce</h2>
                                 </Three>
@@ -67,7 +67,7 @@ const FirstPage = () => {
                 <Section>
                     <Overlay>
                         <article>
-                            <Link to='/swiat'>
+                            <Link to='/articles/oldbreweries'>
                                 <Four>
                                     <h2>Opuszczone browary</h2>
                                 </Four>
@@ -77,9 +77,7 @@ const FirstPage = () => {
                     </Overlay>
                 </Section>
             </MainGrid>
-
            <AgeVerificationForm ageVerified={ageVerified}/>
-
         </Main>
      );
 }
@@ -89,46 +87,53 @@ export default FirstPage;
 
 const Main = styled.main`
     display: flex;
-    background-color: #4A5859;
+    background: rgb(119,119,119);
+    background: linear-gradient(90deg, rgba(119,119,119,1) 0%, rgba(170,170,170,1) 43%, rgba(170,170,170,1) 85%, rgba(153,153,153,1) 100%);
     align-items: center;
     justify-content: center;
-    gap: 80px;
+    gap: 60px;
 `
 
 const MainGrid = styled.div`
     display: flex;
     flex-flow: column;
     align-items: center;
-    margin-top: 30px;
+    margin-top: 10px;
     @media(min-width: 992px){
         display: grid;
-        grid-template-columns: 400px 400px;
+        grid-template-columns: 280px 280px;
+        gap: 30px;
         justify-items: center;
         justify-content: center;
-        padding: 50px 0 75px;
+        padding: 20px 0 75px;
     }
 `
 
 const Section = styled.section`
+    display: flex;
+    box-sizing: border-box;
+    align-items: flex-start;
+    justify-content: flex-start;
     position: relative;
-    width: 350px;
-    height: 350px;
-    background-color: #4A5859;
+    width: 230px;
+    height: 280px;
+    z-index: 999;
     margin: 20px 0;
+   
+    
+    
     @media(min-width: 992px){
-        margin: 20px;
-        &:nth-child(even){
-            transform: translateY(25px);
-        }
-        &:nth-child(odd){
-            transform: translateY(-35px);
-        }
+        margin: 0px;
+
         
     }
     img {
+        position: absolute;
+        top: 5px;
         width: 100%;
-        height: 100%;
+        height: 80%;
     }
+
 
 `
 
@@ -167,34 +172,32 @@ const brightnessChange = keyframes`
     opacity: 0;
 }
     to { 
-    filter: brightness(100%);
+    filter: brightness(140%);
     opacity: 1;
 }
 `
 
-const OneImg = styled.img`
-    animation: ${brightnessChange} 0.5s ease-in-out forwards 0s;
+ const OneImg = styled.img`
+    overflow: hidden;
+     animation: ${brightnessChange} 0.5s ease-in-out forwards 0s;
+ `
+ const TwoImg = styled.img`
+     animation: ${brightnessChange} 0.5s ease-in-out forwards 0.5s;
+ `
+ const ThreeImg = styled.img`
+     animation: ${brightnessChange} 0.5s ease-in-out forwards 1s;
+ `
+ const FourImg = styled.img`
+     animation: ${brightnessChange} 0.5s ease-in-out forwards 1.5s; 
+     &:hover {
+             /* animation-play-state: paused; */
+             mix-blend-mode: multiply;
+         }
 `
-const TwoImg = styled.img`
-    animation: ${brightnessChange} 0.5s ease-in-out forwards 0.5s;
-`
-const ThreeImg = styled.img`
-    animation: ${brightnessChange} 0.5s ease-in-out forwards 1s;
-`
-const FourImg = styled.img`
-    animation: ${brightnessChange} 0.5s ease-in-out forwards 1.5s; 
-    &:hover {
-            /* animation-play-state: paused; */
-            mix-blend-mode: multiply;
-        }
-`
-
-
-
-
 
 const Overlay = styled.div`
     display: flex;
+    box-sizing: border-box;
     position: absolute;
     overflow: hidden;
     align-items: center;
@@ -202,20 +205,33 @@ const Overlay = styled.div`
     width: 100%;
     height: 100%;
     z-index: 1;
-    background-color: #4A5859;
+    padding: 0px;
+    background-color: transparent;
+    border: 0px solid black;
     transition: all 0.3s ease-in-out;
-
     
 
+    &:hover *{
+        transform: scale(1.04);
+    }
+
+    * {
+        transition: all 0.3s ease-in-out;
+    }
+
+    &:hover h2{
+        bottom: 13px;
+    }
+    
     img {
         position: absolute;
         z-index: -1;
-        width: 100%;
-        height: 100%;
+        width: 90%;
         opacity: 0;
         background-color: transparent;
-        filter: brightness(100%);
-        
+        filter: brightness(110%);
+        transition: all 0.3s ease-in-out;
+     
     }
 
     a {
@@ -229,10 +245,7 @@ const Overlay = styled.div`
         width: 100%;
         height: 100%;
         
-        
 
-
-        
         div {
             
             opacity: 0;
@@ -241,14 +254,19 @@ const Overlay = styled.div`
             z-index: 0;
             background-color: transparent;
             h2 {
-            
             text-align: center;
+            position: absolute;
             color: white;
-            width: 80%;
-            margin: 45px auto;
+            bottom: 3px;
             font-weight: 400;
-            width: 60%;
+            width: 100%;
+            font-size: 16px;
+            line-height: 44px;
+            background-color: rgba(195, 133, 0, 0.6); 
+            box-shadow: 0px 2px 1px gray;
             }
+
+            
 
             
          button {
@@ -266,9 +284,7 @@ const Overlay = styled.div`
                 color: white;
                 text-decoration: none;
             }
-
-        }
-        } 
+        }} 
     } 
 `
 

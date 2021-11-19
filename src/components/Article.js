@@ -21,7 +21,7 @@ const Article = () => {
     const beerArticleRedux = useSelector(selectArticle(id));
 
     
-
+    
     //Selektor danych w Redux pobierający obecnie zaladowany artykul jezeli odswiezymy stronę
     const beerArticleOne = useSelector(state => state.entities.beers.list)
 

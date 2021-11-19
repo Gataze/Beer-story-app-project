@@ -10,7 +10,7 @@ import { onAuthStateChanged } from "@firebase/auth";
 import LoginPage from "./LoginPage";
 import SignUpPage from "./SignUpPage";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoginFormValue, handleSignUpStyle, setUserAgeVerified } from '../store/beersStyles'
+import { setLoginFormValue, handleSignUpStyle, setUserAgeVerified, setEmailVerificationMessage } from '../store/beersStyles'
 import { logoutUser, setUserLoggedIn  } from "../store/beersAuth";
 import Loader from "./Loader";
 
@@ -21,11 +21,14 @@ const Navbar = () => {
 
     const dispatch = useDispatch();
     
-    const user = useSelector(state => state.entities.auth.user.username)
+    const user = useSelector(state => state.entities.auth.user.username);
+    const emailVerified = useSelector(state => state.entities.styles.emailVerificationMessage);
 
 
     const [showMenu, setShowMenu] = useState(false)
     const history = useHistory()
+
+
    
     
     //Listener onAuthStateChange z Firebase/auth zwracający dane zalogowanego użytkownika gdy ten się zaloguje. Funkcja setUser zapisuje dane urzytkownika
@@ -36,7 +39,7 @@ const Navbar = () => {
     
     //Komponent ma wiele zmiennych? więc renderuje się kilka razy przez co kilka razy odpalal funkcje onAuthStateChange. Umieszczenie go w useEffect
     //sprawia ze odpla sie tylko przy zaladowaniu
-    useEffect(() => {
+    useEffect( () => {
 
         onAuthStateChanged(auth,  (currentUser) => {
 
@@ -49,7 +52,6 @@ const Navbar = () => {
                 //username wlasciwego. Username tworzony jest po utworzeniu uzytkownika w bazie firebase. Utworzenie uzytkownika samo w sobie 
                 //uruchamia onAuthStateChange jeszcze przed nadaniem uzytkownika przez co po rejestracji username początkowo zostaje null. 
                 //Aby zamiescic nazwe uzytkonika w redux to po rejestracji funkcja ta dispatchuje sie wtedy rownież w middleware tuż po dodaniu uzytkownika do bazy firebase.
-
                 
 
                 dispatch(setUserLoggedIn(data))
@@ -57,8 +59,12 @@ const Navbar = () => {
            
     
         })
+
     },[dispatch])
 
+    
+
+    
     
     
 
@@ -135,6 +141,13 @@ const Navbar = () => {
             <SignUpPage />
             
             <Loader />
+
+            <VerifyEmail emailVerified={emailVerified}>
+                <h2>W celu pełnej aktywacji konta na twój email wysłany został link weryfikacyjny.</h2>
+                <p>Aby dostać nową wiadomość weryfikacyjną wejdz w panel użytkownika i kliknij przycisk 'Ponownie wyślij wiadomośc weryfikacyjną' </p>
+                <button onClick={() => dispatch(setEmailVerificationMessage(false))}>Ok</button>
+            </VerifyEmail>
+
         </NavbarContainer>
 
      );
@@ -272,3 +285,29 @@ const BurgerContainer = styled.div`
 
 
 
+const VerifyEmail = styled.div`
+    display: ${({emailVerified}) => emailVerified? 'flex' : 'none'};
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+    position: fixed;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.9);
+    z-index: 9999;
+    color: white;
+    gap: 20px;
+    text-align: center;
+
+    h2{
+        width: 70%;
+        font-weight: 600;
+        
+    }
+
+    p {
+        width: 70%;
+        font-size: 12px;
+    }
+`

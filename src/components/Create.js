@@ -11,17 +11,14 @@ import { useHistory } from "react-router";
 const Create = () => {
 
     const [name, setName] = useState('');
-
-    const [description, setDescription] = useState([
-        
-    ]);
-    // const [description, setDescription2] = useState('');
-    // const [description, setDescription3] = useState('');
-    // const [description, setDescription4] = useState('');
-    // const [description, setDescription5] = useState('');
-
+    const [description, setDescription] = useState([]);
     const [color, setColor] = useState('');
-    const [photo, setPhoto] = useState('')
+    const [photo, setPhoto] = useState('');
+    const [beerSection, setBeerSection] = useState('Historia piwa na świecie')
+
+    
+
+
     const author = useSelector(state => state.entities.auth.user.username);
     const uid = useSelector(state => state.entities.auth.user.uid);
     
@@ -105,14 +102,26 @@ const Create = () => {
         e.preventDefault()
 
         //Object.values(data.description) zmienia objekt na macierz
-        const data = {name: name, description: Object.values(description), color: color, author: author, photo: photo, whoRated: [], comments: [], userID: uid, date: moment().format('MMMM Do YYYY, h:mm:ss a'), id: uuidv4()}
+        const data = {
+                    name: name, 
+                    description: Object.values(description), 
+                    color: color, 
+                    author: author, 
+                    photo: photo, 
+                    beerSection: beerSection,
+                    whoRated: [], 
+                    comments: [], 
+                    userID: uid, 
+                    date: moment().format('MMMM Do YYYY, h:mm:ss a'), 
+                    id: uuidv4()}
         
         dispatch(addBeer(data))
         console.log(author)
         setName("");
         setColor("");
         setDescription("");
-        history.push('/swiat')
+        history.goBack()
+        
     }
 
 //  console.log([...description] + paragraphs.toString())
@@ -123,7 +132,8 @@ const Create = () => {
     return ( 
         <FormSection>
             <h2>Dodaj nowy artykuł</h2>
-            <Form onSubmit={createBeerArticle}>
+            <Form>
+               
                 <Label htmlFor="">Tytuł artykułu:</Label>
                 <Input type="text"  value={name} onChange={(e) => setName(e.target.value)}/>
                 <Label htmlFor="">Link do fotografii:</Label>
@@ -141,8 +151,15 @@ const Create = () => {
                 
                 <Label htmlFor="">Bibliografia:</Label>
                 <Input type="text" value={color} onChange={(e) => setColor(e.target.value)}/>
-                <button>opublikuj</button>
-                <button onClick={() => history.push('/swiat')}>Wróć</button>
+                <Label htmlFor="">Sekcja:</Label>
+                <Select onChange={(e) => setBeerSection(e.target.value)}>
+                    <option value='Historia piwa na świecie'>Historia piwa na świecie</option>
+                    <option value='Historia piwa w Polsce'>Historia piwa w Polsce</option>
+                    <option value='Zapomniane Piwa'>Zapomniane Piwa</option>
+                    <option value='Opuszczone Browary'>Opuszczone Browary</option>
+                </Select>
+                <button onClick={createBeerArticle}>Opublikuj</button>
+                <button onClick={(e) => {e.preventDefault(); history.goBack(-1)}}>Wróć</button>
             </Form>
             
         </FormSection>
@@ -171,6 +188,12 @@ const Form = styled.form`
         margin-top: 20px;
     }
 `
+
+
+const Select = styled.select`
+    border: 2px solid black;
+`
+
 
 const Label = styled.label`
     font-size: 12px;

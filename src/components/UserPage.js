@@ -5,6 +5,10 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getUserBeer } from "../store/beers";
+import { deleteUser } from "firebase/auth";
+import { auth } from "../firebase/firebase.config";
+import { useHistory } from "react-router";
+
 
 const UserPage = () => {
 
@@ -13,9 +17,15 @@ const UserPage = () => {
     const dispatch = useDispatch();
     
     const beers = useSelector(state => state.entities.beers.list);
-    // const loading = useSelector(state => state.entities.beers.loading);
+  
     const uid = useSelector(state => state.entities.auth.user.uid)
 
+
+    
+    const user = auth.currentUser;
+
+
+    const history = useHistory();
     
     const ignoreLastFetch = true
 
@@ -34,6 +44,20 @@ const UserPage = () => {
     }, [uid])
 
 
+    const handleDeleteAccount = () => {
+        deleteUser(user).then(() => {
+            // User deleted.
+            history.push('/swiat')
+            alert('konto usunięte')
+          }).catch((error) => {
+            console.log(error)
+          });
+
+
+        
+    }
+
+
 
     return ( 
         <UserInfo>
@@ -42,6 +66,7 @@ const UserPage = () => {
                 <div>
                     <p>Użytkownik: {userCreds?.username}</p>
                     <p>Email: {userCreds?.email}</p>
+                    <button onClick={handleDeleteAccount}>Usuń konto</button>
                 </div>
                 <h2>Twoje artykuły</h2>
                 <ArticlesGrid>
@@ -57,13 +82,8 @@ const UserPage = () => {
                             
                         </ArticleItem>
                         ))}
-                    
-                        
-                        
-                    
                 </ArticlesGrid>
                 {/* <button onClick={() => loadMore(prevState => prevState = prevState + 2)}>{loading? 'Ładuję' : 'Więcej'}</button> */}
-
             </article>
         </UserInfo>
 
