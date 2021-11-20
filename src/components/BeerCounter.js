@@ -33,7 +33,6 @@ const BeerCounter =  () => {
     //map mapuje oceny z obiektu zawierajacargo emaile oraz oceny z nimi powiązane
 
     
-    
    //1? dodana tylko po to aby kolejne wartosci tez sie zliczyly (bez error) po odświeżeniu strony
     const gradeArray = (rating?.length)? rating.map(grade => {
         return grade.gradeArrayItem
@@ -66,11 +65,11 @@ const BeerCounter =  () => {
         if(!uid) {setShowLogInRequest(true)} else {
 
 
-            if(found){
+            // if(found){
 
-                setShowReminder(true)
+            //     setShowReminder(true)
                 
-             } else {
+            //  } else {
  
                      const gradeArrayItem = grade
                      const userID = uid
@@ -79,7 +78,7 @@ const BeerCounter =  () => {
                      const data = {gradeArrayItem, articleID, userID, id}
                      dispatch(rateBeer(data))
  
-             }
+            //  }
         }     
     }
 
@@ -92,9 +91,9 @@ const BeerCounter =  () => {
             <InfoForUSer onClick={() => setShowLogInRequest(false)} showLogInRequest={showLogInRequest}>
                 <p>Zaloguj się aby ocenić artykuł</p>
             </InfoForUSer>
-            <InfoForUSer onClick={() => setShowReminder(false)} showReminder={showReminder}>
+            {/* <InfoForUSer onClick={() => setShowReminder(false)} showReminder={showReminder}>
                 <p>Już oceniłeś ten artykuł</p>
-            </InfoForUSer>
+            </InfoForUSer> */}
             <Container>
            
                 {[...Array(5)].map((star, i) => {

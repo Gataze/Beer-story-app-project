@@ -9,7 +9,7 @@ const slice = createSlice({
         list: [],
         lastFetch: null,
         commentsList: [],
-        rates: []
+        rates: [],
     },
     reducers: {
         beersRequested: (beers, action) => {
@@ -30,7 +30,6 @@ const slice = createSlice({
             beers.lastFetch = Date.now();
         },
         beerAdded: (beers, action) => {
-            // beers.list.push(action.payload);
             beers.loading = false;
         },
         beerDeleted: (beers, action) => {
@@ -50,10 +49,16 @@ const slice = createSlice({
             beers.loading = false
         },
         beerRate: (beers, action) => {
-            //odnajduje dokument o danym id aby przypisać mu ocene
-            // const index = beers.list.findIndex(beer => beer.id === action.payload.id)
-            // beers.list[index].whoRated.push({gradeArrayItem: action.payload.gradeArrayItem})
-            beers.rates.push(action.payload);
+            //Check if logged in user rated article before. If yes overwrite the rate value.
+            //Find index: If index is 0 or more user commented article. If index is -1 user never commented the article 
+            const index = beers.rates.findIndex(beer => beer.userID === action.payload.userID)
+            if(index >= 0){
+                //If user rated the article, overwrite the old rate.
+                beers.rates[index] = action.payload;
+            }else{
+                //If user never rated tha article for the first time, push new value to array of rates
+                beers.rates.push(action.payload)
+            }
             beers.loading = false
         },
         beerRateReceived: (beers, action) => {

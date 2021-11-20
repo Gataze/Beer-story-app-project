@@ -67,7 +67,7 @@ const UserPage = () => {
                     <p>Użytkownik: {userCreds?.username}</p>
                     <p>Email: {userCreds?.email}</p>
                     <p>Status weryfikacji: {user?.emailVerified? <span>zweryfikowano</span> : <span>niezweryfikowano</span>}</p>
-                    {!user.emailVerified && <button>Wyślij link weryfikacyjny</button>}
+                    {!user?.emailVerified && <button>Wyślij link weryfikacyjny</button>}
                     <button onClick={handleDeleteAccount}>Usuń konto</button>
                 </UserDets>
                 <h2>Twoje artykuły</h2>

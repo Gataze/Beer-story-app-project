@@ -73,8 +73,6 @@ const CommentsSection = () => {
 
     }
 
-
-    console.log(comment)
     
 
 
