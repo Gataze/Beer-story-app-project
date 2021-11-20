@@ -67,8 +67,6 @@ const Create = () => {
 
   
 
-
-
     const handleDescriptionOne = (e, i) => {
 
         const value = e.target.value
