@@ -39,7 +39,6 @@ const UserPage = () => {
             getBeers(uid, ignoreLastFetch);
         }
             
-           
     }, [uid])
 
 

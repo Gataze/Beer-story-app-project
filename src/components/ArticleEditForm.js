@@ -87,6 +87,7 @@ const ArticleEditForm = () => {
                     }
                 return item
             })); break;
+            default: console.log('unknown value'); break;
         }
     }
 

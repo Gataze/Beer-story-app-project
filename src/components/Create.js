@@ -91,6 +91,7 @@ const Create = () => {
                 ...prevState, 
                 [i-1]: value
             })); break;
+            default: console.log('unknown value'); break;
 
         }
         
