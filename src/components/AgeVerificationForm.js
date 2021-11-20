@@ -73,24 +73,25 @@ export default AgeVerificationForm;
 
 const AgeVerification = styled.section`
         display: ${({userAgeCheck}) => userAgeCheck? 'none' : 'flex'};
-        height: 100vh;
-        width: 100vw;
-        flex-flow: column;
         position: fixed;
+        z-index: 999;
         top: 0px;
+        flex-flow: column;
         align-items: center;
         justify-content: center;
+        width: 100vw;
+        height: 100vh;
         background-color: white;
-        z-index: 999;
         
     `
 
 const Logo = styled.div`
+    padding: 20px;
 
     color: black;
-    padding: 20px;
     font-size: 26px;
     text-align: center;
+
     svg {
         margin-right: 5px;
     }
@@ -103,7 +104,7 @@ const AgeMessage = styled.article`
     padding: 0 20px;
     text-align: center;
 
-    h2{
+    h2 {
         font-size: 25px;
     }
 
@@ -113,10 +114,11 @@ const AgeMessage = styled.article`
 
     button {
         margin: 10px;
-        background-color: white;
         border: 2px solid black;
+        background-color: white;
         font-size: 20px;
-        &:hover{
+
+        &:hover {
             background-color: #999999;
         }
     }

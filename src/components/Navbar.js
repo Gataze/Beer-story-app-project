@@ -160,32 +160,33 @@ const NavbarContainer = styled.section`
     display: flex;
     flex-flow: column;
     background-color: #233237 ;
-    @media(min-width: 768px){
+    @media (min-width: 768px) {
         flex-flow: row;
         align-items: center;
     }
+
     span {
         margin: 0 0 0 auto;
         color: white;
         font-size: 14px;
-        @media(min-width: 992px){
+        @media (min-width: 992px) {
             margin: 0;
-            font-size: 16px;
             padding: 0 20px;
+            font-size: 16px;
         }
     }
 `
 
 
 const Navigation = styled.nav`
-    position: relative;
     display: flex;
-    flex-wrap: wrap;
+    position: relative;
     flex-flow: column;
+    flex-wrap: wrap;
+    height: ${({showMenu}) => showMenu? 'auto' : '70px'};
     background-color: #233237;
     color: white;
-    height: ${({showMenu}) => showMenu? 'auto' : '70px'};
-    @media(min-width: 768px){
+    @media (min-width: 768px) {
         flex-flow: row;
     }
 `
@@ -197,6 +198,7 @@ const Logo = styled.h2`
         color: white;
         text-decoration: none;
     }
+
     svg {
         margin-right: 10px;
     }
@@ -206,51 +208,55 @@ const Logo = styled.h2`
 
 const MobileNav = styled.ul`
     display: flex;
-    list-style-type: none;
-    padding: 20px;
-    flex-flow: column;
-    text-align: center;
     z-index: 0;
+    flex-flow: column;
+    padding: 20px;
+    list-style-type: none;
     transform: ${({showMenu}) => showMenu? 'translateY(0%)' : 'translateY(-120%)'};
-    @media(min-width: 768px){
+    text-align: center;
+    @media (min-width: 768px) {
         display: none;
     }
+
     li {
-        font-size: 20px;
         margin: 20px;
+        font-size: 20px;
         cursor: pointer;
+
         a {
             color: white;
-            text-decoration: none;
             font-size: 20px;
+            text-decoration: none;
         }
     }
 `
 
 const FullNav = styled.ul`
     display: none;
-    @media(min-width: 768px){
+    @media (min-width: 768px) {
         display: flex;
+        align-items: center;
+        margin-right: 20px;
+        margin-left: auto;
         list-style-type: none;
         gap: 30px;
-        align-items: center;
-        margin-left: auto;
-        margin-right: 20px;
+
     a {
         color: white;
         text-decoration: none;
         }
     }
+
     li {
-        cursor: pointer;
         color: white;
+        cursor: pointer;
     }
 `
 
 const UserWelcome = styled.div`
     display: none;
     margin: 0 auto 0 20px;
-    @media(min-width: 992px){
+    @media (min-width: 992px) {
         display: flex;
     }
     
@@ -258,13 +264,13 @@ const UserWelcome = styled.div`
 
 const Burger = styled.div`
     position: absolute;
-    right: 20px;
+    z-index: 100;
     top: 20px;
-    background: transparent;
+    right: 20px;
     width: 30px;
     height: 30px;
-    z-index: 100;
-    @media(min-width: 768px){
+    background: transparent;
+    @media (min-width: 768px) {
         display: none;
     }
 `
@@ -276,10 +282,10 @@ const BurgerContainer = styled.div`
     height: 100%;
 
     span {
-        background-color: white;
-        height: 4px;
         width: 100%;
+        height: 4px;
         border-radius: 2px;
+        background-color: white;
     }
 `
 
@@ -287,20 +293,20 @@ const BurgerContainer = styled.div`
 
 const VerifyEmail = styled.div`
     display: ${({emailVerified}) => emailVerified? 'flex' : 'none'};
+    position: fixed;
+    z-index: 9999;
+    top: 0px;
+    flex-flow: column;
     align-items: center;
     justify-content: center;
-    flex-flow: column;
-    position: fixed;
-    top: 0px;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0,0,0,0.9);
-    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.9);
     color: white;
-    gap: 20px;
     text-align: center;
+    gap: 20px;
 
-    h2{
+    h2 {
         width: 70%;
         font-weight: 600;
         

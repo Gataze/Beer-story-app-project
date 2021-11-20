@@ -124,11 +124,10 @@ const ArticleCommentsSection = styled.section`
 const CommentList = styled.ul`
     display: flex;
     flex-flow: column;
+    margin-top: 20px;
     padding: 0;
     list-style-type: none;
     gap: 10px;
-    margin-top: 20px;
-
 
 `
 
@@ -148,12 +147,12 @@ const CommentItem = styled.li`
         font-size: 9px;
     }
 
-
     
 
     div {
         display: flex;
         justify-content: space-between;    
+
         svg {
             font-size: 9px;
         }
@@ -169,11 +168,12 @@ const CommentForm = styled.form`
     display: flex;
     flex-flow: column;
     margin-top: 50px;
+
     button {
-        margin-top: 5px;
-        background-color: transparent;
-        border: 2px solid black;
         width: 102px;
+        margin-top: 5px;
+        border: 2px solid black;
+        background-color: transparent;
 
     }
 `
@@ -181,18 +181,17 @@ const CommentForm = styled.form`
 
 const InfoForUSer = styled.div`
     display: ${({showLogInRequest, showReminder}) => (showLogInRequest || showReminder)? 'flex' : 'none'};
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
     flex-flow: column;
     align-items: center;
     justify-content: center;
-    position: fixed;
-    z-index: 999;
-    background-color: rgba(0,0,0,0.7);
     width: 100vw;
     height: 100vh;
-    left: 0;
-    top: 0;
+    background-color: rgba(0, 0, 0, 0.7);
     color: white;
-
 
     p {
         font-size: 30px;

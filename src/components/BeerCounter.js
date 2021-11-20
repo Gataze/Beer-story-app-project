@@ -146,6 +146,7 @@ const Container = styled.div`
     svg {
         
         font-size: 13px;
+
         &:hover {
             color: gold;
         }
@@ -168,18 +169,17 @@ const BeerArticleGrade = styled.span`
 
 const InfoForUSer = styled.div`
     display: ${({showLogInRequest, showReminder}) => (showLogInRequest || showReminder)? 'flex' : 'none'};
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
     flex-flow: column;
     align-items: center;
     justify-content: center;
-    position: fixed;
-    z-index: 999;
-    background-color: rgba(0,0,0,0.7);
     width: 100vw;
     height: 100vh;
-    left: 0;
-    top: 0;
+    background-color: rgba(0, 0, 0, 0.7);
     color: white;
-
 
     p {
         font-size: 30px;

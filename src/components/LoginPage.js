@@ -61,29 +61,31 @@ export default LoginPage;
 
 const LoginPageContainer = styled.div`
     display: ${({setLoginShow}) =>  setLoginShow? 'flex' : 'none' };
+    position: fixed;
+    z-index: 9999;
+    top: 0px;
     box-sizing: border-box;
     flex-flow: column;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    height: 100vh;
+    padding: 20px;
     background-color: rgba(46, 49, 49, 0.9);
     color: white;
-    padding: 20px;
-    z-index: 9999;
-    position: fixed;
-    top: 0px;
-    width: 100%;
-    height: 100vh
+    
 `
 
 
 const LoginForm = styled.section`
     width: 300px;
-    p{ 
+
+    p {
         display: flex;
         position: absolute;
-        justify-content: flex-end;
-        right: 10px;
         top: 5px;
+        right: 10px;
+        justify-content: flex-end;
         cursor: pointer;
         
     }
@@ -94,16 +96,18 @@ const LoginForm = styled.section`
 const Form = styled.div`
     display: flex;
     flex-flow: column;
-    font-size: 12px;
     height: 250px;
+    font-size: 12px;
     
     button {
         width: 100px;
     }
+
     button:first-of-type {
         margin-top: 30px;
         margin-bottom: 10px;
     }
+
     label {
         margin-top: 20px;
     }

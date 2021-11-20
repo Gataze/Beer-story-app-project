@@ -13,14 +13,15 @@ const HomeArticle = () => {
 const ArticleHome = styled.article`
     display: none;
     width: 380px;
+    margin-left: 25px;
     color: white;
     text-align: justify;
-    margin-left: 25px;
+
     h2 {
         margin-bottom: 20px;
     }
 
-    @media(min-width: 1200px){
+    @media (min-width: 1200px) {
         display: block;
         
     }

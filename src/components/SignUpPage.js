@@ -98,18 +98,18 @@ export default SignUpPage;
 
 const LoginPageContainer = styled.div`
     display: ${({setSignUpShow}) =>  setSignUpShow? 'flex' : 'none' };
+    position: fixed;
+    z-index: 9999;
+    top: 0px;
     box-sizing: border-box;
     flex-flow: column;
     align-items: center;
     justify-content: center;
-    background-color: rgba(46, 49, 49, 0.9);
-    color: white;
-    padding: 20px;
-    z-index: 9999;
-    position: fixed;
-    top: 0px;
     width: 100%;
     height: 100vh;
+    padding: 20px;
+    background-color: rgba(46, 49, 49, 0.9);
+    color: white;
 
     > div {
        
@@ -119,19 +119,20 @@ const LoginPageContainer = styled.div`
     }
 
     button {
-            margin-top: 30px; 
+            margin-top: 30px;
         }
 `
 
 
 const LoginForm = styled.section`
     width: 300px;
-    p{ 
+
+    p {
         display: flex;
         position: absolute;
-        justify-content: flex-end;
-        right: 10px;
         top: 5px;
+        right: 10px;
+        justify-content: flex-end;
         cursor: pointer;
         
     }
@@ -142,24 +143,26 @@ const LoginForm = styled.section`
 const Form = styled.div`
     display: flex;
     flex-flow: column;
-    font-size: 12px;
     height: 300px;
+    font-size: 12px;
     
     button {
         width: 100px;
     }
+
     button:first-of-type {
         margin-top: 30px;
         margin-bottom: 10px;
     }
+
     label {
         margin-top: 20px;
     }
 
     div {
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
         margin-top: 20px;
 
         > label {
@@ -173,12 +176,13 @@ const Form = styled.div`
 `
 
 const Codex = styled.section`
+    width: 50%;
     margin: 0;
     padding-left: 5px;
-    width: 50%;
-    text-align: justify;
     font-size: 12px;
-    ol{
+    text-align: justify;
+
+    ol {
         padding-left: 15px;
     }
 `

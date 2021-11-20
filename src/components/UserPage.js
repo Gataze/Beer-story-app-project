@@ -95,20 +95,21 @@ export default UserPage;
 
 const UserInfo = styled.section`
 margin: 40px;
-    > h2{
-        font-size: 29px;
-        margin: 20px auto;
+
+    > h2 {
         width: 1000px;
+        margin: 20px auto;
+        font-size: 29px;
     }
 
     > article {
-        margin: 0 auto;
         width: 1000px;
+        margin: 0 auto;
     }
 
-    > article > h2{
+    > article > h2 {
         margin: 45px 0 20px;
-        @media(min-width: 992px){
+        @media (min-width: 992px) {
             margin: 54px 0 0px;
         }
     }
@@ -118,13 +119,14 @@ const UserDets = styled.div`
     flex-flow: column;
     width: 90%;
     gap: 15px;
-    @media(min-width: 768px){
+    @media (min-width: 768px) {
         width: 60%;
     }
+
     button {
         width: 150px;
-        background-color: transparent;
         border: 2px solid black;
+        background-color: transparent;
         cursor: pointer;
     }
 `

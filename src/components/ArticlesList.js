@@ -97,13 +97,14 @@ const ArticlesList = styled.section`
     display: flex;
     flex-flow: column;
     min-height: 634px;
+
     > button {
         display: block;
         box-sizing: border-box;
-        background-color: white;
         margin: 0 auto 50px;
         padding: 10px 20px;
         border: 2px solid black;
+        background-color: white;
         cursor: pointer;
     }
 `
@@ -115,14 +116,14 @@ const Container = styled.div`
 
 export const ArticlesGrid = styled.div`
     display: grid;
-    grid-template-columns: 300px;
     grid-auto-rows: 200px;
+    grid-template-columns: 300px;
     margin: 0 auto;
     gap: 20px;
-    @media(min-width: 768px){
+    @media (min-width: 768px) {
         grid-template-columns: 300px 300px;
     }
-    @media(min-width: 992px){
+    @media (min-width: 992px) {
         grid-template-columns: 300px 300px 300px;
         gap:40px;
         padding: 50px 0;
@@ -133,40 +134,44 @@ export const ArticleItem = styled.article`
     display: flex;
     flex-flow: column;
     align-items: flex-start;
+    padding: 20px;
     border: 2px solid black;
     font-size: 10px;
-    padding: 20px;
+
     span {
-        text-align: justify;
         margin-top: 3px;
+        text-align: justify;
     }
+
     button {
+        margin-top: 10px;
         border: 1px solid black;
         background-color: transparent;
         font-size: 10px;
-        margin-top: 10px;
         cursor: pointer;
     }
 `
 
 const AddArticleItem = styled.div`
     display: flex;
-    justify-content: center;
+    box-sizing: border-box;
     align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    box-sizing: border-box;
     border: dashed;
+
     a {
         display: flex;
-        justify-content: center;
         align-items: center;
-        color: black;
-        margin: 0;
-        height: 100%;
+        justify-content: center;
         width: 100%;
+        height: 100%;
+        margin: 0;
+        color: black;
         font-size: 56px;
-        &:hover{
+
+        &:hover {
         opacity: 0.75;
         }
     }
@@ -174,22 +179,23 @@ const AddArticleItem = styled.div`
 
 const InfoForUser = styled.article`
     display: ${({infoShowForUser}) => infoShowForUser? 'flex' : 'none'};
-    align-items: center;
-    justify-content: center;
     position: fixed;
-    padding: 20px;
-    width: 100%;
-    height: calc(100vh);
-    background-color: rgba(46, 49, 49, 0.9);
+    z-index: 999;
     top: 0px;
     left: 0;
-    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: calc(100vh);
+    padding: 20px;
+    background-color: rgba(46, 49, 49, 0.9);
     color: white;
     text-align: center;
-    @media(min-width: 992px){
+    @media (min-width: 992px) {
         font-size: 25px;
     }
-    h2{
+
+    h2 {
         width: 240px;
     }
    

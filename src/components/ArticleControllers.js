@@ -28,13 +28,13 @@ export default ArticleControllers;
 const ArticleContent = styled.div`
 display: flex;
 flex-flow: column;
-gap: 5px;
-font-size: 12px;
-padding: 20px;
 min-height: calc(100vh - 218px);
-@media(min-width: 768px){
-        margin: 0 auto;
+padding: 20px;
+font-size: 12px;
+gap: 5px;
+@media (min-width: 768px) {
         max-width: 992px;
+        margin: 0 auto;
 }`
 
 

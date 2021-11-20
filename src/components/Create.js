@@ -177,14 +177,15 @@ const Form = styled.form`
     display: flex;
     flex-flow: column;
     width: 300px;
-    padding: 30px;
     margin: 0 auto;
+    padding: 30px;
     text-align: left;
+
     button {
         width: 100px;
+        margin-top: 20px;
         background-color: white;
         cursor: pointer;
-        margin-top: 20px;
     }
 `
 
@@ -195,8 +196,8 @@ const Select = styled.select`
 
 
 const Label = styled.label`
-    font-size: 12px;
     margin: 5px 0 0;
+    font-size: 12px;
     
 `
 
@@ -219,12 +220,12 @@ const Textarea = styled.textarea`
 `
 
 const ParagraphAdd = styled.p`
-        border: none;
-        font-size: 10px;
+        width: 100%;
         margin: 0 0 10px;
         padding: 0;
-        width: 100%;
+        border: none;
+        font-size: 10px;
         text-align: left;
         text-decoration: underline;
-        cursor: pointer;
+        cursor: pointer;        
 `

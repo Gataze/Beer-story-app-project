@@ -29,15 +29,16 @@ export default Footer;
 const FooterStyles = styled.footer`
     position: relative;
     padding: 30px;
-    color: white;
     background-color: #233237;
+    color: white;
     text-align: center
 `
 
 const Test = styled.div`
     position: absolute;
-    text-align: left;
     bottom: 15px;
+    text-align: left;
+
     span {
         margin-right: 20px;
     }

@@ -135,11 +135,11 @@ const ArticleButtons = styled.div`
     margin: 40px 0;
 
     button {
-        margin: 5px 20px 0 0;
         width: 33%;
-        background-color: transparent;
+        margin: 5px 20px 0 0;
         border: 2px solid black;
-        @media(min-width: 768px){
+        background-color: transparent;
+        @media (min-width: 768px) {
             width: 130px;
         }
     }
@@ -149,66 +149,70 @@ const ArticleMainContent = styled.div`
     display: flex;
     flex-flow: column;
     margin-top: 30px;
-    @media(min-width: 768px) {
+    @media (min-width: 768px) {
         display: block;
     }
+
+    > p {
+        order: 4;
+        margin-top: 25px;
+        font-size: 15px;
+        text-align: justify;
+        text-indent: 40px;
+    }
+
     > div {
         display: flex;
         flex-flow: column;
         align-items: flex-start;
         align-self: flex-start;
-        margin: 20px 0px 0px 0;
         
         order: 4;
-        @media(min-width: 768px){
+        margin: 20px 0px 0px 0;
+        @media (min-width: 768px) {
             display: block;
-            float: left;
             align-items: flex-start;
             margin-top: 0;
             margin-right: 30px;
+            float: left;
         }
+
         img {
-            max-width: 100%;
             width: 350px;
+            max-width: 100%;
         }
         
         > p {
-            text-indent: 0px;
             margin: 0;
             font-size: 12px;
+            text-indent: 0px;
+            
         }
     
     }
 
     h1 {
         order: 1;
+        margin: 0 0 15px;
         font-size: 30px;
-        margin: 0 0 15px 0;
         line-height: 30px;
-        @media(min-width: 768px){
+        @media (min-width: 768px) {
             font-size: 36px;
         }
     }
 
-    > p {
-        order: 4;
-        text-align: justify;
-        margin-top: 25px;
-        font-size: 15px;
-        text-indent: 40px;
-    }
+    
 
     > span {
+        order: 2;
         margin: 0 5px 0 0;
         font-size: 11px;
         line-height: 5px;
-        order: 2;
     }
 
     &:nth-child(6) {
         order: 6;
     }
-
 
 `
 
@@ -225,10 +229,12 @@ const ArticleDets = styled.summary`
 
 const Bibliography = styled.div`
     display: block;
+
     h2 {
-        font-size: 20px;
         margin: 20px 0;
+        font-size: 20px;
     }
+
     ol {
         padding-left: 5;
     }

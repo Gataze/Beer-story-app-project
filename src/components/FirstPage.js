@@ -87,10 +87,10 @@ export default FirstPage;
 
 const Main = styled.main`
     display: flex;
-    background: rgb(119,119,119);
-    background: linear-gradient(90deg, rgba(119,119,119,1) 0%, rgba(170,170,170,1) 43%, rgba(170,170,170,1) 85%, rgba(153,153,153,1) 100%);
     align-items: center;
     justify-content: center;
+    background: rgb(119, 119, 119);
+    background: linear-gradient(90deg, rgba(119, 119, 119, 1) 0%, rgba(170, 170, 170, 1) 43%, rgba(170, 170, 170, 1) 85%, rgba(153, 153, 153, 1) 100%);
     gap: 60px;
 `
 
@@ -99,7 +99,7 @@ const MainGrid = styled.div`
     flex-flow: column;
     align-items: center;
     margin-top: 10px;
-    @media(min-width: 992px){
+    @media (min-width: 992px) {
         display: grid;
         grid-template-columns: 280px 280px;
         gap: 30px;
@@ -111,21 +111,22 @@ const MainGrid = styled.div`
 
 const Section = styled.section`
     display: flex;
+    position: relative;
+    z-index: 999;
     box-sizing: border-box;
     align-items: flex-start;
     justify-content: flex-start;
-    position: relative;
     width: 230px;
     height: 310px;
-    z-index: 999;
     margin: 20px 0;
    
     
     
-    @media(min-width: 992px){
+    @media (min-width: 992px) {
         margin: 0px;
  
     }
+
     img {
         position: absolute;
         top: 5px;
@@ -168,7 +169,8 @@ const brightnessChange = keyframes`
     filter: brightness(100%);
     opacity: 0;
 }
-    to { 
+
+    to {
     filter: brightness(140%);
     opacity: 1;
 }
@@ -186,7 +188,9 @@ const brightnessChange = keyframes`
  `
  const FourImg = styled.img`
      animation: ${brightnessChange} 0.5s ease-in-out forwards 1.5s; 
+
      &:hover {
+
              /* animation-play-state: paused; */
              mix-blend-mode: multiply;
          }
@@ -194,48 +198,32 @@ const brightnessChange = keyframes`
 
 const Overlay = styled.div`
     display: flex;
-    box-sizing: border-box;
     position: absolute;
-    overflow: hidden;
+    z-index: 1;
+    box-sizing: border-box;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
-    z-index: 1;
     padding: 0px;
-    background-color: transparent;
-    border: 0px solid black;
+    overflow: hidden;
     transition: all 0.3s ease-in-out;
+    border: 0px solid black;
+    background-color: transparent;
     
-
-    &:hover *{
-        transform: scale(1.04);
-    }
-
     * {
         transition: all 0.3s ease-in-out;
     }
 
-    &:hover h2{
-        bottom: 13px;
-    }
-    
-    img {
-        position: absolute;
-        z-index: -1;
-        width: 90%;
-        opacity: 0;
-        background-color: transparent;
-        filter: brightness(110%);
-        transition: all 0.3s ease-in-out;
-     
+    &:hover * {
+        transform: scale(1.04);
     }
 
     a {
         text-decoration: none;
     }
-    
-    article{
+
+    article {
         display: block;
         position: absolute;
         z-index: 0;
@@ -244,23 +232,24 @@ const Overlay = styled.div`
         
 
         div {
+            position: relative;
+            z-index: 0;
+            height: 100%;
             
             opacity: 0;
-            position: relative;
-            height: 100%;
-            z-index: 0;
             background-color: transparent;
+
             h2 {
-            text-align: center;
             position: absolute;
-            color: white;
             bottom: 3px;
-            font-weight: 400;
             width: 100%;
-            font-size: 16px;
-            line-height: 44px;
             background-color: rgba(195, 133, 0, 0.6); 
             box-shadow: 0px 2px 1px gray;
+            color: white;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 44px;
+            text-align: center;
             }
 
             
@@ -268,21 +257,41 @@ const Overlay = styled.div`
             
          button {
             display: block;
-            color: white;
-            background: none;
-            border: 2px solid white;
-            padding: 10px 20px;
-            text-transform: uppercase;
             margin: 50px auto;
+            padding: 10px 20px;
+            border: 2px solid white;
+            background: none;
+            color: white;
             font-size: 18px;
             font-weight: 600;
+            text-transform: uppercase;
 
             a {
                 color: white;
                 text-decoration: none;
             }
-        }} 
+        }
+        }
     } 
+
+    &:hover h2 {
+        bottom: 13px;
+    }
+    
+    img {
+        position: absolute;
+        z-index: -1;
+        width: 90%;
+        transition: all 0.3s ease-in-out;
+        opacity: 0;
+        background-color: transparent;
+        filter: brightness(110%);
+     
+    }
+
+    
+    
+    
 `
 
 
