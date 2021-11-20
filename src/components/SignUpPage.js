@@ -16,6 +16,9 @@ const SignUpPage = () => {
     const [username, setUsername] = useState('')
 
 
+    const [accept, setAccept] = useState(false)
+
+
     //Funkcja zamykająca formularz rejestracji. Zeruje wszystkie stany w formularzu 
     const handleHide = () => {
         dispatch(handleSignUpStyle()) 
@@ -29,6 +32,7 @@ const SignUpPage = () => {
  
     const signUp = (email, password) => {
 
+        if(accept){
         if(password === passwordRepeat){
             dispatch(signUpUser(email, password, username));
             dispatch(handleSignUpStyle());
@@ -45,6 +49,9 @@ const SignUpPage = () => {
         } else {
             alert('Wpisane hasła nie są identyczne')
         }
+    }else{
+        alert('regulamin niezaakceptowany')
+    }
         
         
     }
@@ -53,7 +60,7 @@ const SignUpPage = () => {
     return ( 
         <LoginPageContainer setSignUpShow={setSignUpShow}>
             <LoginForm>
-            <p  onClick={() => handleHide(handleSignUpStyle)}>X</p>
+            <p onClick={() => handleHide(handleSignUpStyle)}>X</p>
             <h2>Rejestracja do BeerStory</h2>
                 <Form>
                     <label>Użytkownik: </label>
@@ -64,10 +71,23 @@ const SignUpPage = () => {
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                     <label>Powtórz hasło: </label>
                     <input type="password" value={passwordRepeat} onChange={(e) => setPasswordRepeat(e.target.value)}/>
-                    <button onClick={() => signUp(email, password)}>Zarejestruj</button>
+                    
                 </Form>
-            </LoginForm>
+                
+            </LoginForm> 
             
+                    <Codex>Regulamin:
+                        <ol>
+                            <li>Wszelkie dane zamieszczone przez użytkownika w testowej wersji aplikacji BeerStory mogą zostać usunięte bez podania przyczyny.</li>
+                            <li>Użytkownik nie będzie zamieszczał na stronie żadnych danych osobowych, danych wrażliwych, materiałów do których nie ma praw autorskich i wszelkich innych treści niezgodnych z prawem obowiązującym w Rzeczpospolitej Polsce.</li>
+                            <li>Użytkownik może dowolnie testować niniejszą stronę. W razie znalezienia problemów użytkownik proszony jest o kontak mailowy z właścicielem strony: b.gataze@gmail.com</li>
+                        </ol>
+                    </Codex>
+                    <div>
+                        <input type='checkbox' onChange={() => setAccept(prevState => prevState = !prevState)}/>
+                        <label>Akceptuję regulamin</label>
+                    </div>
+                    <button onClick={() => signUp(email, password)}>Zarejestruj</button>    
         </LoginPageContainer>
         
      );
@@ -89,7 +109,18 @@ const LoginPageContainer = styled.div`
     position: fixed;
     top: 0px;
     width: 100%;
-    height: 100vh
+    height: 100vh;
+
+    > div {
+       
+        margin-top: 30px;
+
+        
+    }
+
+    button {
+            margin-top: 30px; 
+        }
 `
 
 
@@ -112,7 +143,7 @@ const Form = styled.div`
     display: flex;
     flex-flow: column;
     font-size: 12px;
-    height: 250px;
+    height: 300px;
     
     button {
         width: 100px;
@@ -124,6 +155,31 @@ const Form = styled.div`
     label {
         margin-top: 20px;
     }
+
+    div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+
+        > label {
+            margin-top: 0;
+            margin-left: 5px;
+        }
+    }
+
     
+    
+`
+
+const Codex = styled.section`
+    margin: 0;
+    padding-left: 5px;
+    width: 50%;
+    text-align: justify;
+    font-size: 12px;
+    ol{
+        padding-left: 15px;
+    }
 `
 
