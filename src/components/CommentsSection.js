@@ -16,7 +16,8 @@ const CommentsSection = () => {
     const {id: articleId} = useParams();
     const dispatch = useDispatch();
     const [comment, setComment] = useState('');
-    
+    const [showReminder, setShowReminder] = useState(false);
+   
     // const commentsLoaded = useSelector(state => state.entities.beers.commentsList)
 
     const commentsLoaded = useSelector(selectArticleComments(articleId))
@@ -33,7 +34,9 @@ const CommentsSection = () => {
                 user: user,
                 userID: uid,
                 date: moment().format('MMMM Do YYYY, h:mm:ss a')
-            }) 
+            })
+            
+            
   
     }
 
@@ -47,7 +50,9 @@ const CommentsSection = () => {
             dispatch(commentBeer(comment))
         } 
         else {
-            alert('please log-in')
+            setComment('')
+            setShowReminder(true)
+            
         }
         
 
@@ -69,6 +74,7 @@ const CommentsSection = () => {
     }
 
 
+    console.log(comment)
     
 
 
@@ -93,11 +99,14 @@ const CommentsSection = () => {
                 <textarea 
                     placeholder='Twój komentarz...' 
                     rows="5"
+                    value={comment.comment}
                     onChange={(e) => Comment(e.target.value)}
                     ></textarea>
                 <button onClick={addComment}>Wyślij</button>
             </CommentForm>
-            
+            <InfoForUSer onClick={() => setShowReminder(false)} showReminder={showReminder}>
+                <p>Zaloguj się aby dodać komentarz</p>
+            </InfoForUSer>
         </ArticleCommentsSection>
      );
 }
@@ -108,6 +117,7 @@ export default CommentsSection;
 const ArticleCommentsSection = styled.section`
 
     display: flex;
+    position: relative;
     flex-flow: column;
     margin: 50px 0;
 `
@@ -167,6 +177,27 @@ const CommentForm = styled.form`
         border: 2px solid black;
         width: 102px;
 
+    }
+`
+
+
+const InfoForUSer = styled.div`
+    display: ${({showLogInRequest, showReminder}) => (showLogInRequest || showReminder)? 'flex' : 'none'};
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 999;
+    background-color: rgba(0,0,0,0.7);
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    color: white;
+
+
+    p {
+        font-size: 30px;
     }
 `
 

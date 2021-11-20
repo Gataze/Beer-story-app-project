@@ -49,7 +49,7 @@ const LoginPage = () => {
                     <button onClick={() => login(email, password)}>Zaloguj</button>
                 </Form>
             </LoginForm>
-            <span>Użyj konta testowego lub zarejestruj nowego użytkownika.</span>
+            <span>Użyj konta testowego lub utwórz nowe konto.</span>
             <span>Konto testowe: email: 3cf2zsnz@freeml.net  hasło: test1234</span>
         </LoginPageContainer>
         

@@ -89,13 +89,11 @@ const BeerCounter =  () => {
         <BeerCounterContainer >
            
             <div>Ocenili: {rating? rating.length : null}</div>
-            <InfoForUSer showLogInRequest={showLogInRequest}>
+            <InfoForUSer onClick={() => setShowLogInRequest(false)} showLogInRequest={showLogInRequest}>
                 <p>Zaloguj się aby ocenić artykuł</p>
-                <button onClick={() => setShowLogInRequest(false)}>X</button>
             </InfoForUSer>
-            <InfoForUSer showReminder={showReminder}>
+            <InfoForUSer onClick={() => setShowReminder(false)} showReminder={showReminder}>
                 <p>Już oceniłeś ten artykuł</p>
-                <button onClick={() => setShowReminder(false)}>X</button>
             </InfoForUSer>
             <Container>
            
@@ -183,10 +181,6 @@ const InfoForUSer = styled.div`
     top: 0;
     color: white;
 
-    button {
-        color: black;
-        cursor: pointer;
-    }
 
     p {
         font-size: 30px;

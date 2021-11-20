@@ -91,7 +91,6 @@ const Article = () => {
                     ))}
                     
                     
-
                 </ArticleMainContent>
 
                 <Bibliography>
@@ -116,7 +115,7 @@ const Article = () => {
 
                 <CommentsSection />
             </ArticleShowController>
-            
+           
         </article>
      );
 }
@@ -126,7 +125,8 @@ export default Article;
 
 
 const ArticleShowController = styled.div`
-    display: ${({showContent}) => showContent? 'block' : 'none'}
+    display: ${({showContent}) => showContent? 'block' : 'none'};
+    position: relative;
 `
 
 
@@ -233,3 +233,5 @@ const Bibliography = styled.div`
         padding-left: 5;
     }
 `
+
+
