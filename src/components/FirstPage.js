@@ -116,7 +116,7 @@ const Section = styled.section`
     justify-content: flex-start;
     position: relative;
     width: 230px;
-    height: 269px;
+    height: 310px;
     z-index: 999;
     margin: 20px 0;
    
@@ -124,8 +124,7 @@ const Section = styled.section`
     
     @media(min-width: 992px){
         margin: 0px;
-
-        
+ 
     }
     img {
         position: absolute;
@@ -133,8 +132,6 @@ const Section = styled.section`
         width: 100%;
         height: 80%;
     }
-
-
 `
 
 //Keyframes animacji sekwencji wyświetlania kafelków na stronie głownej

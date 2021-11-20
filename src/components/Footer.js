@@ -27,7 +27,7 @@ export default Footer;
 
 
 const FooterStyles = styled.footer`
-
+    position: relative;
     padding: 30px;
     color: white;
     background-color: #233237;
