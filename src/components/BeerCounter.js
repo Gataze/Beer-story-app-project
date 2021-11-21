@@ -14,9 +14,7 @@ const BeerCounter =  () => {
 
     //selektor danych osób które oceniły dany artykuł wraz z ich ocenami
     // const rating = useSelector(selectArticle(id))[0]?.whoRated
-
     const rating = useSelector(state => state.entities.beers.rates)
-
 
     //selektor sprawdzajacy czy loggedIn is true
     const uid = useSelector(state => state.entities.auth.user.uid);
@@ -24,14 +22,9 @@ const BeerCounter =  () => {
     //stan kontrolujacy wyswietlanie sie wiadomosci o oniecznosci zalogowania sie jezeli trzeba sie zalogowac
     const [showLogInRequest, setShowLogInRequest] = useState(false)
 
-    //stan kontrolujacy wyswietlanie sie wiadomosci o wczesniejszym ocenieniu danego artykułu
-    const [showReminder, setShowReminder] = useState(false)
 
     //stan kontrolujacy podswietlenie gwiazdek na pasku oceny artykułu po najechaniu na gwiazdki
     const [hover, setHover] = useState(null)
-
-    //map mapuje oceny z obiektu zawierajacargo emaile oraz oceny z nimi powiązane
-
     
    //1? dodana tylko po to aby kolejne wartosci tez sie zliczyly (bez error) po odświeżeniu strony
     const gradeArray = (rating?.length)? rating.map(grade => {
@@ -58,27 +51,18 @@ const BeerCounter =  () => {
     //Jesli uzytkownik dodal juz ocene lub jest nie zalogowany wtedy odsyla do zalogowania lub przypomina o wczesniejszej ocenie
     const rateBeerArticle = (articleId, grade) => {
 
-        const found = ratersID?.find(raterID => raterID === uid)
      
 
         //If user is not logged in show msg that he should login or register
         if(!uid) {setShowLogInRequest(true)} else {
 
-
-            // if(found){
-
-            //     setShowReminder(true)
-                
-            //  } else {
- 
-                     const gradeArrayItem = grade
-                     const userID = uid
-                     const id = uid + articleId
-                     const articleID = articleId
-                     const data = {gradeArrayItem, articleID, userID, id}
-                     dispatch(rateBeer(data))
- 
-            //  }
+            const gradeArrayItem = grade
+            const userID = uid
+            const id = uid + articleId
+            const articleID = articleId
+            const data = {gradeArrayItem, articleID, userID, id}
+            dispatch(rateBeer(data))
+            
         }     
     }
 
@@ -99,7 +83,6 @@ const BeerCounter =  () => {
                 {[...Array(5)].map((star, i) => {
                     const ratingValue = i + 1;
 
-
                     return (
                         <Star 
                             key={i}
@@ -115,13 +98,10 @@ const BeerCounter =  () => {
                     )
                 })}
 
-
-
-               
                 <BeerArticleGrade>Średnia: {mean}</BeerArticleGrade>
+
             </Container>
-                
-            
+
         </BeerCounterContainer>
      );
 }
@@ -143,14 +123,12 @@ const Container = styled.div`
     cursor: pointer;
     
     
-    svg {
-        
+    svg { 
         font-size: 13px;
 
         &:hover {
             color: gold;
-        }
-        
+        }     
     }
 
 `
@@ -159,12 +137,6 @@ const BeerArticleGrade = styled.span`
         margin-left: 5px;
 
 `
-
-// const GiveBeer = styled.p`
-//     margin: 0;
-//     font-size: 11px;
-
-// `
 
 
 const InfoForUSer = styled.div`
