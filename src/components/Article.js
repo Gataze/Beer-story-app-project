@@ -20,17 +20,14 @@ const Article = () => {
     //Selektor danych w Redux o danym id, stanowiacych treść artykułu (jeśli nie odświeżono strony)
     const beerArticleRedux = useSelector(selectArticle(id));
 
-    
-    
+
     //Selektor danych w Redux pobierający obecnie zaladowany artykul jezeli odswiezymy stronę
     const beerArticleOne = useSelector(state => state.entities.beers.list)
-
-    
 
     const beerArticle = beerArticleRedux[0]? beerArticleRedux[0] : beerArticleOne[0];
     // console.log(Object.values(beerArticle?.description))
 
-    //sprawdzić czy ignore last fetch jest napewno tu potrzebne
+    
     useEffect(() => {
         const ignoreLastFetch = true;
         dispatch(getOneBeer(id, ignoreLastFetch))

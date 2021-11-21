@@ -1,5 +1,3 @@
-
-import { keyframes } from "styled-components";
 import { Link } from "react-router-dom";
 import img1 from '../img/img-1.svg'
 import img2 from '../img/img-2.svg'

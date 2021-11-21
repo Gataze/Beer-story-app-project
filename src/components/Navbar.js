@@ -17,28 +17,17 @@ import Loader from "./Loader";
 
 
 
+
 const Navbar = () => {
 
-    const dispatch = useDispatch();
-    
+    const dispatch = useDispatch();  
     const user = useSelector(state => state.entities.auth.user.username);
     const emailVerified = useSelector(state => state.entities.styles.emailVerificationMessage);
-
-
     const [showMenu, setShowMenu] = useState(false)
     const history = useHistory()
 
+ 
 
-   
-    
-    //Listener onAuthStateChange z Firebase/auth zwracający dane zalogowanego użytkownika gdy ten się zaloguje. Funkcja setUser zapisuje dane urzytkownika
-    //do pozniejszczego wykorzystania
-    // const [user, setUser] = useState({});
-
-
-    
-    //Komponent ma wiele zmiennych? więc renderuje się kilka razy przez co kilka razy odpalal funkcje onAuthStateChange. Umieszczenie go w useEffect
-    //sprawia ze odpla sie tylko przy zaladowaniu
     useEffect( () => {
 
         onAuthStateChanged(auth,  (currentUser) => {
@@ -53,26 +42,19 @@ const Navbar = () => {
                 //uruchamia onAuthStateChange jeszcze przed nadaniem uzytkownika przez co po rejestracji username początkowo zostaje null. 
                 //Aby zamiescic nazwe uzytkonika w redux to po rejestracji funkcja ta dispatchuje sie wtedy rownież w middleware tuż po dodaniu uzytkownika do bazy firebase.
                 
-
+             
                 dispatch(setUserLoggedIn(data))
                 if(!uid) dispatch(setUserAgeVerified(false))
            
-    
         })
 
     },[dispatch])
 
     
-
-    
-    
-    
-
     //Shows/hides small screen menu based on showMenu localValue 
     const handleBurgerMenu = () => {
         setShowMenu(prevState => 
-            prevState = !prevState
-            )
+            prevState = !prevState)
     }
 
     //Shows/hides Login/SignUp component. Value argument contains redux action that we want to dispatch. Based on changes in redux store LoginPage/SignUpPage
@@ -155,7 +137,6 @@ const Navbar = () => {
  
 export default Navbar;
 
-
 const NavbarContainer = styled.section`
     display: flex;
     flex-flow: column;
@@ -164,7 +145,6 @@ const NavbarContainer = styled.section`
         flex-flow: row;
         align-items: center;
     }
-
     span {
         margin: 0 0 0 auto;
         color: white;
@@ -193,12 +173,10 @@ const Navigation = styled.nav`
 
 const Logo = styled.h2`
     padding: 20px;
-
     a {
         color: white;
         text-decoration: none;
     }
-
     svg {
         margin-right: 10px;
     }
@@ -217,12 +195,10 @@ const MobileNav = styled.ul`
     @media (min-width: 768px) {
         display: none;
     }
-
     li {
         margin: 20px;
         font-size: 20px;
         cursor: pointer;
-
         a {
             color: white;
             font-size: 20px;
@@ -240,13 +216,11 @@ const FullNav = styled.ul`
         margin-left: auto;
         list-style-type: none;
         gap: 30px;
-
     a {
         color: white;
         text-decoration: none;
         }
     }
-
     li {
         color: white;
         cursor: pointer;
@@ -280,7 +254,6 @@ const BurgerContainer = styled.div`
     flex-flow: column;
     justify-content: space-around;
     height: 100%;
-
     span {
         width: 100%;
         height: 4px;
@@ -305,13 +278,11 @@ const VerifyEmail = styled.div`
     color: white;
     text-align: center;
     gap: 20px;
-
     h2 {
         width: 70%;
         font-weight: 600;
         
     }
-
     p {
         width: 70%;
         font-size: 12px;

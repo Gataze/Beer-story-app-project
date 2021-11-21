@@ -79,6 +79,7 @@ const slice = createSlice({
             beers.loading = false;
         },
         
+        
 
     }
 })
@@ -96,7 +97,8 @@ const {
     beerRateReceived,
     beerComment,
     beerCommentReceived,
-    beerCommentDeleted
+    beerCommentDeleted,
+    beerClear
 } = slice.actions;
 
 export default slice.reducer;
@@ -215,12 +217,12 @@ export const commentBeer = (data) => apiCallBegan({
 })
 
 
-// export const clearBeer = () => apiCallBegan({
-//     method: 'clear',
-//     onStart: beersRequested.type,
-//     onSuccess: beerClear.type,
-//     onError: beersRequestFailed.type
-// })
+export const clearBeer = () => apiCallBegan({
+    method: 'clear',
+    onStart: beersRequested.type,
+    onSuccess: beerClear.type,
+    onError: beersRequestFailed.type
+})
 
 
 export const rateBeer = (data) => apiCallBegan({

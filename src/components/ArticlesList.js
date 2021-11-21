@@ -36,11 +36,12 @@ const ArticlesGroupList = () => {
             dispatch(loadBeers(numberOfDocs, group, true))
         }
         
-        if(beers.length < 2){
+        if(beers.length < 1){
             getBeers();
+            console.log('tak')
         }
 
-    }, [dispatch, numberOfDocs])
+    },[dispatch, numberOfDocs])
 
 
 
@@ -79,6 +80,7 @@ const ArticlesGroupList = () => {
                         
                     
                 </ArticlesGrid>
+                
                 <InfoForUser infoShowForUser={infoShowForUser} onClick={() => setShowInfoForUser(false)}>
                     <h2>Zaloguj się aby dodać artykuł</h2>
                 </InfoForUser>
@@ -177,8 +179,11 @@ const AddArticleItem = styled.div`
     }
 `
 
+
+// display: ${({infoShowForUser}) => infoShowForUser? 'flex' : 'none'};
 const InfoForUser = styled.article`
-    display: ${({infoShowForUser}) => infoShowForUser? 'flex' : 'none'};
+    
+    display: none;
     position: fixed;
     z-index: 999;
     top: 0px;

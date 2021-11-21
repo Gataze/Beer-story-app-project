@@ -157,21 +157,6 @@ const api = ({dispatch}) => next => async action => {
     }
 
 
-    // if(method === 'rateBeer') try {
-
-    //     const {id, gradeArrayItem, whoRated, userID} = data;
-    //     const beerRef = doc(db, 'Beers', id)
-
-    //     await updateDoc(beerRef, {
-            
-    //         whoRated: arrayUnion({name: whoRated, gradeArrayItem: gradeArrayItem, userID: userID})
-    //     });
-    //     dispatch(actions.apiCallSuccess(data));
-    //     if(onSuccess) dispatch({type: onSuccess, payload: {id: id, name: whoRated, gradeArrayItem: gradeArrayItem, userID: userID}});
-    // }
-    // catch(error){
-    //     dispatch(actions.apiCallFailed(error.message))
-    // }
 
 
     if(method === 'clear'){

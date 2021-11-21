@@ -41,7 +41,7 @@ const BeerCounter =  () => {
     
     
     
-    // // tworzy macierz użytkowników ktorzy ocenili artykul
+    // tworzy macierz użytkowników ktorzy ocenili artykul
     const ratersID = rating? rating.map(grade => {
         return grade.userID
     }) : null;

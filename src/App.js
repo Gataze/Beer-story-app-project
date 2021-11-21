@@ -9,14 +9,18 @@ import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
 import ArticleControllers from './components/ArticleControllers';
 import UserPage from './components/UserPage';
+import { PersistGate } from 'redux-persist/integration/react'
+import { persistStore } from 'redux-persist'
 
 
 const store = configureStore();
+let persistor = persistStore(store);
 
 function App() {
 
   return (
     <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
       <Router>
         <Navbar />
         <Switch>
@@ -47,6 +51,7 @@ function App() {
         </Switch>
         <Footer/>
       </Router>
+      </PersistGate>
     </Provider>
   );
 }
