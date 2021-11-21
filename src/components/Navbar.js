@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoginFormValue, handleSignUpStyle, setUserAgeVerified, setEmailVerificationMessage } from '../store/beersStyles'
 import { logoutUser, setUserLoggedIn  } from "../store/beersAuth";
 import Loader from "./Loader";
-
+import { clearBeer } from "../store/beers";
 
 
 
@@ -44,6 +44,7 @@ const Navbar = () => {
                 
              
                 dispatch(setUserLoggedIn(data))
+                dispatch(clearBeer())
                 if(!uid) dispatch(setUserAgeVerified(false))
            
         })

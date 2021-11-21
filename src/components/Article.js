@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { useEffect } from "react";
 import { useParams } from "react-router";
-import { deleteBeer, getOneBeer, selectArticle } from "../store/beers";
+import { deleteBeer, getOneBeer, selectArticle, clearBeer } from "../store/beers";
 import styled from "styled-components";
 import { setEditMode, setUserAgeVerified } from "../store/beersStyles";
 import BeerCounter from "./BeerCounter";
@@ -27,7 +27,7 @@ const Article = () => {
     const beerArticle = beerArticleRedux[0]? beerArticleRedux[0] : beerArticleOne[0];
     // console.log(Object.values(beerArticle?.description))
 
-    
+
     useEffect(() => {
         const ignoreLastFetch = true;
         dispatch(getOneBeer(id, ignoreLastFetch))
@@ -41,6 +41,7 @@ const Article = () => {
     const deleteBeerArticle = (id) => {
 
         dispatch(deleteBeer(id));
+        dispatch(clearBeer())
         history.goBack();
     }
 

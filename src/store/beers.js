@@ -30,6 +30,7 @@ const slice = createSlice({
             beers.lastFetch = Date.now();
         },
         beerAdded: (beers, action) => {
+            beers.list.push(action.payload)
             beers.loading = false;
         },
         beerDeleted: (beers, action) => {
