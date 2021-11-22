@@ -3,14 +3,11 @@ import Article from "./Article";
 import ArticleEditForm from "./ArticleEditForm";
 
 
+// ArticleControllers contains Article component and ArticleEditForm component. Intentionally created to control the display of of both components. 
+// In future ArticleControllers might be deleted.
+
+
 const ArticleControllers = () => {
-
-    //usunięto 11.11.2021 
-    // const dispatch = useDispatch();
-    // useEffect(() => {
-    //     dispatch(setEditMode(true))
-    // })
-
 
     return ( 
         

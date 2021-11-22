@@ -6,6 +6,8 @@ import { faBeer } from '@fortawesome/free-solid-svg-icons';
 import { useState } from "react";
 
 
+// AgeVerificationForm is a component that is shown when user enters BeerStory website for the first time. Logic of this component checks if user is adult. BeerStory content is
+// forbidden for non adult users. ReduxStore and LocalStorage are used to store the value that confirms user is 18+ y.o.
 const AgeVerificationForm = ({ageVerified}) => {
 
 
@@ -15,19 +17,16 @@ const AgeVerificationForm = ({ageVerified}) => {
     //UserAgeCheck stores boolean value true/false if user is adult/not adult. This value comes from localStorage(ageVerified) or ReduxStore (userAgeReduxCheck)
     const userAgeCheck = ageVerified || userAgeReduxCheck;
 
-
+    //RememberAge stores local value true/false if user is adult/not adult.
     const [rememberAge, setRememberAge] = useState(false)
 
-  
-    //Funkcja weryfikuje wiek użytkownika. Osoby niepelnoletnie nie maja dostepu do strony
+    //AgeVerificationFunction sets ageConfirmed valuein ReduxStore as true and saves rememberAge localState to localStorage if(rememberAge === true);
     const ageVerificationFunction = () => {
 
         dispatch(setUserAgeVerified(true))
 
         if(rememberAge)
-        localStorage.setItem('ageVerifiedBeerStory', true)
-        
-        
+        localStorage.setItem('ageVerifiedBeerStory', true)    
     }
 
     //Redirects to google.com
@@ -35,7 +34,7 @@ const AgeVerificationForm = ({ageVerified}) => {
         window.location.href = "https://google.com/"
     }
 
-
+    //HandleClick changes rememberAge local value from false to true;
     const handleClick = () => {
         setRememberAge(prevState => 
             prevState = !prevState
@@ -46,6 +45,7 @@ const AgeVerificationForm = ({ageVerified}) => {
 
 
     return ( 
+        // If userAgeCheck is true set AgeVerification display as none
         <AgeVerification userAgeCheck={userAgeCheck}>
                 <Logo>
                     <FontAwesomeIcon icon={faBeer}/>
@@ -55,10 +55,13 @@ const AgeVerificationForm = ({ageVerified}) => {
                         <h2>Dostęp do strony tylko dla osób pełnoletnich</h2>
                         <label>Czy ukończyłeś 18 lat?</label>
                         <p>
+                            {/* If user clicks buttton 'Tak' app knows that user has 18+ years */}
                             <button onClick={() => ageVerificationFunction()}>Tak</button>
+                            {/* If user clicks button 'Nie' it means user is less than 18 y.o. (redirectToGoogle) => Redirecs to google*/}
                             <button onClick={redirectToGoogle}>Nie</button>
                         </p>
                         <RememberMyChoice>
+                            {/* //If user checks the input app remembers that user has 18+ years old */}
                             <input type='checkbox' onClick={handleClick}/>
                             <span>Zapamiętaj mój wybór</span>
                         </RememberMyChoice>
@@ -87,7 +90,6 @@ const AgeVerification = styled.section`
 
 const Logo = styled.div`
     padding: 20px;
-
     color: black;
     font-size: 26px;
     text-align: center;
@@ -121,9 +123,7 @@ const AgeMessage = styled.article`
         &:hover {
             background-color: #999999;
         }
-    }
-
-    
+    }  
 `
 
 const RememberMyChoice = styled.div`

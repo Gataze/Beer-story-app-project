@@ -8,26 +8,28 @@ import { setEditMode, setUserAgeVerified } from "../store/beersStyles";
 import BeerCounter from "./BeerCounter";
 import CommentsSection from "./CommentsSection";
 
+
+//Component used to display article that user wants to show (from ArtcileList). Component has display: none when user clicks 'edytuj' button.
 const Article = () => {
 
+
+    //Id is used to selectively gets/deletes the article data from Firebase and ReduxStore.  
     const {id} = useParams();
     const dispatch = useDispatch();
     const history = useHistory();
 
+
+    //Gets user username from Redux store.
     const user = useSelector(state => state.entities.auth.user.username)
+
+    //Gets edit value from Redux store.
     const edit = useSelector(state => state.entities.styles.edit)
 
-    //Selektor danych w Redux o danym id, stanowiacych treść artykułu (jeśli nie odświeżono strony)
+    //React-redux Selector of the article with given id.
     const beerArticleRedux = useSelector(selectArticle(id));
+    const beerArticle = beerArticleRedux[0];
 
-
-    //Selektor danych w Redux pobierający obecnie zaladowany artykul jezeli odswiezymy stronę
-    const beerArticleOne = useSelector(state => state.entities.beers.list)
-
-    const beerArticle = beerArticleRedux[0]? beerArticleRedux[0] : beerArticleOne[0];
-    // console.log(Object.values(beerArticle?.description))
-
-
+    //React useEffect hook is used to dispatch actions that are responsible for getting artcile data(artcile title, description, rates, comments etc.) from Firestore database. 
     useEffect(() => {
         const ignoreLastFetch = true;
         dispatch(getOneBeer(id, ignoreLastFetch))
@@ -37,60 +39,64 @@ const Article = () => {
         return () => console.log('unmounting...');
     },[id, dispatch])
 
-    //usuwa artykuł, wraca do wczesniejszej strony
+    //Function deleteBeerArticle deletes currently loaded artcile.
     const deleteBeerArticle = (id) => {
-
         dispatch(deleteBeer(id));
         dispatch(clearBeer())
         history.goBack();
     }
 
     
-  
-
-    //ustawia wartoś edit w store na true/false. Wartośc ta steruje wyświetlaniem artykułu lub sekcji edytowania artykułu.
+    //Sets edit mode value in redux store as true. If true edit mode is on.
     const updateShowInput = () => {
-        
-            dispatch(setEditMode(true))
-            
+        dispatch(setEditMode(true))    
     }
 
-    //wraca do poprzedniej strony
+    //Goes back to previous page
     const goBackward = () => {
         history.goBack();
     }
 
+    // beerArticle?.photo? beerArticle.photo : null
 
     return ( 
         <article>
+
+            {/* If edit value is false set ArticleShowController display as none  */}
             <ArticleShowController showContent={!edit}>
                 <ArticleMainContent>
 
                     <div>
-                        {beerArticle?.photo && 
+                        {/* If beerArticle.photo is loaded show beerArticle.photo*/}
+                        {beerArticle.photo && 
                         <div>
-                            <img src={beerArticle?.photo? beerArticle.photo : null} alt='zdjecie artykulu'/>
+                            <img src={beerArticle.photo} alt='zdjecie artykulu'/>
                             <p>1. Lorem Ipsum dolor sie emet.</p>
                         </div>
                     }
                         
                     </div>
-
+                    {/* If beerArticle has name show beerArticle.name.*/}
                     <h1>{beerArticle?.name}</h1>
+
+                    {/* Component responsible for showing current article ratings. */}
                     <BeerCounter/>
+
+                    {/* If beerArtcile has author and creation data load author and creation data. */}
                     <ArticleDets>
                         <span>Autor: {beerArticle?.author? beerArticle.author : '@anonim '} /</span>
                         <span>/ Data publikacji: {beerArticle?.date}</span>
                     </ArticleDets>
+                    {/* Maps beerArtcile description paragraphs on page.*/}
                     {beerArticle?.description.map((descript, index) => (
                         <p key={index}>
                             {descript}
                         </p>
                     ))}
                     
-                    
                 </ArticleMainContent>
 
+                {/* Hardcoded bibliography section currently not finished (22.11.2021) */}
                 <Bibliography>
 
                         <h2>Bibliografia</h2>
@@ -105,6 +111,7 @@ const Article = () => {
 
                 <ArticleButtons>
                     
+                    {/* If user is logged in user value is true. If user value is true delete and edit buttons are visible. */}
                     {user && user ===  beerArticle?.author && <button onClick={() => deleteBeerArticle(id)}>Usuń</button>}
                     {user && user ===  beerArticle?.author && <button onClick={() => updateShowInput()}>Edytuj</button>}
                             <button onClick={() => goBackward()}>Wróć</button>

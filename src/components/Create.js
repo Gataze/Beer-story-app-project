@@ -7,31 +7,28 @@ import moment from "moment";
 import { useHistory } from "react-router";
 
 
-
+//Responsible for creating new articles
 const Create = () => {
 
+    const history = useHistory();
+    const dispatch = useDispatch();
+
+    //Group of local states created to get data from inputs and textareas.
     const [name, setName] = useState('');
     const [description, setDescription] = useState([]);
     const [references, setReferences] = useState('');
     const [photo, setPhoto] = useState('');
     const [beerSection, setBeerSection] = useState('world')
 
-    
-
-
+    // Selectors for user username/uid 
     const author = useSelector(state => state.entities.auth.user.username);
     const uid = useSelector(state => state.entities.auth.user.uid);
     
-
-    const history = useHistory();
-    const dispatch = useDispatch();
-
-
+    //Local states responsible for adding/deleting new paragraphs textareas.
     const [paragraphs, setParagraphs] = useState([{key: 1}])
     const [paragraphCounter, setParagraphCounter] = useState(2);
 
-    console.log(beerSection)
-
+    //Function that controls adding new paragraphs. Number of paragraphs is restricted to 5.
     const addParagraph = () => {
 
         if(paragraphs.length >= 5){
@@ -47,26 +44,18 @@ const Create = () => {
         ))
     }
 
-
-
-
-
-
+    //Deletes new paragraph textarea.
     const deleteParagraph = () => {
         setParagraphCounter(prevState => (
             prevState = prevState - 1
         ))
 
-        
-
-        setParagraphs(prevState => 
-            
+        setParagraphs(prevState =>       
             prevState = prevState.slice(0, -1)
             )
     }
 
-  
-
+    //Sets description of current paragraph based on index (i) from map function and textarea event (e) value (line: 129).
     const handleDescriptionOne = (e, i) => {
 
         const value = e.target.value
@@ -94,37 +83,40 @@ const Create = () => {
             default: console.log('unknown value'); break;
 
         }
-        
-        
+ 
     }
 
-    //Zbiera stany lokalne i wysyłe ja jako treść artykułu do firebase
+    // Gathers localStates and sends them as the article content to next functions that saves the data to Firebase and Redux store.  
+    // Zbiera stany lokalne i wysyłe ja jako ar jako treść artykułu do firebase
     const createBeerArticle = (e) => {
         e.preventDefault()
 
-        //Object.values(data.description) zmienia objekt na macierz
+        //Object.values(data.description) changes object to array.
         const data = {
-                    name: name, 
-                    description: Object.values(description), 
-                    references: references, 
-                    author: author, 
-                    photo: photo, 
-                    beerSection: beerSection,
-                    userID: uid, 
-                    date: moment().format('MMMM Do YYYY, h:mm:ss a'), 
-                    id: uuidv4()}
+            name: name, 
+            description: Object.values(description), 
+            references: references, 
+            author: author, 
+            photo: photo, 
+            beerSection: beerSection,
+            userID: uid, 
+            date: moment().format('MMMM Do YYYY, h:mm:ss a'), 
+            id: uuidv4()
+        }
         
+        //Dispatch function with data argument (article content).
         dispatch(addBeer(data))
-        console.log(author)
+        
+
+        //Resets local states
         setName("");
         setReferences("");
         setDescription("");
+        setPhoto("")
+
         history.goBack()
         
     }
-
-//  console.log([...description] + paragraphs.toString())
-
 
 
 
@@ -133,31 +125,48 @@ const Create = () => {
             <h2>Dodaj nowy artykuł</h2>
             <Form>
                
+                {/* Inputs for article title and link to article image */}
                 <Label htmlFor="">Tytuł artykułu:</Label>
                 <Input type="text"  value={name} onChange={(e) => setName(e.target.value)}/>
                 <Label htmlFor="">Link do fotografii:</Label>
                 <Input type="text" value={photo} onChange={(e) => setPhoto(e.target.value)} />
+
+                {/* Map paragraphs. When new object is added into paragraphs array (setParagraphs)(line: 41) another item with textarea is mapped on the page. Every textarea has 
+                its own index from map function. This index makes handleDescription() know from which textarea the paragraph comes from. */}
                 {paragraphs.map(p => (
                     <ArticleParts key={p.key}>
-                    <Label htmlFor="">Akapit:</Label>
-                    <Textarea type="text" value={description.paragraph1} onChange={(e) =>  handleDescriptionOne(e, p.key)} />
+
+                        <Label htmlFor="">Akapit:</Label>
+                        <Textarea type="text" value={description.paragraph1} onChange={(e) =>  handleDescriptionOne(e, p.key)} />
                     
                     </ArticleParts>
                 ))}
+
+                {/* Executes function that extends paragraphs array. */}
                 <ParagraphAdd onClick={addParagraph}>Dodaj pole</ParagraphAdd>
+
+                {/* If we have more than 2 paragraphs on the page display delete paragraph button.*/}
                 {paragraphCounter > 2 && <ParagraphAdd onClick={deleteParagraph}>Usuń pole</ParagraphAdd>}
                 
                 
                 <Label htmlFor="">Bibliografia:</Label>
+
+                {/* Input for references. */}
                 <Input type="text" value={references} onChange={(e) => setReferences(e.target.value)}/>
                 <Label htmlFor="">Sekcja:</Label>
+
+                {/* Select which section article belongs to. */}
                 <Select onChange={(e) => setBeerSection(e.target.value) }>
                     <option value='world'>Historia piwa na świecie</option>
                     <option value='poland'>Historia piwa w Polsce</option>
                     <option value='lostrecipes'>Zapomniane Piwa</option>
                     <option value='oldbreweries'>Opuszczone Browary</option>
                 </Select>
+
+                {/* Executes function that adds new article */}
                 <button onClick={createBeerArticle}>Opublikuj</button>
+
+                {/* If user wants to go back to previosu page without adding article, this button has to be clicked*/}
                 <button onClick={(e) => {e.preventDefault(); history.goBack(-1)}}>Wróć</button>
             </Form>
             

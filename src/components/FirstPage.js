@@ -8,12 +8,14 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 
-
+// Hero section of the article
 const FirstPage = () => {
 
-
+    // If false age verification form is shown.
     const [ageVerified, setAgeVerified] = useState(false)
 
+
+    // If in localStorage ageVerifiedBeerStory item is saved app takes this data and setsAgeVerified as true. In result age verification form will not appear.
     useEffect(() => {
 
         setAgeVerified(localStorage.getItem('ageVerifiedBeerStory'))
@@ -52,6 +54,8 @@ const FirstPage = () => {
                     </Link>
                 </Section>
             </MainGrid>
+
+            {/* ageVerified localState is passed as a prop to AgeVerificationForm component */}
            <AgeVerificationForm ageVerified={ageVerified}/>
         </Main>
      );

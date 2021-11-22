@@ -13,38 +13,41 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoginFormValue, handleSignUpStyle, setUserAgeVerified, setEmailVerificationMessage } from '../store/beersStyles'
 import { logoutUser, setUserLoggedIn  } from "../store/beersAuth";
 import Loader from "./Loader";
-import { clearBeer } from "../store/beers";
-
-
-
 
 const Navbar = () => {
 
-    const dispatch = useDispatch();  
-    const user = useSelector(state => state.entities.auth.user.username);
-    const emailVerified = useSelector(state => state.entities.styles.emailVerificationMessage);
-    const [showMenu, setShowMenu] = useState(false)
-    const history = useHistory()
+    const dispatch = useDispatch();
+    const history = useHistory();  
 
- 
+    // User username selector
+    const user = useSelector(state => state.entities.auth.user.username);
+
+    // Boolean value indicating if user verified its own email.
+    const emailVerified = useSelector(state => state.entities.styles.emailVerificationMessage);
+    
+    //Local state that controls slide out menu for small screen devices.
+    const [showMenu, setShowMenu] = useState(false);
+    
 
     useEffect( () => {
 
+        // Firebase/auth function that checks if any user is logged in to the application. User registration is treated as a sign-up and sign-in combined. So newly registered user
+        // will be automatically logged to the app.
         onAuthStateChanged(auth,  (currentUser) => {
 
+            // States with details about current logged in user 
             const email =  currentUser?.email? currentUser.email : false;
             const username = currentUser?.email? currentUser.displayName : false;
             const uid = currentUser?.email? currentUser.uid : false;
-            const data = {email, username, uid}
+            const data = {email, username, uid}              
 
-                //Po odświeżeniu strony lub zalogowaniu zamieszcza dane o uzytkowniku wredux store. Po zarejestrowaniu tez się dispatchuje jednak nie zamieszcza
-                //username wlasciwego. Username tworzony jest po utworzeniu uzytkownika w bazie firebase. Utworzenie uzytkownika samo w sobie 
-                //uruchamia onAuthStateChange jeszcze przed nadaniem uzytkownika przez co po rejestracji username początkowo zostaje null. 
-                //Aby zamiescic nazwe uzytkonika w redux to po rejestracji funkcja ta dispatchuje sie wtedy rownież w middleware tuż po dodaniu uzytkownika do bazy firebase.
-                
-             
+                // If user is authenticated, set user as logged in.
                 dispatch(setUserLoggedIn(data))
-                dispatch(clearBeer())
+
+                // if user is logged do not show age verification form. Age verified value is then true
+                // if no one is logged in eg. after user logged out, age verified value will be false so age verification form will be set to false.
+                //  If user age verification value in loaclStorage is true this 
+                // dispatch will still be executed. This line of code will need to be improvemed in the future.
                 if(!uid) dispatch(setUserAgeVerified(false))
            
         })
@@ -70,10 +73,6 @@ const Navbar = () => {
         history.push('/')
     }
 
-
-    
-
-    
 
     return ( 
         <NavbarContainer>
@@ -128,6 +127,7 @@ const Navbar = () => {
             <VerifyEmail emailVerified={emailVerified}>
                 <h2>W celu pełnej aktywacji konta na twój email wysłany został link weryfikacyjny.</h2>
                 <p>Aby dostać nową wiadomość weryfikacyjną wejdz w panel użytkownika i kliknij przycisk 'Ponownie wyślij wiadomośc weryfikacyjną' </p>
+                {/* If user created new account, email given by user has to be verified.  */}
                 <button onClick={() => dispatch(setEmailVerificationMessage(false))}>Ok</button>
             </VerifyEmail>
 

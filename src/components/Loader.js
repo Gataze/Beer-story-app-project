@@ -2,24 +2,29 @@ import styled, { keyframes } from "styled-components";
 import { useSelector } from "react-redux";
 
 
+// Loader component that makes loading indicator visible if redux-store loading value is true.
 const Loader = () => {
 
+    // Loading value selectors: auth is true when user awaits for authentication, article loading is true when article is adding/getting/updateing or deleting.
     const authLoading = useSelector(state => state.entities.auth.loading);
     const articleLoading = useSelector(state => state.entities.beers.loading);
 
-    //'+' przed wartością true/false zamienia ją na 1/0 przez co moze być przekazana w propsach do styled-components (official solution). W przypadku
-    //gdy przekazemy propsy true/false do styled-components to wyrzucany jest błąd (mimo że wszystko działa): Warning: Received `false` for a non-boolean attribute `loading`.
+    // True/false values should not be sended by props to styled components. 
+    // Official sollution: In this case we should send 1/0 instead. "+" before true/false value will change this value to 1/0.
+    // If we will not change true false into 1/0 warning msg will be displayed in the console (Warning: Received `false` for a non-boolean attribute `loading`.)
     const loading =  +articleLoading? +articleLoading : +authLoading
     
 
     return ( 
+
         <LoaderContainer loading={loading}>
             <AppLoader></AppLoader>
         </LoaderContainer>
-        
+    
      );
 }
  
+
 export default Loader;
 
 const spin = keyframes`

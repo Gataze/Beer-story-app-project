@@ -12,29 +12,34 @@ import { useHistory } from "react-router";
 
 const UserPage = () => {
 
-    const userCreds = useSelector(state => state.entities.auth.user)
-
     const dispatch = useDispatch();
-    
+    const history = useHistory();
+
+    // User state data
+    const userCreds = useSelector(state => state.entities.auth.user);
+    const uid = useSelector(state => state.entities.auth.user.uid);
+
+    // Articles state data
     const beers = useSelector(state => state.entities.beers.list);
-  
-    const uid = useSelector(state => state.entities.auth.user.uid)
 
-
+    // Currently logged in user state data from auth object.
     const user = auth.currentUser;
 
 
-    const history = useHistory();
     
-    const ignoreLastFetch = true
-
+    // React hook useEffect dispatches actions that are supposed to get all articles that currently logged in user creeated.
+    const ignoreLastFetch = true; 
     useEffect(() => {
         
-    
         const getBeers = () => {
+
+            // ignoreLastFetch: function that loads articles can be dispatched once every 10 minutes. Ignore this condition if ignoreLastFetch is true.
             dispatch(getUserBeer(uid, ignoreLastFetch))
         }
 
+
+        // Gets user articles. Every article has uid verificatator that is given when article is created. This uid is the same as user uid that created the article
+        // ,so we can use this uid as a selector to take articles that were created by the user.
         if(uid){
             getBeers(uid, ignoreLastFetch);
         }
@@ -42,36 +47,36 @@ const UserPage = () => {
     }, [uid])
 
 
-
-
+    // Function that deletes user from firebase. Redux store is not needed here, as firebase/auth onAuthStateChange function in Navbar component 
+    // will dispatch all necesary actions by itself.
     const handleDeleteAccount = () => {
+
+        // firebase/auth function used to delete account.
         deleteUser(user).then(() => {
             // User deleted.
             history.push('/swiat')
             alert('konto usunięte')
           }).catch((error) => {
             console.log(error)
-          });
-
-
-        
+          }); 
     }
-
-
 
     return ( 
         <UserInfo>
             <h2>Panel użytkownika</h2>
             <article>
                 <UserDets>
+                    {/* User details values */}
                     <p>Użytkownik: {userCreds?.username}</p>
                     <p>Email: {userCreds?.email}</p>
                     <p>Status weryfikacji: {user?.emailVerified? <span>zweryfikowano</span> : <span>niezweryfikowano</span>}</p>
+                    {/* If user is not verified show button send werification link again. Not completed yet... */}
                     {!user?.emailVerified && <button>Wyślij link weryfikacyjny</button>}
                     <button onClick={handleDeleteAccount}>Usuń konto</button>
                 </UserDets>
                 <h2>Twoje artykuły</h2>
                 <ArticlesGrid>
+                    {/* User articles are mapped here*/}
                     {beers.map(beer => (
                         <ArticleItem key={beer.id}>
                             <h2>{beer.name}</h2>

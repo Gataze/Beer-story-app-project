@@ -36,9 +36,8 @@ const ArticlesGroupList = () => {
             dispatch(loadBeers(numberOfDocs, group, true))
         }
         
-        if(beers.length < 1){
+        if(beers.length < 3){
             getBeers();
-            console.log('tak')
         }
 
     },[dispatch, numberOfDocs])
@@ -58,11 +57,13 @@ const ArticlesGroupList = () => {
         <ArticlesList>
             <Container>
                 <ArticlesGrid>
+                    {/* Map loaded articles data and display it*/}
                     {beers.map(beer => (
                         <ArticleItem key={beer.id}>
                             <h2>{beer.name}</h2>
                             {beer.author && <p>@{beer.author}</p>}
                             <span>{ 
+                                // display only first 120 characters od descritpion
                                 `${beer.description[0]?.substring(0, 120)}...` 
                             }</span>
                             <span>{beer.date}</span>
@@ -70,24 +71,24 @@ const ArticlesGroupList = () => {
                             
                         </ArticleItem>
                         ))}
-                    
-                        <AddArticleItem onClick={() => setShowInfoForUser(true)}>
+
+                        {/* If user is not logged in setShowInfoForUser as oposite value (true) */}
+                        <AddArticleItem onClick={() => setShowInfoForUser(prevState => prevState = !prevState)}>
                     
                             <Link to={user? `/create` : "#"}>
                                 <FontAwesomeIcon icon={faPlusCircle} />
                             </Link> 
                         </AddArticleItem>
-                        
-                    
                 </ArticlesGrid>
                 
-                <InfoForUser infoShowForUser={infoShowForUser} onClick={() => setShowInfoForUser(false)}>
+                {/* If infoShowForUser is true than show InfoForUser component that displays 'Zaloguj się aby dodać artykuł' */}
+                <InfoForUser infoShowForUser={infoShowForUser} onClick={() => setShowInfoForUser(prevState => prevState = !prevState)}>
                     <h2>Zaloguj się aby dodać artykuł</h2>
                 </InfoForUser>
                 
             </Container>
+            {/* After you click this button loadMore function is executed. In result more artciles are laoded*/}
             <button onClick={() => loadMore(prevState => prevState = prevState + 2)}>{loading? 'Ładuję' : 'Więcej'}</button>
-            
         </ArticlesList>
      );
 }
@@ -180,10 +181,9 @@ const AddArticleItem = styled.div`
 `
 
 
-// display: ${({infoShowForUser}) => infoShowForUser? 'flex' : 'none'};
+
 const InfoForUser = styled.article`
-    
-    display: none;
+    display: ${({infoShowForUser}) => infoShowForUser? 'flex' : 'none'};
     position: fixed;
     z-index: 999;
     top: 0px;

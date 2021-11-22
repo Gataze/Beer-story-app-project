@@ -1,17 +1,17 @@
 import styled from "styled-components";
 
-
+// Footer component of the page
 const Footer = () => {
 
 
     return ( 
         <FooterStyles>
+            
             <Test>
                 <p>Wersja testowa</p>
                 <p>Dane do logowania:</p>
                 <span>email: 3cf2zsnz@freeml.net</span>
                 <span>hasło: test1234 </span>
-                
             </Test>
             
             <section>

@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
+
+// Hardcoded hero section article that explains what BeerStory webpage is about.
 const HomeArticle = () => {
+
+
     return ( 
         <ArticleHome>
             <h2>Co to BeerStory?</h2>

@@ -3,50 +3,58 @@ import * as actions from '../api'
 import { collection, getDocs, getDoc, doc, setDoc, deleteDoc, updateDoc, limit, query, where } from 'firebase/firestore'
 
 
+// Middleware that controls actions responsible for comunicating with firebase/firestore.
 const api = ({dispatch}) => next => async action => {
 
+    // Verify if action.type is apiCallBegan. If true this middleware supposed to do something with the action. If false do not use this middleware. Go to next action.
     if(action.type !== actions.apiCallBegan.type) return next(action);
 
+    // Collect data from the action
     const {data, method, onStart, onSuccess, onSuccessBeers, onSuccessComments, onSuccessRates, onError, numberOfDocs, group} = action.payload;
     
-    
+    // OnStart contains redux action that have to be dispatched first. 
     if(onStart) dispatch({type: onStart});
 
+    // Go to next action in this middleware
     next(action);
 
+    // If method is 'getDocs' try to query collection in 'Beers' database, limit the number of docs to numberOfDocs value. 
+    // Get only those articles 'where' beerSection value equals group value.
     if(method === 'getDocs') try {
         const beersCollectionRef = query(collection(db, 'Beers'), limit(numberOfDocs), where("beerSection", "==", group))
         const data = await getDocs(beersCollectionRef)
-        // const comments = await getDocs(commentsCollectionRef)
-
+        
+        // After data is taken, dispatch function under onSuccess variable. OnSucces action passed in this case, saves received data to redux store. Saved data 
+        // can be selected by useSelector() in React components.
         if(onSuccess) dispatch({type: onSuccess, payload: data.docs.map(doc => ({...doc.data(), id: doc.id}))})
-        // if(onSuccessComments) dispatch({type: onSuccessComments, payload: comments.docs.map(doc => ({...doc.data(), id: doc.id}))})
+        
  
     }
+    // If something went wrong (connection error  etc.), 'onError' action will be dispatched.
     catch(error){
         dispatch(actions.apiCallFailed(error.message))
         if(onError) dispatch({type: onError, payload: error.message})
     }
 
-    //pobiera z firebase pojedynczy dokument
+    //If method is 'doc' try to query single document, with comments and rates documents connected with this article.
     if(method === 'doc') try {
 
+        // Comment and rates if firestore have property articleId, that is the same as the Id aof article. So this articleId is used as a selector for those comments.
+        // and rates.
         const commentsCollectionRef =  query(collection(db, 'Comments'), where("articleId", "==", data))
         const ratesCollecionRef = query(collection(db, 'Rates'), where("articleID", "==", data))
 
-        
-
+        // getDoc: firebase/firestore function used to get single docs from firestore collection.
         const beer = await getDoc(doc(db, 'Beers', data))
-        
         const comments = await getDocs(commentsCollectionRef)
-        //tu do zmianu
         const rates = await getDocs(ratesCollecionRef)
 
-
+        // Actions that are saving received data to the redux store.
         if(onSuccessBeers) dispatch({type: onSuccessBeers, payload: [{...beer.data(), id: beer.id}]})
         if(onSuccessComments) dispatch({type: onSuccessComments, payload: comments.docs.map(doc => ({...doc.data(), id: doc.id}))})
         if(onSuccessRates) dispatch({type: onSuccessRates, payload: rates.docs.map(doc => ({...doc.data(), id: doc.id}))})
     }
+    // If something went wrong (connection error  etc.), 'onError' action will be dispatched.
     catch(error){
         dispatch(actions.apiCallFailed(error.message))
     }
@@ -83,7 +91,7 @@ const api = ({dispatch}) => next => async action => {
             userID: data.userID
         })
 
-        // dispatch(actions.apiCallSuccess(data))
+        
         if(onSuccess) dispatch({type: onSuccess, payload: data})
     }
     catch(error){
@@ -97,7 +105,7 @@ const api = ({dispatch}) => next => async action => {
         await deleteDoc(beer)
 
         dispatch(actions.apiCallSuccess('deleted'))
-        // if(onSuccess) dispatch({type: onSuccess, payload: {id: data}})
+        
     }
 
     catch(error){
@@ -145,10 +153,7 @@ const api = ({dispatch}) => next => async action => {
             articleID: articleID
         })
 
-        // await updateDoc(beerRef, {
-            
-        //     gradeArrayItem: gradeArrayItem
-        // });
+        
         dispatch(actions.apiCallSuccess(data));
         if(onSuccess) dispatch({type: onSuccess, payload: {gradeArrayItem: gradeArrayItem, userID: userID, articleID: articleID}});
     }
@@ -178,8 +183,6 @@ const api = ({dispatch}) => next => async action => {
 }
 
     
-
-   
 
     if(method === 'setComment') try {
 

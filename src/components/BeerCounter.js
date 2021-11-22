@@ -7,53 +7,41 @@ import { useParams } from "react-router";
 import { useState } from "react";
 
 
+//BeerCounter components displays the mean number of stars given by users for selected article
 const BeerCounter =  () => {
-
+  
     const {id: articleId} = useParams()
     const dispatch = useDispatch();
 
-    //selektor danych osób które oceniły dany artykuł wraz z ich ocenami
-    // const rating = useSelector(selectArticle(id))[0]?.whoRated
+    //Selects documents in redux store with ratings of curently displayed article  
     const rating = useSelector(state => state.entities.beers.rates)
 
-    //selektor sprawdzajacy czy loggedIn is true
+    //Selects uid of currently logged-in user
     const uid = useSelector(state => state.entities.auth.user.uid);
 
-    //stan kontrolujacy wyswietlanie sie wiadomosci o oniecznosci zalogowania sie jezeli trzeba sie zalogowac
+    //Local state with true/false value. If true/false Login request msg is/is not displayed.
     const [showLogInRequest, setShowLogInRequest] = useState(false)
 
 
-    //stan kontrolujacy podswietlenie gwiazdek na pasku oceny artykułu po najechaniu na gwiazdki
+    //Local state that is used to change styles of stars displayed in component
     const [hover, setHover] = useState(null)
     
-   //1? dodana tylko po to aby kolejne wartosci tez sie zliczyly (bez error) po odświeżeniu strony
+   //Maps documents in redux store with ratings of curently displayed article. Returns all rating values.
     const gradeArray = (rating?.length)? rating.map(grade => {
         return grade.gradeArrayItem
     }) : [0]
     
 
-
-    // // zbiera sumę wszystkich wartosci w macierzy 
+    //Calculate mean of ratings of each user
     const sum = gradeArray? gradeArray.reduce((a, b) => a + b) : 0
-
-    // // oblicza srednia ocen
     const mean = Math.round((sum / gradeArray.length) * 100) / 100
     
-    
-    
-    // tworzy macierz użytkowników ktorzy ocenili artykul
-    const ratersID = rating? rating.map(grade => {
-        return grade.userID
-    }) : null;
 
-    
-    //Funkja kontroluje dispatchowanie akcji wysylajacych dane na serwer o ocenie dodanej przez uzytkownika.
-    //Jesli uzytkownik dodal juz ocene lub jest nie zalogowany wtedy odsyla do zalogowania lub przypomina o wczesniejszej ocenie
+    //Function rateBeerArticle dispatches rateBeer() function that takes data{grade, id, articleID, userID}. This data is mandatory if rates have to be displayed
+    //properly on the website. 
     const rateBeerArticle = (articleId, grade) => {
 
-     
-
-        //If user is not logged in show msg that he should login or register
+        //If user is not logged in show msg that he should login or register.
         if(!uid) {setShowLogInRequest(true)} else {
 
             const gradeArrayItem = grade
@@ -70,16 +58,18 @@ const BeerCounter =  () => {
 
     return ( 
         <BeerCounterContainer >
-           
+
+            {/* If article was rated before show how many times it was rated */}
             <div>Ocenili: {rating? rating.length : null}</div>
+
+            {/* If user is not logged and wants to rate the article, this component will display the msg 'Zaloguj się aby ocenić artykuł' */}
             <InfoForUSer onClick={() => setShowLogInRequest(false)} showLogInRequest={showLogInRequest}>
                 <p>Zaloguj się aby ocenić artykuł</p>
             </InfoForUSer>
-            {/* <InfoForUSer onClick={() => setShowReminder(false)} showReminder={showReminder}>
-                <p>Już oceniłeś ten artykuł</p>
-            </InfoForUSer> */}
+            
             <Container>
            
+                {/* Maps array of stars. Depending on the current user rating stars have different styles. */}
                 {[...Array(5)].map((star, i) => {
                     const ratingValue = i + 1;
 
@@ -89,7 +79,9 @@ const BeerCounter =  () => {
                             ratingValue={ratingValue} 
                             rating={mean? mean : null}
                             hover={hover}
+                            // If user click the star with index (0,1,2,3,4), this index will serve as a rate given to the article.
                             onClick={() => rateBeerArticle(articleId, i + 1)}
+                            //ratingValue changes everytime mouse hovers over displayed stars
                             onMouseEnter={() => setHover(ratingValue)}
                             onMouseLeave={() => setHover(null)}
                             >
@@ -97,7 +89,7 @@ const BeerCounter =  () => {
                         </Star>
                     )
                 })}
-
+                {/* Show mean value of rates given by users to the article */}
                 <BeerArticleGrade>Średnia: {mean}</BeerArticleGrade>
 
             </Container>
@@ -107,7 +99,6 @@ const BeerCounter =  () => {
 }
  
 export default BeerCounter;
-
 
 const BeerCounterContainer = styled.div`
     display: block;
@@ -121,7 +112,6 @@ const Container = styled.div`
     align-items: center;
     justify-content: space-around;
     cursor: pointer;
-    
     
     svg { 
         font-size: 13px;

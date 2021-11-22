@@ -4,35 +4,34 @@ import { loginUser } from "../store/beersAuth";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoginFormValue, setUserAgeVerified } from "../store/beersStyles";
 
+
+//Component with login form and its own frontend logic.
 const LoginPage = () => {
 
     const dispatch = useDispatch();
 
-
-    //ustala czy formularz logowania się wyświetla czy nie
+    //If true show login form.
     const setLoginShow = useSelector(state => state.entities.styles.loginShow);
 
-
-    //zmienne zapuisujące email i haslo wpisane w formularzu
+    //Sets/changes email/password from inputs while user writes.
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-
-    //ukrywa formularz logowania
+    //Hides login form
     const hideForm = () => {
         dispatch(setLoginFormValue()) 
     }
        
-
-    //loguje urzytkownika, ukrywa formularz logowania
+    //Dispatches functions responsible for signing user in. Function setLoginFormValue sets login value in redux store as true meaning that the user is logged in.
     const login = (email, password) => {
         
         dispatch(loginUser(email, password))
         dispatch(setLoginFormValue())
         dispatch(setUserAgeVerified(true)) 
+
+        // Clear input fields...
         setEmail('')
         setPassword('')
-
     }
 
 
