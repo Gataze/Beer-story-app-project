@@ -68,7 +68,7 @@ const Article = () => {
 
                     <div>
                         {/* If beerArticle.photo is loaded show beerArticle.photo*/}
-                        {beerArticle.photo && 
+                        {beerArticle?.photo && 
                         <div>
                             <img src={beerArticle.photo} alt='zdjecie artykulu'/>
                             <p>1. Lorem Ipsum dolor sie emet.</p>
@@ -106,8 +106,6 @@ const Article = () => {
                         </ol>
 
                 </Bibliography>
-
-                
 
                 <ArticleButtons>
                     

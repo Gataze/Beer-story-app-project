@@ -15,14 +15,14 @@ const UserPage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    // User state data
+    // User data
     const userCreds = useSelector(state => state.entities.auth.user);
     const uid = useSelector(state => state.entities.auth.user.uid);
 
-    // Articles state data
+    // Articles data
     const beers = useSelector(state => state.entities.beers.list);
 
-    // Currently logged in user state data from auth object.
+    // Currently logged in user data from auth object.
     const user = auth.currentUser;
 
 
@@ -51,6 +51,8 @@ const UserPage = () => {
     // will dispatch all necesary actions by itself.
     const handleDeleteAccount = () => {
 
+
+        
         // firebase/auth function used to delete account.
         deleteUser(user).then(() => {
             // User deleted.
@@ -71,8 +73,9 @@ const UserPage = () => {
                     <p>Email: {userCreds?.email}</p>
                     <p>Status weryfikacji: {user?.emailVerified? <span>zweryfikowano</span> : <span>niezweryfikowano</span>}</p>
                     {/* If user is not verified show button send werification link again. Not completed yet... */}
-                    {!user?.emailVerified && <button>Wyślij link weryfikacyjny</button>}
-                    <button onClick={handleDeleteAccount}>Usuń konto</button>
+                    {/* {!user?.emailVerified && <button>Wyślij link weryfikacyjny</button>} */}
+                    <button disabled onClick={handleDeleteAccount}>Usuń konto</button>
+                    <span>Usuwanie kont tymczasowo zablokowane. Nowe konta usuwane są na biarząco. </span>
                 </UserDets>
                 <h2>Twoje artykuły</h2>
                 <ArticlesGrid>
@@ -82,7 +85,7 @@ const UserPage = () => {
                             <h2>{beer.name}</h2>
                             {beer.author && <p>@{beer.author}</p>}
                             <span>{ 
-                                `${beer.description[0].substring(0, 120)}`
+                                `${beer.description[0]?.substring(0, 120)}`
                             }</span>
                             <span>{beer.date}</span>
                             <button><Link to={`/article/${beer.id}`}>Czytaj dalej...</Link></button>
@@ -133,6 +136,10 @@ const UserDets = styled.div`
         border: 2px solid black;
         background-color: transparent;
         cursor: pointer;
+    }
+
+    span {
+        font-size: 11px;
     }
 `
 

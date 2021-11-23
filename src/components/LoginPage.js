@@ -13,6 +13,12 @@ const LoginPage = () => {
     //If true show login form.
     const setLoginShow = useSelector(state => state.entities.styles.loginShow);
 
+    // Value indicating if user is verified.
+    const emailVerified = useSelector(state => state.entities.styles.emailVerificationMessage);
+
+    //Sign-in: when user password or email are wrong when signing-in, the 'error' will store msg for the user that password or email are wrong
+    const error = useSelector(state => state.entities.auth.error);
+
     //Sets/changes email/password from inputs while user writes.
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -25,13 +31,17 @@ const LoginPage = () => {
     //Dispatches functions responsible for signing user in. Function setLoginFormValue sets login value in redux store as true meaning that the user is logged in.
     const login = (email, password) => {
         
-        dispatch(loginUser(email, password))
-        dispatch(setLoginFormValue())
+        dispatch(loginUser(email, password, emailVerified))
         dispatch(setUserAgeVerified(true)) 
+
+        
 
         // Clear input fields...
         setEmail('')
         setPassword('')
+
+        
+        
     }
 
 
@@ -46,7 +56,9 @@ const LoginPage = () => {
                     <label>Hasło: </label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                     <button onClick={() => login(email, password)}>Zaloguj</button>
+                    <i>{error}</i>
                 </Form>
+                
             </LoginForm>
             <span>Użyj konta testowego lub utwórz nowe konto.</span>
             <span>Konto testowe: email: 3cf2zsnz@freeml.net  hasło: test1234</span>
@@ -111,4 +123,8 @@ const Form = styled.div`
         margin-top: 20px;
     }
     
+    i {
+        color: red;
+        padding: 0;
+    }
 `

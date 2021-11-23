@@ -18,8 +18,8 @@ const api = ({dispatch}) => next => async action => {
     // Go to next action in this middleware
     next(action);
 
-    // If method is 'getDocs' try to query collection in 'Beers' database, limit the number of docs to numberOfDocs value. 
-    // Get only those articles 'where' beerSection value equals group value.
+    // If method is 'getDocs' try to query'Beers' collection in database, limit the number of docs to numberOfDocs value. 
+    // Get only those articles 'where' beerSection value equals group.
     if(method === 'getDocs') try {
         const beersCollectionRef = query(collection(db, 'Beers'), limit(numberOfDocs), where("beerSection", "==", group))
         const data = await getDocs(beersCollectionRef)
@@ -35,6 +35,7 @@ const api = ({dispatch}) => next => async action => {
         dispatch(actions.apiCallFailed(error.message))
         if(onError) dispatch({type: onError, payload: error.message})
     }
+
 
     //If method is 'doc' try to query single document, with comments and rates documents connected with this article.
     if(method === 'doc') try {
@@ -60,26 +61,27 @@ const api = ({dispatch}) => next => async action => {
     }
 
 
+    //If method is 'getUserDocs' query documentents where userID is equal userID in data.
     if(method === 'getUserDocs') try {
 
         
         const userCollecionRef = query(collection(db, 'Beers'), where("userID", "==", data))
-
-
-
         const userDocs = await getDocs(userCollecionRef);
 
+        // Action that is saving received data to the redux store.
         if(onSuccess) dispatch({type: onSuccess, payload: userDocs.docs.map(doc => ({...doc.data(), id: doc.id}))})
     }
     catch(error){
         dispatch(actions.apiCallFailed(error.message))
     }
 
-    
+
+    // If method is setDoc save the data to firestore database.
     if(method === 'setDoc') try {
 
         console.log(data)
 
+        // document object we want to set in our firestore database.
         await setDoc(doc(db, 'Beers', data.id), {
             name: data.name,
             author: data.author,
@@ -91,18 +93,21 @@ const api = ({dispatch}) => next => async action => {
             userID: data.userID
         })
 
-        
-        if(onSuccess) dispatch({type: onSuccess, payload: data})
+        // Action that is saving received data to the redux store.
+        // if(onSuccess) dispatch({type: onSuccess, payload: data})
     }
     catch(error){
         if(onError) dispatch({type: onError, payload: error.message})
         dispatch(actions.apiCallFailed(error.message))
     }
 
+
+    // If method is deleteDoc, query the doc and delete it from the server. 
     if(method === 'deleteDoc') try {
 
         const beer = doc(db, "Beers", data)
         await deleteDoc(beer)
+
 
         dispatch(actions.apiCallSuccess('deleted'))
         
@@ -114,12 +119,15 @@ const api = ({dispatch}) => next => async action => {
     }
 
 
+    // If method is deleteComment, query the comment doc and delete it from the server. 
     if(method === 'deleteComment') try {
 
         const comment = doc(db, "Comments", data)
         await deleteDoc(comment)
 
         dispatch(actions.apiCallSuccess('deleted'))
+
+        // Action that is saving id of deleted document to the redux store.
         if(onSuccess) dispatch({type: onSuccess, payload: {id: data}})
     }
 
@@ -129,21 +137,26 @@ const api = ({dispatch}) => next => async action => {
     }
 
 
+
+    // If method is updateDoc take the data, query the doc, and use updateDoc firebase/function to update the doc.
     if(method === 'updateDoc') try {
 
-        
         const {id, color, description, name, photo} = data 
         const beer = doc(db, 'Beers', id)
         console.log({id, color, description, name, photo})
 
         await updateDoc(beer, {id, description, name, color, photo});
         dispatch(actions.apiCallSuccess(data))
+
+        // Action that is overwriting the document in the redux store.
         if(onSuccess) dispatch({type: onSuccess, payload: data})
     }
     catch(error){
         dispatch(actions.apiCallFailed(error.message))
     }
 
+
+    // If method is rateBeer take the data and save it to Rates collection database.
     if(method === 'rateBeer') try {
 
         const {gradeArrayItem, articleID, userID, id} = data;
@@ -153,8 +166,8 @@ const api = ({dispatch}) => next => async action => {
             articleID: articleID
         })
 
-        
         dispatch(actions.apiCallSuccess(data));
+        // Action that is adding rating data to the redux store.
         if(onSuccess) dispatch({type: onSuccess, payload: {gradeArrayItem: gradeArrayItem, userID: userID, articleID: articleID}});
     }
     catch(error){
@@ -162,20 +175,19 @@ const api = ({dispatch}) => next => async action => {
     }
 
 
-
-
+    // If method is clear dispatch method that clears redux store.
     if(method === 'clear'){
         dispatch({type: onSuccess})
     }
 
 
+    // If method is loadComment query document in 'Comments' collection. Query only documents where data value is equal articleID property in document.
     if(method === 'loadComment') try {
 
         const commentsCollectionRef =  query(collection(db, 'Comments'), where("articleId", "==", data))
-
         const comments = await getDocs(commentsCollectionRef)
 
-    
+        // Action that is adding received data to the redux store.
         if(onSuccess) dispatch({type: onSuccess, payload: comments.docs.map(doc => ({...doc.data(), id: doc.id}))})
     }
     catch(error){
@@ -183,14 +195,13 @@ const api = ({dispatch}) => next => async action => {
 }
 
     
-
+    // If method is setComment save the data to firestore database ('Comments' collection).
     if(method === 'setComment') try {
 
         const {articleId, id, comment, date, user, userID} = data 
 
 
         await setDoc(doc(db, 'Comments', id), {
-            
             id: id,
             articleId: articleId,
             user: user,
@@ -199,18 +210,13 @@ const api = ({dispatch}) => next => async action => {
             date: date
         })
 
-        // dispatch(actions.apiCallSuccess(data))
+        // Action that is adding received data to the redux store.
         if(onSuccess) dispatch({type: onSuccess, payload: data})
     }
     catch(error){
         if(onError) dispatch({type: onError, payload: error.message})
         dispatch(actions.apiCallFailed(error.message))
     }
-
-
-
-
-
 
 }
 

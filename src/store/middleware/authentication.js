@@ -22,7 +22,7 @@ const authentication = ({dispatch}) => next => async action => {
                 password
                 
             )
-            const userDate = await updateProfile(auth.currentUser, {
+            await updateProfile(auth.currentUser, {
                 displayName: username, photoURL: "https://example.com/jane-q-user/profile.jpg"})
 
             await sendEmailVerification(auth.currentUser)
@@ -30,8 +30,10 @@ const authentication = ({dispatch}) => next => async action => {
 
             
             if(onSuccess) dispatch({type: onSuccess, payload: {email, username}})
+            
+            await signOut(auth);
 
-            console.log(userDate)
+            
         }  
         catch( error ){
             if(onError) dispatch({type: onError, payload: error.message}) 
@@ -49,7 +51,7 @@ const authentication = ({dispatch}) => next => async action => {
             if(onSuccess) dispatch({type: onSuccess})
             
         } catch( error ){
-            console.log(error.message);
+            if(onError) dispatch({type: onError, payload: '*wrong email or password'})
         }
     }
     if(method === 'logout'){

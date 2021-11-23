@@ -23,8 +23,6 @@ const FirstPage = () => {
     }, [ageVerified])
 
 
-
-
     return ( 
         <Main>
             <HomeArticle />

@@ -13,8 +13,10 @@ const ArticlesGroupList = () => {
     const {group} = useParams();
 
     //username selector.
-    const user = useSelector(state => state.entities.auth.user.username)
-    
+    const user = useSelector(state => state.entities.auth.user.username);
+
+    const verified = useSelector(state => state.entities.auth.user.verified);
+    console.log(verified);
     //articles group selector.
     const beers = useSelector(selectArticleGroups(group));
 
@@ -23,6 +25,7 @@ const ArticlesGroupList = () => {
 
     //when true / false <InfoForUser> components display property is flex / none.
     const [infoShowForUser, setShowInfoForUser] = useState(false);
+    const [infoMsg, setInfoMsg] = useState('Zaloguj się aby dodać artykuł')
 
     //number of documents that are initially loaded from firebase
     const numberOfDocs = 3;
@@ -53,6 +56,20 @@ const ArticlesGroupList = () => {
     }
 
 
+    //userCheck checks if user is logged-in and verified. 
+    //Depending on verification and sign-in status different messages can be shown to the user.
+    const userCheck = () => {
+
+        if(!user){
+            setShowInfoForUser(prevState => prevState = !prevState);
+        } else if(!verified){
+            setInfoMsg('Konto niezweryfikowane: wejdz w wysłany link weryfikacyjny i odśwież stronę');
+            setShowInfoForUser(prevState => prevState = !prevState);
+        }
+        
+    }
+    
+
     return ( 
         <ArticlesList>
             <Container>
@@ -72,18 +89,18 @@ const ArticlesGroupList = () => {
                         </ArticleItem>
                         ))}
 
-                        {/* If user is not logged in setShowInfoForUser as oposite value (true) */}
-                        <AddArticleItem onClick={() => setShowInfoForUser(prevState => prevState = !prevState)}>
+                        {/* If user is not logged-in setShowInfoForUser as oposite value (true) */}
+                        <AddArticleItem onClick={userCheck}>
                     
-                            <Link to={user? `/create` : "#"}>
+                            <Link to={user && verified? `/create` : "#"}>
                                 <FontAwesomeIcon icon={faPlusCircle} />
                             </Link> 
                         </AddArticleItem>
                 </ArticlesGrid>
                 
                 {/* If infoShowForUser is true than show InfoForUser component that displays 'Zaloguj się aby dodać artykuł' */}
-                <InfoForUser infoShowForUser={infoShowForUser} onClick={() => setShowInfoForUser(prevState => prevState = !prevState)}>
-                    <h2>Zaloguj się aby dodać artykuł</h2>
+                <InfoForUser infoShowForUser={infoShowForUser} onClick={userCheck}>
+                    <h2>{infoMsg}</h2>
                 </InfoForUser>
                 
             </Container>
@@ -196,12 +213,14 @@ const InfoForUser = styled.article`
     background-color: rgba(46, 49, 49, 0.9);
     color: white;
     text-align: center;
+    
     @media (min-width: 992px) {
-        font-size: 25px;
+        font-size: 20px;
     }
 
     h2 {
-        width: 240px;
+        width: 80%;
+        font-weight: 400;     
     }
    
 `

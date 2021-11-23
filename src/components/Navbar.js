@@ -39,14 +39,18 @@ const Navbar = () => {
             const email =  currentUser?.email? currentUser.email : false;
             const username = currentUser?.email? currentUser.displayName : false;
             const uid = currentUser?.email? currentUser.uid : false;
-            const data = {email, username, uid}              
+            const verified = currentUser?.emailVerified;
+            const data = {email, username, uid, verified};
+
+            
 
                 // If user is authenticated, set user as logged in.
-                dispatch(setUserLoggedIn(data))
+                dispatch(setUserLoggedIn(data));
+                dispatch(setLoginFormValue(false));
 
                 // if user is logged do not show age verification form. Age verified value is then true
                 // if no one is logged in eg. after user logged out, age verified value will be false so age verification form will be set to false.
-                //  If user age verification value in loaclStorage is true this 
+                // If user age verification value in loaclStorage is true this 
                 // dispatch will still be executed. This line of code will need to be improvemed in the future.
                 if(!uid) dispatch(setUserAgeVerified(false))
            
@@ -64,7 +68,7 @@ const Navbar = () => {
     //Shows/hides Login/SignUp component. Value argument contains redux action that we want to dispatch. Based on changes in redux store LoginPage/SignUpPage
     //is shown or hidden
     const showForm = (value) => {
-        dispatch(value())
+        dispatch(value(true))
     }
 
     //Logout current user

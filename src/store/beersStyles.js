@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
-
+// Styles data manipulation slice
 const slice = createSlice({
     name: 'styles',
     initialState: {
@@ -14,7 +14,7 @@ const slice = createSlice({
     },
     reducers: {
         setLoginFormValue: (styles, action) => {
-            styles.loginShow = !styles.loginShow
+            styles.loginShow = action.payload;
         },
         handleSignUpStyle: (styles, action) => {
             styles.signUpShow = !styles.signUpShow
