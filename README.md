@@ -2,9 +2,9 @@
 
 ## About BeerStory
 
-Beer Story is my personal project build with React and Redux and Firebase. It is training project and the project that I will officially publish in future. 
-However, before release, some functionalities still need to be improved. Official BeerStory webapp will store information about history of beer.
-All moderators will be able to publish their own articles about history of beer on this website. Users will be able to read, rate and comment those articles. 
+Beer Story is my personal project build with React, Redux and Firebase. It is not only training project but also the website that I will officially publish in future. 
+Before release, some additional functionalities still need to be added. Official BeerStory webapp will store articles and information about history of beer.
+All moderators will be able to publish their own articles about history of beer on BeerStory. Users will be able to read, rate and comment those articles. 
 
 ## How It works?
 
