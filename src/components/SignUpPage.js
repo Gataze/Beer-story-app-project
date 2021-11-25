@@ -77,10 +77,11 @@ const SignUpPage = () => {
                     <input type="password" value={passwordRepeat} onChange={(e) => setPasswordRepeat(e.target.value)}/>  
                 </Form>
             </LoginForm> 
-                    <Codex>Regulamin:
+                    <Codex>
+                        <h2>Terms of use</h2>
                         <ol>
                             <li>Wszelkie dane zamieszczone przez użytkownika w testowej wersji aplikacji BeerStory mogą zostać usunięte bez podania przyczyny.</li>
-                            <li>Użytkownik nie będzie zamieszczał na stronie żadnych danych osobowych, danych wrażliwych, materiałów do których nie ma praw autorskich i wszelkich innych treści niezgodnych z prawem obowiązującym w Rzeczpospolitej Polsce.</li>
+                            <li>Użytkownik nie będzie zamieszczał na stronie żadnych danych osobowych, danych wrażliwych, materiałów do których nie ma praw autorskich i wszelkich treści niezgodnych z prawem obowiązującym w Rzeczpospolitej Polsce.</li>
                             <li>Użytkownik może dowolnie testować niniejszą stronę. W razie znalezienia problemów użytkownik proszony jest o kontak mailowy z właścicielem strony: b.gataze@gmail.com</li>
                         </ol>
                     </Codex>
@@ -173,14 +174,36 @@ const Form = styled.div`
 `
 
 const Codex = styled.section`
-    width: 50%;
+    width: 80%;
     margin: 0;
-    padding-left: 5px;
+    padding-left: 0px;
     font-size: 12px;
     text-align: justify;
+    @media(min-width: 576px){
+        width: 50%;
+    }
+    @media(min-width: 768px){
+        width: 40%;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        @media(min-width: 768px){
+        margin: 0 0 0 -10px;
+        text-align: left;
+    }
+    }
 
     ol {
-        padding-left: 15px;
+        padding: 0;
+        
     }
+
+    li {
+        margin-bottom: 5px;
+    }
+
+   
 `
 

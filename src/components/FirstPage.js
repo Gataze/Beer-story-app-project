@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import img1 from '../img/img-1.svg'
-import img2 from '../img/img-2.svg'
+import img1 from '../img/img-1.png'
+import img2 from '../img/img-2.png'
 import HomeArticle from "./HomeArticle";
 import AgeVerificationForm from "./AgeVerificationForm";
 import styled from "styled-components";

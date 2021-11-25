@@ -84,6 +84,12 @@ const LoginPageContainer = styled.div`
     padding: 20px;
     background-color: rgba(46, 49, 49, 0.9);
     color: white;
+
+    span {
+        
+        align-self: center;
+        margin: 0;
+    }
     
 `
 

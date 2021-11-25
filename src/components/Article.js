@@ -84,8 +84,8 @@ const Article = () => {
 
                     {/* If beerArtcile has author and creation data load author and creation data. */}
                     <ArticleDets>
-                        <span>Autor: {beerArticle?.author? beerArticle.author : '@anonim '} /</span>
-                        <span>/ Data publikacji: {beerArticle?.date}</span>
+                        <span>Autor: {beerArticle?.author? beerArticle.author : '@anonim '}</span>
+                        <span>Data publikacji: {beerArticle?.date}</span>
                     </ArticleDets>
                     {/* Maps beerArtcile description paragraphs on page.*/}
                     {beerArticle?.description.map((descript, index) => (
@@ -221,9 +221,14 @@ const ArticleMainContent = styled.div`
 
 //Stylizuje element zawierający nazwę autora i datę
 const ArticleDets = styled.summary`
-
     display: flex;
     justify-content: flex-end;
+    flex-flow: column;
+    
+    @media(min-width: 768px){
+        flex-flow: row;
+        gap: 10px;
+    }
     
 
 `
