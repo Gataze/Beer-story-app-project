@@ -198,9 +198,7 @@ export const getUserBeer = (user, ignoreLastFetch) => (dispatch, getState) => {
 export const addBeer = (data) => apiCallBegan({
     method: 'setDoc',
     data: data,
-    onStart: beersRequested.type,
     onSuccess: beerAdded.type,
-    onError: beersRequestFailed.type
 })
 
 

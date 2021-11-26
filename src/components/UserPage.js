@@ -5,9 +5,10 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getUserBeer } from "../store/beers";
-import { deleteUser } from "firebase/auth";
+import { deleteUser, sendEmailVerification } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
 import { useHistory } from "react-router";
+
 
 
 const UserPage = () => {
@@ -63,6 +64,18 @@ const UserPage = () => {
           }); 
     }
 
+
+    // Function used to resend verification email for user
+    const sendVerificationEmail = () => {
+
+        if(user.emailVerified){
+            alert('Email already verified')
+        }else{
+            sendEmailVerification(auth.currentUser);
+            alert('We have sent an email with a confirmation link to your email address.')
+        } 
+    }
+
     return ( 
         <UserInfo>
             <h2>Panel użytkownika</h2>
@@ -75,9 +88,14 @@ const UserPage = () => {
                     {/* If user is not verified show button send werification link again. Not completed yet... */}
                     {/* {!user?.emailVerified && <button>Wyślij link weryfikacyjny</button>} */}
                     <button disabled onClick={handleDeleteAccount}>Usuń konto</button>
-                    <span>Usuwanie kont tymczasowo zablokowane. Nowe konta usuwane są na biarząco. </span>
+
+                    
+                    {/* If user email was not verified, and first verification email expired, user can resend the verification email */}
+                    {!user.emailVerified && <button onClick={sendVerificationEmail}>Send verification email again</button>}
+                    <span>Usuwanie kont tymczasowo zablokowane. Nowe konta usuwane są na bieżąco. </span>
                 </UserDets>
                 <h2>Twoje artykuły</h2>
+                {!beers[0] && <p>Jeszcze nie napisałeś żadnego artykułu</p>}
                 <ArticlesGrid>
                     {/* User articles are mapped here*/}
                     {beers.map(beer => (
@@ -89,9 +107,11 @@ const UserPage = () => {
                             }</span>
                             <span>{beer.date}</span>
                             <button><Link to={`/article/${beer.id}`}>Czytaj dalej...</Link></button>
+                        
                         </ArticleItem>
                         ))}
                 </ArticlesGrid>
+                
             </article>
         </UserInfo>
 
@@ -102,6 +122,7 @@ export default UserPage;
 
 
 const UserInfo = styled.section`
+min-height: 71.5vh;
 margin: 40px;
 
     > h2 {
@@ -113,6 +134,10 @@ margin: 40px;
     > article {
         width: 1000px;
         margin: 0 auto;
+    }
+
+    > article p {
+        margin-top: 20px;
     }
 
     > article > h2 {
@@ -130,6 +155,8 @@ const UserDets = styled.div`
     @media (min-width: 768px) {
         width: 60%;
     }
+
+    
 
     button {
         width: 150px;

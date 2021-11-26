@@ -61,8 +61,8 @@ const SignUpPage = () => {
 
 
     return ( 
-        <LoginPageContainer setSignUpShow={setSignUpShow}>
-            <LoginForm>
+        <SignUpPageContainer setSignUpShow={setSignUpShow}>
+            <SignUpForm>
             {/* Sign-up form close button. */}
             <p onClick={() => handleHide(handleSignUpStyle)}>X</p>
             <h2>Rejestracja do BeerStory</h2>
@@ -76,7 +76,7 @@ const SignUpPage = () => {
                     <label>Powtórz hasło: </label>
                     <input type="password" value={passwordRepeat} onChange={(e) => setPasswordRepeat(e.target.value)}/>  
                 </Form>
-            </LoginForm> 
+            </SignUpForm> 
                     <Codex>
                         <h2>Terms of use</h2>
                         <ol>
@@ -92,7 +92,7 @@ const SignUpPage = () => {
                     </div>
                     {/* Sign-up button. */}
                     <button onClick={() => signUp(email, password)}>Zarejestruj</button>    
-        </LoginPageContainer>
+        </SignUpPageContainer>
         
      );
 }
@@ -100,7 +100,7 @@ const SignUpPage = () => {
 export default SignUpPage;
 
 
-const LoginPageContainer = styled.div`
+const SignUpPageContainer = styled.div`
     display: ${({setSignUpShow}) =>  setSignUpShow? 'flex' : 'none' };
     position: fixed;
     z-index: 9999;
@@ -126,7 +126,7 @@ const LoginPageContainer = styled.div`
         }
 `
 
-const LoginForm = styled.section`
+const SignUpForm = styled.section`
     width: 300px;
 
     p {

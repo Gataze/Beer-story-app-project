@@ -79,8 +79,6 @@ const api = ({dispatch}) => next => async action => {
     // If method is setDoc save the data to firestore database.
     if(method === 'setDoc') try {
 
-        console.log(data)
-
         // document object we want to set in our firestore database.
         await setDoc(doc(db, 'Beers', data.id), {
             name: data.name,

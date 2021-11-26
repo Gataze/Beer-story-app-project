@@ -30,7 +30,7 @@ const FirstPage = () => {
                 <Section>
                     <Link to='/articles/world'>
                         <img src={img1} alt="hello"/>
-                        <h2>Historia Piwa na Świecie</h2>
+                        <h2>Historia piwa na świecie</h2>
                     </Link>
                 </Section>
                 <Section>
@@ -67,7 +67,7 @@ const Main = styled.main`
     align-items: center;
     justify-content: center;
     background: rgb(119, 119, 119);
-    background: linear-gradient(90deg, rgba(119, 119, 119, 1) 0%, rgba(170, 170, 170, 1) 43%, rgba(170, 170, 170, 1) 85%, rgba(153, 153, 153, 1) 100%);
+    background: linear-gradient(90deg, rgba(136,136,136,1) 0%, rgba(187,187,187,1) 43%, rgba(187,187,187,1) 85%, rgba(170,170,170,1) 100%);
     gap: 60px;
 `
 
@@ -75,7 +75,7 @@ const MainGrid = styled.div`
     display: flex;
     flex-flow: column;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 17px;
     
     @media (min-width: 992px) {
         display: grid;

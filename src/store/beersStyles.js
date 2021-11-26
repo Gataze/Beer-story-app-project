@@ -10,26 +10,30 @@ const slice = createSlice({
         loggedIn: {},
         edit: false,
         ageConfirmed: true,
-        emailVerificationMessage: false
+        emailVerificationMessage: false,
+        passwordForgot: false
     },
     reducers: {
         setLoginFormValue: (styles, action) => {
             styles.loginShow = action.payload;
         },
         handleSignUpStyle: (styles, action) => {
-            styles.signUpShow = !styles.signUpShow
+            styles.signUpShow = !styles.signUpShow;
         },
         setUserLoggedIn: (styles, action) => {
-            styles.loggedIn = action.payload? action.payload : null
+            styles.loggedIn = action.payload? action.payload : null;
         },
         setEditMode: (styles, action) => {
-            styles.edit = action.payload
+            styles.edit = action.payload;
         },
         setUserAgeVerified: (styles, action) => {
-            styles.ageConfirmed = action.payload
+            styles.ageConfirmed = action.payload;
         },
         setEmailVerificationMessage: (styles, action) => {
-            styles.emailVerificationMessage = action.payload
+            styles.emailVerificationMessage = action.payload;
+        },
+        setPasswordForgotForm: (styles, action) => {
+            styles.passwordForgot = action.payload;
         }
 
     }
@@ -41,7 +45,8 @@ export const {
     setUserLoggedIn,
     setEditMode,
     setUserAgeVerified,
-    setEmailVerificationMessage
+    setEmailVerificationMessage,
+    setPasswordForgotForm
 } = slice.actions
 
 export default slice.reducer

@@ -2,7 +2,9 @@ import { useState } from "react";
 import styled from "styled-components";
 import { loginUser } from "../store/beersAuth";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoginFormValue, setUserAgeVerified } from "../store/beersStyles";
+import { setLoginFormValue, setUserAgeVerified, setPasswordForgotForm } from "../store/beersStyles";
+import ResetPassword from "./ResetPassword";
+
 
 
 //Component with login form and its own frontend logic.
@@ -16,6 +18,9 @@ const LoginPage = () => {
     // Value indicating if user is verified.
     const emailVerified = useSelector(state => state.entities.styles.emailVerificationMessage);
 
+    // If true show ResetPassword component/hide LoginForm component.
+    const passwordForgot = useSelector(state => state.entities.styles.passwordForgot);
+
     //Sign-in: when user password or email are wrong when signing-in, the 'error' will store msg for the user that password or email are wrong
     const error = useSelector(state => state.entities.auth.error);
 
@@ -27,41 +32,45 @@ const LoginPage = () => {
     const hideForm = () => {
         dispatch(setLoginFormValue()) 
     }
+
+    //Hides/shows - forgot pasword/login component.
+    const showForgotPassword = () => {
+        dispatch(setPasswordForgotForm(true))
+    }
+
+
        
     //Dispatches functions responsible for signing user in. Function setLoginFormValue sets login value in redux store as true meaning that the user is logged in.
-    const login = (email, password) => {
+    const login = (e, email, password) => {
+        e.preventDefault();
         
         dispatch(loginUser(email, password, emailVerified))
         dispatch(setUserAgeVerified(true)) 
 
-        
-
         // Clear input fields...
         setEmail('')
-        setPassword('')
-
-        
-        
+        setPassword('')   
     }
-
 
     return ( 
         <LoginPageContainer setLoginShow={setLoginShow}>
-            <LoginForm>
+            <LoginForm passwordForgot={passwordForgot}>
             <p onClick={hideForm}>X</p>
             <h2>Logowanie do BeerStory</h2>
-                <Form>
+                <Form onSubmit={(e) => login(e, email, password)}>
                     <label>Email: </label>
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                     <label>Hasło: </label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
-                    <button onClick={() => login(email, password)}>Zaloguj</button>
+                    <button >Zaloguj</button>
+                    <span onClick={showForgotPassword}>Zapomniałeś hasła?</span>
                     <i>{error}</i>
                 </Form>
-                
+                <span>Użyj konta testowego lub utwórz nowe konto.</span>
+                <span>Konto testowe: email: 3cf2zsnz@freeml.net  hasło: test1234</span>
             </LoginForm>
-            <span>Użyj konta testowego lub utwórz nowe konto.</span>
-            <span>Konto testowe: email: 3cf2zsnz@freeml.net  hasło: test1234</span>
+            <ResetPassword />
+            
         </LoginPageContainer>
         
      );
@@ -95,6 +104,7 @@ const LoginPageContainer = styled.div`
 
 
 const LoginForm = styled.section`
+    display: ${({passwordForgot}) => !passwordForgot? 'block' : 'none'};
     width: 300px;
 
     p {
@@ -110,7 +120,7 @@ const LoginForm = styled.section`
 `
 
 
-const Form = styled.div`
+const Form = styled.form`
     display: flex;
     flex-flow: column;
     height: 250px;
@@ -132,5 +142,13 @@ const Form = styled.div`
     i {
         color: red;
         padding: 0;
+    }
+
+    > span {
+        align-self: flex-start;
+        padding: 0;
+        font-size: 10px;
+        cursor: pointer;
+        text-decoration: underline;
     }
 `
