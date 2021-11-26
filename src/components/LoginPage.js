@@ -63,11 +63,12 @@ const LoginPage = () => {
                     <label>Hasło: </label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                     <button >Zaloguj</button>
-                    <span onClick={showForgotPassword}>Zapomniałeś hasła?</span>
+                    <small onClick={showForgotPassword}>Zapomniałeś hasła?</small>
                     <i>{error}</i>
                 </Form>
-                <span>Użyj konta testowego lub utwórz nowe konto.</span>
-                <span>Konto testowe: email: 3cf2zsnz@freeml.net  hasło: test1234</span>
+                <span>Konto testowe:</span>
+                <span>email: 3cf2zsnz@freeml.net </span>
+                <span>hasło: test1234</span>
             </LoginForm>
             <ResetPassword />
             
@@ -95,9 +96,11 @@ const LoginPageContainer = styled.div`
     color: white;
 
     span {
-        
+        display: block;
         align-self: center;
         margin: 0;
+        padding: 0;
+
     }
     
 `
@@ -144,7 +147,7 @@ const Form = styled.form`
         padding: 0;
     }
 
-    > span {
+    > small {
         align-self: flex-start;
         padding: 0;
         font-size: 10px;

@@ -91,6 +91,7 @@ const ResetContainer = styled.form`
 
     label {
         margin-top: 15px;
+        font-size: 12px;
     }
 
     button {
