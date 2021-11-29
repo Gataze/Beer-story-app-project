@@ -68,7 +68,6 @@ All moderators will be able to publish their own articles about history of beer 
 
 
 ## Link
-
 https://determined-darwin-892239.netlify.app/
 
 
