@@ -67,6 +67,11 @@ All moderators will be able to publish their own articles about history of beer 
 10. On the right side of the navbar you will find 'użytkownik' button. It will redirect you to userpage where you can find details about your account.
 
 
+## Link
+
+https://determined-darwin-892239.netlify.app/
+
+
 ## Credits
 Author: Marcin Brzozowski.
 Author fo illustrations: Natalia Brzozowska.
